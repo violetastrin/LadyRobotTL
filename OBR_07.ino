@@ -1,7 +1,6 @@
 #include <Servo.h>
 
 Servo servodf;
-
 Servo servodt;
 Servo servoef;
 Servo servoet;
