@@ -18,10 +18,10 @@ bool resq;
 bool rdir;
 
 const int pretfront = 300;
-const int pretesq = 290;
-const int pretdir = 470;
-const int pretresq = 480;
-const int pretrdir = 400;
+const int pretesq = 250;//290
+const int pretdir = 430;//470
+const int pretresq = 520;//480
+const int pretrdir = 440;//400
 
 void setup() {
   Serial.begin(9600);
@@ -86,10 +86,8 @@ void loop() {
     case 0b00111:
     case 0b01101:
     case 0b01111:
-      pare();
-      delay(200);
       frente();
-      delay(250);
+      delay(200);
       while (analogRead(MEIO) >= pretfront) {
         devesquerda();
       }
@@ -99,10 +97,8 @@ void loop() {
     case 0b10110: 
     case 0b11100: 
     case 0b11110:
-      pare();
-      delay(200);
       frente();
-      delay(250);
+      delay(200);
       while (analogRead(MEIO) >= pretfront) {
         devdireita();
       }
@@ -110,18 +106,14 @@ void loop() {
 
     // Reajuste
     case 0b10011:
-      pare();
-      delay(200);
-      while ((analogRead(DIR) >= pretdir) | (analogRead(REDIR) >= pretrdir))  {
-        efrente();
+      while ((analogRead(DIR) >= pretdir) || (analogRead(REDIR) >= pretrdir)) {
+        devesquerda();
       }
       break;
 
     case 0b11001:
-      pare();
-      delay(200);
-      while ((analogRead(ESQ) >= pretesq) | (analogRead(RESQ) >= pretresq)) {
-        dfrente();
+      while ((analogRead(ESQ) >= pretesq) || (analogRead(RESQ) >= pretresq)) {
+        devdireita();
       }
       break;
 
@@ -196,46 +188,46 @@ void esqfrente() {
 
 void esqre() {
   servoef.write(55);
-  servoet.write(60);
+  servoet.write(55);
 }
 
 void dirfrente() {
-  servodf.write(60);
-  servodt.write(60);
+  servodf.write(55);
+  servodt.write(55);
 }
 
 void dirre() {
-  servodf.write(120);
-  servodt.write(120);
+  servodf.write(125);
+  servodt.write(125);
 }
 
 //-------------------- slow
 
 void devesqfrente() {
-  servoef.write(110);
-  servoet.write(110);
+  servoef.write(115);
+  servoet.write(115);
 }
 
 void devesqre() {
-  servoef.write(70);
-  servoet.write(70);
+  servoef.write(65);
+  servoet.write(65);
 }
 
 void devdirfrente() {
-  servodf.write(70);
-  servodt.write(70);
+  servodf.write(65);
+  servodt.write(65);
 }
 
 void devdirre() {
-  servodf.write(110);
-  servodt.write(110);
+  servodf.write(115);
+  servodt.write(115);
 }
 
 //--------------------- fast
 
 void fesqfrente() {
-  servoef.write(160);
-  servoet.write(160);
+  servoef.write(130);
+  servoet.write(130);
 }
 
 void fesqre() {
@@ -244,8 +236,8 @@ void fesqre() {
 }
 
 void fdirfrente() {
-  servodf.write(30);
-  servodt.write(30);
+  servodf.write(0);
+  servodt.write(0);
 }
 
 void fdirre() {
@@ -260,6 +252,10 @@ void esqpare() {
   servoet.write(90);
 }
 
+void dirpare() {
+  servodf.write(90);
+  servodt.write(90);
+}
 void dirpare() {
   servodf.write(90);
   servodt.write(90);
