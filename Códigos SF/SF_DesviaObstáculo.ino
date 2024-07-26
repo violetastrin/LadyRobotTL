@@ -1,5 +1,6 @@
-#include <Servo.h>       //Biblioteca do servo
-#include <Ultrasonic.h>  //Biblioteca do sensor de obstáculo
+
+#include <Servo.h>       // Biblioteca do servo
+#include <Ultrasonic.h>  // Biblioteca do sensor de obstáculo
 
 Servo servodf;
 Servo servodt;
@@ -19,15 +20,13 @@ bool resq;
 bool rdir;
 
 const int pretfront = 350;
-const int pretesq = 330;   
-const int pretdir = 210;   
-const int pretresq = 450;  
-const int pretrdir = 320; 
+const int pretesq = 350;
+const int pretdir = 320;
+const int pretresq = 450;
+const int pretrdir = 320;
 
-
-Ultrasonic ultrasonic(12,13);  // trig primeiro depois echo
+Ultrasonic ultrasonic(12, 13);  // trig primeiro depois echo
 int distancia;
-
 
 void setup() {
   Serial.begin(9600);
@@ -45,7 +44,6 @@ void setup() {
 }
 
 void loop() {
-
   distancia = ultrasonic.read();
 
   //------------------------- sequencia de if's
@@ -88,12 +86,9 @@ void loop() {
     esq = 0;
   }
 
-  Serial.print("distandia = "); Serial.print(distancia); 
-  Serial.print(" S_esq: " + String(esq));
-  Serial.print(" S_front: " + String(front));
-  Serial.print(" S_dir: " + String(dir));
-  Serial.print(" S_redir: " + String(rdir));
-  Serial.println(" S_resq: " + String(resq));
+  Serial.print("distancia = ");
+  Serial.print(distancia);
+  leiturainfra();
 
   int leituraEsq = esq;
   int leituraResq = resq;
@@ -105,73 +100,91 @@ void loop() {
 
   switch (estadoSensores) {
 
-    //frente 
+      //----------------------------------------------- frente
     case 0b10001:
       frente();
       break;
 
-    // 90 graus
+    //----------------------------------------------- 90 graus esquerda
     case 0b00101:
     case 0b00111:
     case 0b01101:
     case 0b01111:
       Serial.println("90 esquerda");
       frente();
-      delay(100);
+      delay(50);
       while (analogRead(MEIO) >= pretfront) {
-        devesquerda();
+        leiturainfra();
+        esquerda();
       }
       break;
 
+    //----------------------------------------------- 90 graus direita
     case 0b10100:
     case 0b10110:
     case 0b11100:
     case 0b11110:
       Serial.println("90 direita");
       frente();
-      delay(100);
+      delay(50);
       while (analogRead(MEIO) >= pretfront) {
-        devdireita();
+        leiturainfra();
+        direita();
       }
       break;
 
-    // Reajuste
+    //----------------------------------------------- Reajuste
     case 0b10011:
-      while ((analogRead(DIR) >= pretdir) || (analogRead(REDIR) >= pretrdir)) {
-        devesquerda();
+      re();
+      delay(70);
+      while (analogRead(REDIR) >= pretrdir) {
+        efrente();
+        leiturainfra();
+        // Verifica se o sensor MEIO detecta a faixa preta novamente para sair do loop
+        //if (analogRead(MEIO) < pretfront) {
+          //break;}
       }
       break;
 
     case 0b11001:
-      while ((analogRead(ESQ) >= pretesq) || (analogRead(RESQ) >= pretresq)) {
-        devdireita();
+      re();
+      delay(70);
+      while (analogRead(RESQ) >= pretresq) {
+        dfrente();
+        leiturainfra();
+        // Verifica se o sensor MEIO detecta a faixa preta novamente para sair do loop
+       // if (analogRead(MEIO) < pretfront) {
+         // break;}
       }
-      break;
-
-    default:
-      Serial.println("Default");
-      frente();
       break;
   }
 }
 
 //------------------------------------------------------- funções básicas motor -------------------------------------------------------------------------------
+void leiturainfra() {
+  Serial.print(" S_esq: " + String(esq));
+  Serial.print(" S_front: " + String(front));
+  Serial.print(" S_dir: " + String(dir));
+  Serial.print(" S_redir: " + String(rdir));
+  Serial.println(" S_resq: " + String(resq));
+}
+
 void frente() {
   Serial.println("FRENTE");
   esqfrente();
   dirfrente();
 }
 
-void dfrente() {
+void dfrente() {  //                   ---- reajuste direita frente
   Serial.println("reajuste direita");
-  fesqfrente();
+  esqfrente();
   devdirfrente();
 }
 
-void efrente() {
+void efrente() {  //                  ----- reajuste esquerda frente
   Serial.println("reajuste esquerda");
   devesqfrente();
-  fdirfrente();
+  dirfrente();
 }
 
 void re() {
@@ -180,26 +193,38 @@ void re() {
   dirre();
 }
 
-void esquerda() {
+void esquerda() {  //--------------- virando para esquerda
   Serial.println("ESQUERDA");
   esqre();
   dirfrente();
 }
 
-void devesquerda() {
+void devesquerda() {  //----------------- virando para esquerda devagar
   Serial.println("DEVESQUERDA");
   devesqre();
   devdirfrente();
 }
 
-void direita() {
+void reajesq() {
+  Serial.println("RESJUSTE ESQ");
+  devesqre();
+  devdirfrente();
+}
+
+void direita() {  //----------------- virando para direta
   Serial.println("DIREITA");
   esqfrente();
   dirre();
 }
 
-void devdireita() {
+void devdireita() {  //----------------- virando para direita devagar
   Serial.println("DEVDIREITA");
+  devesqfrente();
+  devdirre();
+}
+
+void reajdir() {
+  Serial.println("REAJUSTE DIR");
   devesqfrente();
   devdirre();
 }
@@ -235,45 +260,45 @@ void dirre() {
 //-------------------- slow
 
 void devesqfrente() {
-  servoef.write(115);
-  servoet.write(115);
+  servoef.write(105);
+  servoet.write(105);
 }
 
 void devesqre() {
-  servoef.write(65);
-  servoet.write(65);
+  servoef.write(75);
+  servoet.write(75);
 }
 
 void devdirfrente() {
-  servodf.write(65);
-  servodt.write(65);
+  servodf.write(75);
+  servodt.write(75);
 }
 
 void devdirre() {
-  servodf.write(115);
-  servodt.write(115);
+  servodf.write(105);
+  servodt.write(105);
 }
 
 //--------------------- fast
 
 void fesqfrente() {
-  servoef.write(130);
-  servoet.write(130);
+  servoef.write(170);
+  servoet.write(170);
 }
 
 void fesqre() {
-  servoef.write(20);
-  servoet.write(20);
+  servoef.write(10);
+  servoet.write(10);
 }
 
 void fdirfrente() {
-  servodf.write(0);
-  servodt.write(0);
+  servodf.write(10);
+  servodt.write(10);
 }
 
 void fdirre() {
-  servodf.write(150);
-  servodt.write(150);
+  servodf.write(170);
+  servodt.write(170);
 }
 
 //---------------------- parar
@@ -288,7 +313,7 @@ void dirpare() {
   servodt.write(90);
 }
 
-//---------------------- funções desvia obstáculo
+//---------------------- funções desvia obstáculo (NAO MUDAR!)
 
 void giroabdir() {
   servoef.write(180);  // esquerda fast
@@ -304,19 +329,53 @@ void giroabesq() {
   servodt.write(0);    // direita fast
 }
 
-//----------------------  desvia obstáculo
+void re2() {
+  esqre2();
+  dirre2();
+}
 
+void esquerda2() {
+  esqre2();
+  dirfrente2();
+}
+
+void direita2() {
+  esqfrente2();
+  dirre2();
+}
+
+void esqfrente2() {
+  servoef.write(125);
+  servoet.write(125);
+}
+
+void esqre2() {
+  servoef.write(55);
+  servoet.write(55);
+}
+
+void dirfrente2() {
+  servodf.write(55);
+  servodt.write(55);
+}
+
+void dirre2() {
+  servodf.write(125);
+  servodt.write(125);
+}
+
+//----------------------  desvia obstáculo
 void desviaesq() {
-  re();
+  re2();
   delay(200);
-  devesquerda();
-  delay(1500);
+  esquerda2();
+  delay(1400);
   giroabdir();
   delay(1500);
-  direita();
-  delay(400);
+  direita2();
+  delay(300);
   giroabdir();
+  delay(1000);
+  direita2();
   delay(600);
-  direita();
-  delay(550);
 }
