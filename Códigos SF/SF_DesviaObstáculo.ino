@@ -1,4 +1,3 @@
-
 #include <Servo.h>       // Biblioteca do servo
 #include <Ultrasonic.h>  // Biblioteca do sensor de obstáculo
 
@@ -19,22 +18,23 @@ bool dir;
 bool resq;
 bool rdir;
 
-const int pretfront = 350;
-const int pretesq = 350;
-const int pretdir = 320;
-const int pretresq = 450;
-const int pretrdir = 320;
+// Limiares para os sensores de linha
+const int pretfront = 270;
+const int pretesq = 410;
+const int pretdir = 500;
+const int pretresq = 350;
+const int pretrdir = 300;
 
-Ultrasonic ultrasonic(12, 13);  // trig primeiro depois echo
+Ultrasonic ultrasonic(8, 9);  // trig primeiro depois echo
 int distancia;
 
 void setup() {
   Serial.begin(9600);
 
-  servodf.attach(10);
-  servodt.attach(9);
-  servoef.attach(11);
-  servoet.attach(8);
+  servodf.attach(6);
+  servodt.attach(7);
+  servoef.attach(4);
+  servoet.attach(5);
 
   pinMode(ESQ, INPUT);
   pinMode(RESQ, INPUT);
@@ -47,13 +47,12 @@ void loop() {
   distancia = ultrasonic.read();
 
   //------------------------- sequencia de if's
-
-  if (distancia <= 5 && distancia > 0) {
+  if (distancia <= 4 && distancia > 0) {
     Serial.println("desviando");
-    desviaesq();
-    while (analogRead(MEIO) >= pretfront) {
-      giroabdir();
-    }
+    desviadir();
+    //while (analogRead(MEIO) >= pretfront) {
+    //  giroabesq();
+    //}
   }
 
   if (analogRead(MEIO) >= pretfront) {
@@ -112,10 +111,10 @@ void loop() {
     case 0b01111:
       Serial.println("90 esquerda");
       frente();
-      delay(50);
+      delay(100);
       while (analogRead(MEIO) >= pretfront) {
         leiturainfra();
-        esquerda();
+        devesquerda();
       }
       break;
 
@@ -126,37 +125,34 @@ void loop() {
     case 0b11110:
       Serial.println("90 direita");
       frente();
-      delay(50);
+      delay(100);
       while (analogRead(MEIO) >= pretfront) {
         leiturainfra();
-        direita();
+        devdireita();
       }
       break;
 
     //----------------------------------------------- Reajuste
     case 0b10011:
+      Serial.println("reajuste direita");
       re();
-      delay(70);
+      delay(85);
       while (analogRead(REDIR) >= pretrdir) {
         efrente();
         leiturainfra();
-        // Verifica se o sensor MEIO detecta a faixa preta novamente para sair do loop
-        //if (analogRead(MEIO) < pretfront) {
-          //break;}
       }
       break;
 
     case 0b11001:
+      Serial.println("reajuste esquerda");
       re();
-      delay(70);
+      delay(85);
       while (analogRead(RESQ) >= pretresq) {
         dfrente();
         leiturainfra();
-        // Verifica se o sensor MEIO detecta a faixa preta novamente para sair do loop
-       // if (analogRead(MEIO) < pretfront) {
-         // break;}
       }
       break;
+    
   }
 }
 
@@ -260,23 +256,23 @@ void dirre() {
 //-------------------- slow
 
 void devesqfrente() {
-  servoef.write(105);
-  servoet.write(105);
+  servoef.write(110);
+  servoet.write(110);
 }
 
 void devesqre() {
-  servoef.write(75);
-  servoet.write(75);
+  servoef.write(70);
+  servoet.write(70);
 }
 
 void devdirfrente() {
-  servodf.write(75);
-  servodt.write(75);
+  servodf.write(70);
+  servodt.write(70);
 }
 
 void devdirre() {
-  servodf.write(105);
-  servodt.write(105);
+  servodf.write(110);
+  servodt.write(110);
 }
 
 //--------------------- fast
@@ -364,18 +360,54 @@ void dirre2() {
   servodt.write(125);
 }
 
+void frente2() {
+  dirfrente2();
+  esqfrente2();
+}
+
 //----------------------  desvia obstáculo
 void desviaesq() {
   re2();
   delay(200);
   esquerda2();
   delay(1400);
-  giroabdir();
+  frente2();
   delay(1500);
   direita2();
-  delay(300);
-  giroabdir();
+  delay(400);
+  frente2();
   delay(1000);
   direita2();
   delay(600);
+  while (analogRead(RESQ) > pretresq){
+    frente2();
+  }
+  frente();
+  delay(50);
+  while (analogRead(MEIO) > pretfront){
+    esquerda();
+  }
+}
+
+void desviadir() {
+  re2();
+  delay(200);
+  direita2();
+  delay(1400);
+  frente2();
+  delay(1500);
+  esquerda2();
+  delay(400);
+  frente2();
+  delay(1000);
+  esquerda2();
+  delay(600);
+  while (analogRead(RESQ) > pretresq){
+    frente2();
+  }
+  frente();
+  delay(50);
+  while (analogRead(MEIO) > pretfront){
+    direita();
+  }
 }
