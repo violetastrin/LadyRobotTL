@@ -6,17 +6,21 @@
 #include <SoftwareWire.h>
 #include <Wire.h>
 #include <Adafruit_TCS34725_SWwire.h>
+#include <Arduino.h>
+#include <MicroLCD.h>
+
+LCD_SSD1306 display; /* for SSD1306 OLED module */
 
 SoftwareWire sWire(A6, A7);
 
-Adafruit_TCS34725_SWwire tcs_real = Adafruit_TCS34725_SWwire(TCS34725_INTEGRATIONTIME_180MS, TCS34725_GAIN_4X);
-Adafruit_TCS34725_SWwire tcs_soft = Adafruit_TCS34725_SWwire(TCS34725_INTEGRATIONTIME_180MS, TCS34725_GAIN_4X);
+Adafruit_TCS34725_SWwire tcs_real = Adafruit_TCS34725_SWwire(TCS34725_INTEGRATIONTIME_180MS, TCS34725_GAIN_60X);
+Adafruit_TCS34725_SWwire tcs_soft = Adafruit_TCS34725_SWwire(TCS34725_INTEGRATIONTIME_180MS, TCS34725_GAIN_60X);
 
 uint16_t r1, g1, b1, c1;
 uint16_t r2, g2, b2, c2;
 
-uint16_t medrb1;
-uint16_t medrb2;
+uint16_t medrbg1;
+uint16_t medrbg2;
 
 Servo servodf;
 Servo servodt;
@@ -37,8 +41,11 @@ bool rdir;
 bool dverde;
 bool everde;
 
+float red, green, blue;
+float red2, green2, blue2;
+
 // Limiares para os sensores de linha
-const int pretfront = 270;
+const int pretfront = 320;
 const int pretesq = 420;
 const int pretdir = 500;
 const int pretresq = 350;
@@ -105,6 +112,10 @@ void dirpare() {
 
 //------------------------- frente normal (padrão)
 void frente() {
+  display.clear();
+  display.setCursor(0, 0);
+  display.setFontSize(FONT_SIZE_LARGE);
+  display.println("frente");
   Serial.println("FRENTE");
   servoef.write(125);
   servoet.write(125);
@@ -127,6 +138,26 @@ void giroabesq() {
   servodt.write(0);    // direita fast
 }
 
+void esqfrente2() {
+  servoef.write(125);
+  servoet.write(125);
+}
+
+void dirfrente2() {
+  servodf.write(55);
+  servodt.write(55);
+}
+
+void dirre2() {
+  servodf.write(125);
+  servodt.write(125);
+}
+
+void esqre2() {
+  servoef.write(55);
+  servoet.write(55);
+}
+
 void re2() {
   esqre2();
   dirre2();
@@ -142,37 +173,90 @@ void direita2() {
   dirre2();
 }
 
-void esqfrente2() {
-  servoef.write(125);
-  servoet.write(125);
-}
-
-void esqre2() {
-  servoef.write(55);
-  servoet.write(55);
-}
-
-void dirfrente2() {
-  servodf.write(55);
-  servodt.write(55);
-}
-
-void dirre2() {
-  servodf.write(125);
-  servodt.write(125);
-}
-
 void frente2() {
   dirfrente2();
   esqfrente2();
 }
 
-  void leiturainfra() {
+void leiturainfra() {
   Serial.print(" S_esq: " + String(esq));
   Serial.print(" S_front: " + String(front));
   Serial.print(" S_dir: " + String(dir));
   Serial.print(" S_redir: " + String(rdir));
   Serial.println(" S_resq: " + String(resq));
+}
+
+void leituraCor() {
+
+  tcs_soft.getRGB(&red, &green, &blue);
+  tcs_real.getRGB(&red2, &green2, &blue2);
+
+  Serial.print("Re:\t"); Serial.print(int(red)); 
+  Serial.print("\tGe:\t"); Serial.print(int(green)); 
+  Serial.print("\tBe:\t"); Serial.print(int(blue));
+  Serial.print("\n");
+
+  Serial.print("Rd:\t"); Serial.print(int(red2)); 
+  Serial.print("\tGd:\t"); Serial.print(int(green2)); 
+  Serial.print("\tBd:\t"); Serial.print(int(blue2));
+  Serial.print("\n");
+
+  if (green > 100) {
+    dverde = 1;
+  } else {
+    dverde = 0;
+  }
+
+  if (green2 > 96) {
+    everde = 1;
+  } else {
+    everde = 0;
+  }
+
+  /*tcs_real.getRawData(&r1, &g1, &b1, &c1);
+  tcs_soft.getRawData(&r2, &g2, &b2, &c2);
+
+  Serial.print("ESQ (soft): ");
+  Serial.print("Vermelho: ");
+  Serial.print(r2);
+  Serial.print(", Verde: ");
+  Serial.print(g2);
+  Serial.print(", Azul: ");
+  Serial.print(b2);
+  Serial.print(", Claro: ");
+  Serial.print(c2);
+
+  Serial.print(" | DIR (real): ");
+  Serial.print("Vermelho: ");
+  Serial.print(r1);
+  Serial.print(", Verde: ");
+  Serial.print(g1);
+  Serial.print(", Azul: ");
+  Serial.print(b1);
+  Serial.print(", Claro: ");
+  Serial.println(c1);
+
+  uint16_t medrbg1 = (r1 + b1 + g1) / 3;
+  uint16_t medrbg2 = (r2 + b2 + g2) / 3;
+
+  if (medrbg1 > 10000 && g1 > medrbg1 * 1.05) {
+    dverde = 1;
+  } else {
+    dverde = 0;
+  }
+
+  if (medrbg2 > 9000 && g2 > medrbg2) {
+    everde = 1;
+  } else {
+    everde = 0;
+  }*/
+}
+
+void verdes() {
+  Serial.print("everde: ");
+  Serial.print(everde);
+  Serial.print("  dverde: ");
+  Serial.println(dverde);
 }
 
 #endif
