@@ -34,8 +34,8 @@ void setup() {
 void loop() {
 
   distancia = ultrasonic.read();
-  Serial.print("distancia = ");
-  Serial.print(distancia);
+ // Serial.print("distancia = ");
+ // Serial.print(distancia);
 
   leiturainfra();
 
@@ -208,26 +208,30 @@ void encruzte() {
   verdes();
 
 
-  if (dverde == 1 && everde == 1) {  // dois verde
+  if (dverde == 1 && everde == 1) {  // dois verde                           [esse ta dando certo]
     display.clear();
     display.setCursor(0, 0);
     display.setFontSize(FONT_SIZE_LARGE);
     display.println("beco");
     Serial.println("beco");
     pare();
-    delay(100);
+    delay(130);
+    re();
+    delay(30);
     frente();
     delay(100);
     esquerda();
     delay(2900);
-  } else if (everde == 0 && dverde == 1) {  // direita verde
+  } else if (everde == 0 && dverde == 1) {  // direita verde                      
     display.clear();
     display.setCursor(0, 0);
     display.setFontSize(FONT_SIZE_LARGE);
     display.println("dverde");
     Serial.print("direita verde");
     pare();
-    delay(100);
+    delay(130);
+    re();
+    delay(30);
     frente();
     delay(100);
     direita();
@@ -404,4 +408,4 @@ void desviadir() {
   while (analogRead(MEIO) > pretfront) {
     direita();
   }
-}
+} 
