@@ -31,6 +31,7 @@ void setup() {
       ;
   }
 }
+
 void loop() {
 
   distancia = ultrasonic.read();
