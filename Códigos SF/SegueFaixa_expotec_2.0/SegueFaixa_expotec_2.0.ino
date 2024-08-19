@@ -215,12 +215,12 @@ void encruzte() {
     display.setFontSize(FONT_SIZE_LARGE);
     display.println("beco");
     Serial.println("beco");
-    pare();
+    /*pare();
     delay(130);
     re();
-    delay(30);
+    delay(30);*/
     frente();
-    delay(100);
+    delay(250);
     esquerda();
     delay(2900);
   } else if (everde == 0 && dverde == 1) {  // direita verde                      
@@ -229,12 +229,12 @@ void encruzte() {
     display.setFontSize(FONT_SIZE_LARGE);
     display.println("dverde");
     Serial.print("direita verde");
-    pare();
+    /*pare();
     delay(130);
     re();
-    delay(30);
+    delay(30);*/
     frente();
-    delay(100);
+    delay(250);
     direita();
     delay(500);
     while (analogRead(MEIO) >= pretfront) {
@@ -246,10 +246,10 @@ void encruzte() {
     display.setFontSize(FONT_SIZE_LARGE);
     display.println("everde");
     Serial.print("esquerda verde");
-    pare();
-    delay(100);
+    /*pare();
+    delay(100);*/
     frente();
-    delay(100);
+    delay(250);
     esquerda();
     delay(500);
     while (analogRead(MEIO) >= pretfront) {
@@ -275,12 +275,12 @@ void divd() {
     display.setCursor(0, 0);
     display.setFontSize(FONT_SIZE_LARGE);
     display.println("dverde");
-    pare();
-    delay(100);
+    /*pare();
+    delay(100);*/
     frente();
-    delay(100);
+    delay(250);
     direita();
-    delay(200);
+    delay(400);
     while (analogRead(MEIO) >= pretfront) {
       direita();
     }
@@ -305,12 +305,12 @@ void dive() {
     display.setCursor(0, 0);
     display.setFontSize(FONT_SIZE_LARGE);
     display.println("everde");
-    pare();
-    delay(100);
+    /*pare();
+    delay(100);*/
     frente();
-    delay(100);
+    delay(250);
     esquerda();
-    delay(200);
+    delay(400);
     while (analogRead(MEIO) >= pretfront) {
       esquerda();
     }
