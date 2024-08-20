@@ -33,16 +33,106 @@ void setup() {
 }
 
 void loop() {
+  
+  /*tcs_real.getRawData(&r1, &g1, &b1, &c1);
+  tcs_soft.getRawData(&r2, &g2, &b2, &c2);
+
+  uint16_t medrbg1 = (r1 + b1 + g1) / 3;
+  uint16_t medrbg2 = (r2 + b2 + g2) / 3;
+
+    uint16_t med1 = medrbg1 * 1.075;
+  uint16_t med2 = medrbg2 * 1.05;
+
+  Serial.print("ESQ (soft): ");
+  Serial.print("Verde: ");
+  Serial.print(g2);
+  Serial.print(", Media: ");
+  Serial.print(medrbg2);
+  Serial.print(" - ");
+  Serial.print(med2);
+
+  Serial.print(" | DIR (real): ");
+  Serial.print("Verde: ");
+  Serial.print(g1);
+  Serial.print(", Media: ");
+  Serial.print(medrbg1);
+  Serial.print(" - ");
+  Serial.println(med1);
+
+  if (medrbg1 >= 4000) {
+    dverde = 0;
+  } else if (g1 >= med1){
+    dverde = 1;
+  }
+  else{
+    dverde = 0;
+  }
+  
+  if (medrbg2 >= 4000)
+  { everde = 0;
+  }
+   else if (g2 >= med2){
+    everde = 1;
+  }
+  else{
+    everde = 0;
+  }
+  Serial.print("ESQ (soft): ");
+  Serial.print(everde);
+
+  Serial.print(" | DIR (real): ");
+  Serial.print(dverde);
+  Serial.print(" / ");
+  
+  if (analogRead(MEIO) >= pretfront) {
+    front = 1;
+  } else {
+    front = 0;
+  }
+
+  if (analogRead(RESQ) >= pretresq) {
+    resq = 1;
+  } else {
+    resq = 0;
+  }
+
+  if (analogRead(REDIR) >= pretrdir) {
+    rdir = 1;
+  } else {
+    rdir = 0;
+  }
+
+  if (analogRead(DIR) >= pretdir) {
+    dir = 1;
+  } else {
+    dir = 0;
+  }
+
+  if (analogRead(ESQ) >= pretesq) {
+    esq = 1;
+  } else {
+    esq = 0;
+  }
+
+  int estadoSensores = (esq << 4) | (resq << 3) | (front << 2) | (rdir << 1) | dir;
+
+  Serial.println(estadoSensores, BIN);  
+  delay(1000);
+  return;*/
 
   distancia = ultrasonic.read();
- // Serial.print("distancia = ");
- // Serial.print(distancia);
+  // Serial.print("distancia = ");
+  // Serial.print(distancia);
 
   leiturainfra();
 
   //------------------------- sequencia de if's
   if (distancia <= 5 && distancia > 0) {
     Serial.println("desviando");
+    display.clear();
+    display.setCursor(0, 0);
+    display.setFontSize(FONT_SIZE_LARGE);
+    display.println("desvia");
     desviadir();
   }
 
@@ -76,17 +166,11 @@ void loop() {
     esq = 0;
   }
 
-  int leituraEsq = esq;
-  int leituraResq = resq;
-  int leituraMeio = front;
-  int leituraRedir = rdir;
-  int leituraDir = dir;
-
-  int estadoSensores = (leituraEsq << 4) | (leituraResq << 3) | (leituraMeio << 2) | (leituraRedir << 1) | leituraDir;
+  int estadoSensores = (esq << 4) | (resq << 3) | (front << 2) | (rdir << 1) | dir;
 
   switch (estadoSensores) {
 
-      //----------------------------------------------- frente--------------------------------------------------------------
+    //----------------------------------------------- frente--------------------------------------------------------------
     case 0b10001:
       frente();
       break;
@@ -122,10 +206,16 @@ void loop() {
     case 0b00110:
     case 0b01000:
     case 0b01100:
+    case 0b10000:  //direita
+    case 0b10010:
+    case 0b11000:
+    case 0b00001:  //esquerda
+    case 0b00011:
+    case 0b01001:
       encruzte();
       break;
 
-    case 0b10000:  //direita
+    /*case 0b10000:  //direita
     case 0b10010:
     case 0b11000:
       divd();
@@ -136,7 +226,7 @@ void loop() {
     case 0b00011:
     case 0b01001:
       dive();
-      break;
+      break;*/
 
 
     default:
@@ -203,6 +293,8 @@ void encruzte() {
   display.setFontSize(FONT_SIZE_LARGE);
   display.println("encruzte");
   Serial.println("encruzilhada ou T");
+  re();
+  delay(200);
   pare();
   delay(800);
   leituraCor();
@@ -216,15 +308,15 @@ void encruzte() {
     Serial.println("beco");
 
     frente();
-    delay(250);
+    delay(220);
     esquerda();
     delay(2500);
-    
+
     while (analogRead(MEIO) >= pretfront) {
       esquerda();
     }
 
-  } else if (everde == 0 && dverde == 1) {  // direita verde                      
+  } else if (everde == 0 && dverde == 1) {  // direita verde
     display.clear();
     display.setCursor(0, 0);
     display.setFontSize(FONT_SIZE_LARGE);
@@ -232,9 +324,9 @@ void encruzte() {
     Serial.print("direita verde");
 
     frente();
-    delay(250);
+    delay(220);
     direita();
-    delay(500);
+    delay(600);
 
     while (analogRead(MEIO) >= pretfront) {
       direita();
@@ -247,11 +339,11 @@ void encruzte() {
     display.println("everde");
     Serial.print("esquerda verde");
 
-    
+
     frente();
-    delay(250);
+    delay(220);
     esquerda();
-    delay(500);
+    delay(600);
 
     while (analogRead(MEIO) >= pretfront) {
       esquerda();
@@ -259,9 +351,10 @@ void encruzte() {
 
   } else {
     frente();
+    delay(160);
   }
 }
-void divd() {
+/*void divd() {
   display.clear();
   display.setCursor(0, 0);
   display.setFontSize(FONT_SIZE_LARGE);
@@ -273,23 +366,58 @@ void divd() {
   delay(500);
   leituraCor();
 
-  if (dverde == 1) {
+  if (dverde == 1 && everde == 1) {  // dois verde                           [esse ta dando certo]
+    display.clear();
+    display.setCursor(0, 0);
+    display.setFontSize(FONT_SIZE_LARGE);
+    display.println("beco");
+    Serial.println("beco");
+
+    frente();
+    delay(220);
+    esquerda();
+    delay(2500);
+
+    while (analogRead(MEIO) >= pretfront) {
+      esquerda();
+    }
+
+  } else if (everde == 0 && dverde == 1) {  // direita verde
     display.clear();
     display.setCursor(0, 0);
     display.setFontSize(FONT_SIZE_LARGE);
     display.println("dverde");
-    
+    Serial.print("direita verde");
+
     frente();
-    delay(250);
+    delay(220);
     direita();
-    delay(400);
+    delay(600);
 
     while (analogRead(MEIO) >= pretfront) {
       direita();
     }
 
+  } else if (everde == 1 && dverde == 0) {  // esquerda verde
+    display.clear();
+    display.setCursor(0, 0);
+    display.setFontSize(FONT_SIZE_LARGE);
+    display.println("everde");
+    Serial.print("esquerda verde");
+
+
+    frente();
+    delay(220);
+    esquerda();
+    delay(600);
+
+    while (analogRead(MEIO) >= pretfront) {
+      esquerda();
+    }
+
   } else {
     frente();
+    delay(160);
   }
 }
 
@@ -305,16 +433,50 @@ void dive() {
   delay(500);
   leituraCor();
 
-  if (everde == 1) {
+  if (dverde == 1 && everde == 1) {  // dois verde                           [esse ta dando certo]
+    display.clear();
+    display.setCursor(0, 0);
+    display.setFontSize(FONT_SIZE_LARGE);
+    display.println("beco");
+    Serial.println("beco");
+
+    frente();
+    delay(220);
+    esquerda();
+    delay(2500);
+
+    while (analogRead(MEIO) >= pretfront) {
+      esquerda();
+    }
+
+  } else if (everde == 0 && dverde == 1) {  // direita verde
+    display.clear();
+    display.setCursor(0, 0);
+    display.setFontSize(FONT_SIZE_LARGE);
+    display.println("dverde");
+    Serial.print("direita verde");
+
+    frente();
+    delay(220);
+    direita();
+    delay(600);
+
+    while (analogRead(MEIO) >= pretfront) {
+      direita();
+    }
+
+  } else if (everde == 1 && dverde == 0) {  // esquerda verde
     display.clear();
     display.setCursor(0, 0);
     display.setFontSize(FONT_SIZE_LARGE);
     display.println("everde");
-    
+    Serial.print("esquerda verde");
+
+
     frente();
-    delay(250);
+    delay(220);
     esquerda();
-    delay(400);
+    delay(600);
 
     while (analogRead(MEIO) >= pretfront) {
       esquerda();
@@ -322,21 +484,26 @@ void dive() {
 
   } else {
     frente();
+    delay(160);
   }
-}
+}*/
 
 //------------------------------------------------------- funções básicas motor -------------------------------------------------------------------------------
 
 void dfrente() {  //                   ---- reajuste direita frente
   Serial.println("reajuste direita");
-  esqfrente();
-  devdirfrente();
+  servoef.write(160);
+  servoet.write(160);
+  servodf.write(70);
+  servodt.write(70);
 }
 
 void efrente() {  //                  ----- reajuste esquerda frente
   Serial.println("reajuste esquerda");
-  devesqfrente();
-  dirfrente();
+  servoef.write(110);
+  servoet.write(110);
+  servodf.write(20) ;
+  servodt.write(20);
 }
 
 void re() {
@@ -415,4 +582,4 @@ void desviadir() {
   while (analogRead(MEIO) > pretfront) {
     direita();
   }
-} 
+}
