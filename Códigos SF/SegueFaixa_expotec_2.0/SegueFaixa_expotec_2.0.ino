@@ -204,10 +204,9 @@ void encruzte() {
   display.println("encruzte");
   Serial.println("encruzilhada ou T");
   pare();
-  delay(700);
+  delay(800);
   leituraCor();
   verdes();
-
 
   if (dverde == 1 && everde == 1) {  // dois verde                           [esse ta dando certo]
     display.clear();
@@ -215,46 +214,49 @@ void encruzte() {
     display.setFontSize(FONT_SIZE_LARGE);
     display.println("beco");
     Serial.println("beco");
-    /*pare();
-    delay(130);
-    re();
-    delay(30);*/
+
     frente();
     delay(250);
     esquerda();
-    delay(2900);
+    delay(2500);
+    
+    while (analogRead(MEIO) >= pretfront) {
+      esquerda();
+    }
+
   } else if (everde == 0 && dverde == 1) {  // direita verde                      
     display.clear();
     display.setCursor(0, 0);
     display.setFontSize(FONT_SIZE_LARGE);
     display.println("dverde");
     Serial.print("direita verde");
-    /*pare();
-    delay(130);
-    re();
-    delay(30);*/
+
     frente();
     delay(250);
     direita();
     delay(500);
+
     while (analogRead(MEIO) >= pretfront) {
       direita();
     }
+
   } else if (everde == 1 && dverde == 0) {  // esquerda verde
     display.clear();
     display.setCursor(0, 0);
     display.setFontSize(FONT_SIZE_LARGE);
     display.println("everde");
     Serial.print("esquerda verde");
-    /*pare();
-    delay(100);*/
+
+    
     frente();
     delay(250);
     esquerda();
     delay(500);
+
     while (analogRead(MEIO) >= pretfront) {
       esquerda();
     }
+
   } else {
     frente();
   }
@@ -266,8 +268,9 @@ void divd() {
   display.println("divd");
   Serial.println("t - dir");
   verdes();
+
   pare();
-  delay(400);
+  delay(500);
   leituraCor();
 
   if (dverde == 1) {
@@ -275,15 +278,16 @@ void divd() {
     display.setCursor(0, 0);
     display.setFontSize(FONT_SIZE_LARGE);
     display.println("dverde");
-    /*pare();
-    delay(100);*/
+    
     frente();
     delay(250);
     direita();
     delay(400);
+
     while (analogRead(MEIO) >= pretfront) {
       direita();
     }
+
   } else {
     frente();
   }
@@ -296,8 +300,9 @@ void dive() {
   display.println("dive");
   Serial.println("t - esq");
   verdes();
+
   pare();
-  delay(400);
+  delay(500);
   leituraCor();
 
   if (everde == 1) {
@@ -305,15 +310,16 @@ void dive() {
     display.setCursor(0, 0);
     display.setFontSize(FONT_SIZE_LARGE);
     display.println("everde");
-    /*pare();
-    delay(100);*/
+    
     frente();
     delay(250);
     esquerda();
     delay(400);
+
     while (analogRead(MEIO) >= pretfront) {
       esquerda();
     }
+
   } else {
     frente();
   }
