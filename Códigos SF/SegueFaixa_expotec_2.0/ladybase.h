@@ -45,11 +45,11 @@ float red, green, blue;
 float red2, green2, blue2;
 
 // Limiares para os sensores de linha
-const int pretfront = 320;
-const int pretesq = 400;
-const int pretdir = 480;
-const int pretresq = 350;
-const int pretrdir = 300;
+const int pretfront = 350;
+const int pretesq = 360;
+const int pretdir = 440;
+const int pretresq = 320;
+const int pretrdir = 280;
 
 Ultrasonic ultrasonic(8, 9);  // trig primeiro depois echo
 int distancia;
@@ -188,34 +188,6 @@ void leiturainfra() {
 
 void leituraCor() {
 
-  // tcs_soft.getRGB(&red, &green, &blue);
-  // tcs_real.getRGB(&red2, &green2, &blue2);
-
-  // Serial.print("Re:\t"); Serial.print(int(red)); 
-  // Serial.print("\tGe:\t"); Serial.print(int(green)); 
-  // Serial.print("\tBe:\t"); Serial.print(int(blue));
-  // Serial.print("\n");
-
-  // Serial.print("Rd:\t"); Serial.print(int(red2)); 
-  // Serial.print("\tGd:\t"); Serial.print(int(green2)); 
-  // Serial.print("\tBd:\t"); Serial.print(int(blue2));
-  // Serial.print("\n");
-
-  
-  
-
- /* if (green > 90 < 100 && blue < 90) {
-    dverde = 1; 
-  } else {
-    dverde = 0;  
-  }
-
-  if (green2 > 102 && blue2 < 120) {
-    everde = 1;        
-  } else {
-    everde = 0;        
-  }*/
-
   tcs_real.getRawData(&r1, &g1, &b1, &c1);
   tcs_soft.getRawData(&r2, &g2, &b2, &c2);
 
@@ -223,30 +195,18 @@ void leituraCor() {
   uint16_t medrbg2 = (r2 + b2 + g2) / 3;
 
   Serial.print("ESQ (soft): ");
-  // Serial.print("Vermelho: ");
-  // Serial.print(r2);
   Serial.print(", Verde: ");
   Serial.print(g2);
   Serial.print(", Media: ");
   Serial.print(medrbg2 * 1.05);
-  // Serial.print(", Azul: ");
-  // Serial.print(b2);
-  // Serial.print(", Claro: ");
-  // Serial.print(c2);
 
   Serial.print(" | DIR (real): ");
-  // Serial.print("Vermelho: ");
-  // Serial.print(r1);
   Serial.print(", Verde: ");
   Serial.print(g1);
   Serial.print(", Media: ");
   Serial.println(medrbg1 * 1.10);
-  // Serial.print(", Azul: ");
-  // Serial.print(b1);
-  // Serial.print(", Claro: ");
-  // Serial.println(c1);
 
-  display.clear();
+  /*display.clear();
   display.setCursor(0, 0);
   display.setFontSize(FONT_SIZE_LARGE);
   display.print("Esq G: ");
@@ -257,7 +217,7 @@ void leituraCor() {
   display.println(g1);
   display.print("Dir M: ");
   display.println(medrbg1 * 1.10);
-  delay(2500); // LEMBRAR DE TIRAR EH SO PARA DEBUG!!!!!!
+  delay(2500);*/ // LEMBRAR DE TIRAR EH SO PARA DEBUG!!!!!!
 
   if (medrbg1 >= 2900) {
     dverde = 0;
@@ -268,9 +228,6 @@ void leituraCor() {
     dverde = 0;
   }
 
-  // if (medrbg2 >= 2700) {
-  //   everde = 0;
-  // } else 
   if (g2 >= medrbg2 * 1.05){
     everde = 1;
   }
@@ -291,7 +248,7 @@ void leituraCor() {
   display.println(everde);
   display.print("Dir: ");
   display.println(dverde);
-delay(2500);
+  delay(1500);
 
 
 }
