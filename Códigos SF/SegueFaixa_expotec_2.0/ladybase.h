@@ -46,8 +46,8 @@ float red2, green2, blue2;
 
 // Limiares para os sensores de linha
 const int pretfront = 350;
-const int pretesq = 360;
-const int pretdir = 440;
+const int pretesq = 330;
+const int pretdir = 410;
 const int pretresq = 320;
 const int pretrdir = 280;
 
@@ -194,41 +194,47 @@ void leituraCor() {
   uint16_t medrbg1 = (r1 + b1 + g1) / 3;
   uint16_t medrbg2 = (r2 + b2 + g2) / 3;
 
+  uint16_t med1 = medrbg1 * 1.075;
+  uint16_t med2 = medrbg2 * 1.05;
+
   Serial.print("ESQ (soft): ");
   Serial.print(", Verde: ");
   Serial.print(g2);
   Serial.print(", Media: ");
-  Serial.print(medrbg2 * 1.05);
+  Serial.print(med2);
 
   Serial.print(" | DIR (real): ");
   Serial.print(", Verde: ");
   Serial.print(g1);
   Serial.print(", Media: ");
-  Serial.println(medrbg1 * 1.10);
+  Serial.println(med1);
 
-  /*display.clear();
+  display.clear();
   display.setCursor(0, 0);
   display.setFontSize(FONT_SIZE_LARGE);
   display.print("Esq G: ");
   display.println(g2);
   display.print("Esq M: ");
-  display.println(medrbg2 * 1.05);
+  display.println(med2);
   display.print("Dir G: ");
   display.println(g1);
   display.print("Dir M: ");
-  display.println(medrbg1 * 1.10);
-  delay(2500);*/ // LEMBRAR DE TIRAR EH SO PARA DEBUG!!!!!!
+  display.println(med1);
+  delay(2500); // LEMBRAR DE TIRAR EH SO PARA DEBUG!!!!!!
 
-  if (medrbg1 >= 2900) {
+  if (medrbg1 >= 4000) {
     dverde = 0;
-  } else if (g1 >= medrbg1 * 1.10){
+  } else if (g1 >= med1){
     dverde = 1;
   }
   else{
     dverde = 0;
   }
 
-  if (g2 >= medrbg2 * 1.05){
+  if (medrbg2 >= 4000)
+  { everde = 0;
+  }
+   else if (g2 >= med2){
     everde = 1;
   }
   else{
