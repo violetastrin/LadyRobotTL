@@ -33,96 +33,8 @@ void setup() {
 }
 
 void loop() {
-  
-  /*tcs_real.getRawData(&r1, &g1, &b1, &c1);
-  tcs_soft.getRawData(&r2, &g2, &b2, &c2);
-
-  uint16_t medrbg1 = (r1 + b1 + g1) / 3;
-  uint16_t medrbg2 = (r2 + b2 + g2) / 3;
-
-    uint16_t med1 = medrbg1 * 1.075;
-  uint16_t med2 = medrbg2 * 1.05;
-
-  Serial.print("ESQ (soft): ");
-  Serial.print("Verde: ");
-  Serial.print(g2);
-  Serial.print(", Media: ");
-  Serial.print(medrbg2);
-  Serial.print(" - ");
-  Serial.print(med2);
-
-  Serial.print(" | DIR (real): ");
-  Serial.print("Verde: ");
-  Serial.print(g1);
-  Serial.print(", Media: ");
-  Serial.print(medrbg1);
-  Serial.print(" - ");
-  Serial.println(med1);
-
-  if (medrbg1 >= 4000) {
-    dverde = 0;
-  } else if (g1 >= med1){
-    dverde = 1;
-  }
-  else{
-    dverde = 0;
-  }
-  
-  if (medrbg2 >= 4000)
-  { everde = 0;
-  }
-   else if (g2 >= med2){
-    everde = 1;
-  }
-  else{
-    everde = 0;
-  }
-  Serial.print("ESQ (soft): ");
-  Serial.print(everde);
-
-  Serial.print(" | DIR (real): ");
-  Serial.print(dverde);
-  Serial.print(" / ");
-  
-  if (analogRead(MEIO) >= pretfront) {
-    front = 1;
-  } else {
-    front = 0;
-  }
-
-  if (analogRead(RESQ) >= pretresq) {
-    resq = 1;
-  } else {
-    resq = 0;
-  }
-
-  if (analogRead(REDIR) >= pretrdir) {
-    rdir = 1;
-  } else {
-    rdir = 0;
-  }
-
-  if (analogRead(DIR) >= pretdir) {
-    dir = 1;
-  } else {
-    dir = 0;
-  }
-
-  if (analogRead(ESQ) >= pretesq) {
-    esq = 1;
-  } else {
-    esq = 0;
-  }
-
-  int estadoSensores = (esq << 4) | (resq << 3) | (front << 2) | (rdir << 1) | dir;
-
-  Serial.println(estadoSensores, BIN);  
-  delay(1000);
-  return;*/
 
   distancia = ultrasonic.read();
-  // Serial.print("distancia = ");
-  // Serial.print(distancia);
 
   leiturainfra();
 
@@ -192,10 +104,12 @@ void loop() {
 
     //----------------------------------------------- Reajuste ---------------------------------------------------
     case 0b10011:
+    case 0b10111:
       reajd();
       break;
 
     case 0b11001:
+    case 0b11101:
       reaje();
       break;
 
@@ -215,20 +129,12 @@ void loop() {
       encruzte();
       break;
 
-    /*case 0b10000:  //direita
-    case 0b10010:
-    case 0b11000:
-      divd();
+      // ---------------------------------------------cinza & vermelhor-------------------------------------------------
+
+    case 10101:
+      gapetc();
       break;
-
-
-    case 0b00001:  //esquerda
-    case 0b00011:
-    case 0b01001:
-      dive();
-      break;*/
-
-
+      //--------------------------------------------------------------------------------------------------------------------
     default:
       Serial.println("random");
       frente();
@@ -246,7 +152,7 @@ void novgrausd() {
   display.println("90 graus - d");
   Serial.println("90 direita");
   frente();
-  delay(110);
+  delay(210);
   while (analogRead(MEIO) >= pretfront) {
     leiturainfra();
     devdireita();
@@ -260,7 +166,7 @@ void novgrause() {
   display.println("90 graus - e");
   Serial.println("90 esquerda");
   frente();
-  delay(110);
+  delay(210);
   while (analogRead(MEIO) >= pretfront) {
     devesquerda();
     leiturainfra();
@@ -291,24 +197,20 @@ void encruzte() {
   display.clear();
   display.setCursor(0, 0);
   display.setFontSize(FONT_SIZE_LARGE);
-  display.println("encruzte");
+  display.println("encruzted");
   Serial.println("encruzilhada ou T");
   re();
-  delay(200);
+  delay(160);
   pare();
-  delay(800);
+  delay(400);
   leituraCor();
   verdes();
 
-  if (dverde == 1 && everde == 1) {  // dois verde                           [esse ta dando certo]
-    display.clear();
-    display.setCursor(0, 0);
-    display.setFontSize(FONT_SIZE_LARGE);
-    display.println("beco");
+  if (dverde == 1 && everde == 1) {
     Serial.println("beco");
 
     frente();
-    delay(220);
+    delay(280);
     esquerda();
     delay(2500);
 
@@ -317,14 +219,10 @@ void encruzte() {
     }
 
   } else if (everde == 0 && dverde == 1) {  // direita verde
-    display.clear();
-    display.setCursor(0, 0);
-    display.setFontSize(FONT_SIZE_LARGE);
-    display.println("dverde");
     Serial.print("direita verde");
 
     frente();
-    delay(220);
+    delay(470);
     direita();
     delay(600);
 
@@ -333,15 +231,11 @@ void encruzte() {
     }
 
   } else if (everde == 1 && dverde == 0) {  // esquerda verde
-    display.clear();
-    display.setCursor(0, 0);
-    display.setFontSize(FONT_SIZE_LARGE);
-    display.println("everde");
     Serial.print("esquerda verde");
 
 
     frente();
-    delay(220);
+    delay(470);
     esquerda();
     delay(600);
 
@@ -351,159 +245,57 @@ void encruzte() {
 
   } else {
     frente();
-    delay(160);
-  }
-}
-/*void divd() {
-  display.clear();
-  display.setCursor(0, 0);
-  display.setFontSize(FONT_SIZE_LARGE);
-  display.println("divd");
-  Serial.println("t - dir");
-  verdes();
-
-  pare();
-  delay(500);
-  leituraCor();
-
-  if (dverde == 1 && everde == 1) {  // dois verde                           [esse ta dando certo]
-    display.clear();
-    display.setCursor(0, 0);
-    display.setFontSize(FONT_SIZE_LARGE);
-    display.println("beco");
-    Serial.println("beco");
-
-    frente();
-    delay(220);
-    esquerda();
-    delay(2500);
-
-    while (analogRead(MEIO) >= pretfront) {
-      esquerda();
-    }
-
-  } else if (everde == 0 && dverde == 1) {  // direita verde
-    display.clear();
-    display.setCursor(0, 0);
-    display.setFontSize(FONT_SIZE_LARGE);
-    display.println("dverde");
-    Serial.print("direita verde");
-
-    frente();
-    delay(220);
-    direita();
-    delay(600);
-
-    while (analogRead(MEIO) >= pretfront) {
-      direita();
-    }
-
-  } else if (everde == 1 && dverde == 0) {  // esquerda verde
-    display.clear();
-    display.setCursor(0, 0);
-    display.setFontSize(FONT_SIZE_LARGE);
-    display.println("everde");
-    Serial.print("esquerda verde");
-
-
-    frente();
-    delay(220);
-    esquerda();
-    delay(600);
-
-    while (analogRead(MEIO) >= pretfront) {
-      esquerda();
-    }
-
-  } else {
-    frente();
-    delay(160);
+    delay(410);
   }
 }
 
-void dive() {
+void gapetc() {
   display.clear();
   display.setCursor(0, 0);
   display.setFontSize(FONT_SIZE_LARGE);
-  display.println("dive");
-  Serial.println("t - esq");
-  verdes();
-
-  pare();
-  delay(500);
+  display.println("gap");
+  Serial.println("gap");
   leituraCor();
 
-  if (dverde == 1 && everde == 1) {  // dois verde                           [esse ta dando certo]
+  if (dvermelho == 1 && evermelho == 1) {
+    Serial.println("vermelho");  // final
     display.clear();
     display.setCursor(0, 0);
     display.setFontSize(FONT_SIZE_LARGE);
-    display.println("beco");
-    Serial.println("beco");
-
-    frente();
-    delay(220);
-    esquerda();
-    delay(2500);
-
-    while (analogRead(MEIO) >= pretfront) {
-      esquerda();
-    }
-
-  } else if (everde == 0 && dverde == 1) {  // direita verde
+    display.println("vermelho");
+    pare();
+    delay(10000);
+  } 
+  else if (dcinza == 1 && ecinza == 1) {  // resgate
+    Serial.print("cinza");
     display.clear();
     display.setCursor(0, 0);
     display.setFontSize(FONT_SIZE_LARGE);
-    display.println("dverde");
-    Serial.print("direita verde");
-
-    frente();
-    delay(220);
-    direita();
-    delay(600);
-
-    while (analogRead(MEIO) >= pretfront) {
-      direita();
-    }
-
-  } else if (everde == 1 && dverde == 0) {  // esquerda verde
-    display.clear();
-    display.setCursor(0, 0);
-    display.setFontSize(FONT_SIZE_LARGE);
-    display.println("everde");
-    Serial.print("esquerda verde");
-
-
-    frente();
-    delay(220);
-    esquerda();
-    delay(600);
-
-    while (analogRead(MEIO) >= pretfront) {
-      esquerda();
-    }
-
-  } else {
-    frente();
-    delay(160);
+    display.println("cinza");
+    pare();
+    delay(10000);
   }
-}*/
+  else {
+    frente();
+  }
+}
 
 //------------------------------------------------------- funções básicas motor -------------------------------------------------------------------------------
 
 void dfrente() {  //                   ---- reajuste direita frente
   Serial.println("reajuste direita");
-  servoef.write(160);
-  servoet.write(160);
-  servodf.write(70);
-  servodt.write(70);
+  servoef.write(120);
+  servoet.write(120);
+  servodf.write(75);
+  servodt.write(75);
 }
 
 void efrente() {  //                  ----- reajuste esquerda frente
   Serial.println("reajuste esquerda");
-  servoef.write(110);
-  servoet.write(110);
-  servodf.write(20) ;
-  servodt.write(20);
+  servoef.write(105);
+  servoet.write(105);
+  servodf.write(60);
+  servodt.write(60);
 }
 
 void re() {
@@ -554,7 +346,9 @@ void desviaesq() {
   frente2();
   delay(2400);
   direita2();
-  delay(1600);
+  delay(1500);
+  frente2();
+  delay(200);
   while (analogRead(RESQ) > pretesq) {
     frente2();
   }
@@ -569,13 +363,15 @@ void desviadir() {
   direita2();
   delay(1500);
   frente2();
-  delay(1500);
+  delay(1300);
   esquerda2();
   delay(1500);
   frente2();
-  delay(2500);
+  delay(2400);
   esquerda2();
   delay(1500);
+  frente2();
+  delay(200);
   while (analogRead(RESQ) > pretesq) {
     frente2();
   }
