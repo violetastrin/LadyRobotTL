@@ -35,6 +35,7 @@ void setup() {
 void loop() {
 
   distancia = ultrasonic.read();
+  distancia2 = ultrasonic2.read();
 
   leiturainfra();
 
@@ -104,12 +105,10 @@ void loop() {
 
     //----------------------------------------------- Reajuste ---------------------------------------------------
     case 0b10011:
-    case 0b10111:
       reajd();
       break;
 
     case 0b11001:
-    case 0b11101:
       reaje();
       break;
 
@@ -131,12 +130,12 @@ void loop() {
 
       // ---------------------------------------------cinza & vermelhor-------------------------------------------------
 
-    case 10101:
+    case 0b11111:
       gapetc();
       break;
+
       //--------------------------------------------------------------------------------------------------------------------
     default:
-      Serial.println("random");
       frente();
       break;
   }
@@ -153,7 +152,7 @@ void novgrausd() {
   Serial.println("90 direita");
   frente();
   delay(210);
-  while (analogRead(MEIO) >= pretfront) {
+  while (analogRead(MEIO) >= 310) {
     leiturainfra();
     devdireita();
   }
@@ -167,7 +166,7 @@ void novgrause() {
   Serial.println("90 esquerda");
   frente();
   delay(210);
-  while (analogRead(MEIO) >= pretfront) {
+  while (analogRead(MEIO) >= 310) {
     devesquerda();
     leiturainfra();
   }
@@ -202,17 +201,17 @@ void encruzte() {
   re();
   delay(160);
   pare();
-  delay(400);
-  leituraCor();
+  delay(200);
+  leituraCorG();
   verdes();
 
   if (dverde == 1 && everde == 1) {
     Serial.println("beco");
 
     frente();
-    delay(280);
+    delay(300);
     esquerda();
-    delay(2500);
+    delay(2200);
 
     while (analogRead(MEIO) >= pretfront) {
       esquerda();
@@ -222,7 +221,7 @@ void encruzte() {
     Serial.print("direita verde");
 
     frente();
-    delay(470);
+    delay(460);
     direita();
     delay(600);
 
@@ -235,7 +234,7 @@ void encruzte() {
 
 
     frente();
-    delay(470);
+    delay(460);
     esquerda();
     delay(600);
 
@@ -255,7 +254,9 @@ void gapetc() {
   display.setFontSize(FONT_SIZE_LARGE);
   display.println("gap");
   Serial.println("gap");
-  leituraCor();
+  pare();
+  delay(200);
+  leituraCorR();
 
   if (dvermelho == 1 && evermelho == 1) {
     Serial.println("vermelho");  // final
@@ -264,7 +265,7 @@ void gapetc() {
     display.setFontSize(FONT_SIZE_LARGE);
     display.println("vermelho");
     pare();
-    delay(10000);
+    delay(7000);
   } 
   else if (dcinza == 1 && ecinza == 1) {  // resgate
     Serial.print("cinza");
@@ -277,60 +278,8 @@ void gapetc() {
   }
   else {
     frente();
+    delay(80);
   }
-}
-
-//------------------------------------------------------- funções básicas motor -------------------------------------------------------------------------------
-
-void dfrente() {  //                   ---- reajuste direita frente
-  Serial.println("reajuste direita");
-  servoef.write(120);
-  servoet.write(120);
-  servodf.write(75);
-  servodt.write(75);
-}
-
-void efrente() {  //                  ----- reajuste esquerda frente
-  Serial.println("reajuste esquerda");
-  servoef.write(105);
-  servoet.write(105);
-  servodf.write(60);
-  servodt.write(60);
-}
-
-void re() {
-  Serial.println("RÉ");
-  esqre();
-  dirre();
-}
-
-void esquerda() {  //--------------- virando para esquerda
-  Serial.println("ESQUERDA");
-  esqre();
-  dirfrente();
-}
-void devesquerda() {  //----------------- virando para esquerda devagar
-  Serial.println("DEVESQUERDA");
-  devesqre();
-  devdirfrente();
-}
-
-void direita() {  //----------------- virando para direta
-  Serial.println("DIREITA");
-  esqfrente();
-  dirre();
-}
-
-void devdireita() {  //----------------- virando para direita devagar
-  Serial.println("DEVDIREITA");
-  devesqfrente();
-  devdirre();
-}
-
-void pare() {
-  Serial.println("PARE");
-  esqpare();
-  dirpare();
 }
 
 //----------------------  desvia obstáculo -------------------------------------------------------------------------
@@ -378,4 +327,10 @@ void desviadir() {
   while (analogRead(MEIO) > pretfront) {
     direita();
   }
+}
+
+void resgate() {
+  frente();
+  delay(1000);
+  //if ()
 }
