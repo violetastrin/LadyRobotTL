@@ -46,14 +46,17 @@ bool dcinza;
 bool ecinza;
 
 // Limiares para os sensores de linha
-const int pretfront = 300;
+const int pretfront = 340;
 const int pretesq = 290;
 const int pretdir = 330;
-const int pretresq = 320;
-const int pretrdir = 300;
+const int pretresq = 340;
+const int pretrdir = 320;
 
 Ultrasonic ultrasonic(8, 9);  // trig primeiro depois echo
 int distancia;
+
+Ultrasonic ultrasonic2(30, 31);
+int distancia2;
 //-----------------FUNÇOES SERVOS ------------------------------- FUNÇOES SERVOS --------------------------------- FUNÇOES SERVOS -------------------------------------
 //------------------- normal
 
@@ -179,6 +182,60 @@ void frente2() {
   esqfrente2();
 }
 
+//------------------------------------------------------- funções básicas motor -------------------------------------------------------------------------------
+
+void dfrente() {  //                   ---- reajuste direita frente
+  Serial.println("reajuste direita");
+  servoef.write(120);
+  servoet.write(120);
+  servodf.write(75);
+  servodt.write(75);
+}
+
+void efrente() {  //                  ----- reajuste esquerda frente
+  Serial.println("reajuste esquerda");
+  servoef.write(105);
+  servoet.write(105);
+  servodf.write(60);
+  servodt.write(60);
+}
+
+void re() {
+  Serial.println("RÉ");
+  esqre();
+  dirre();
+}
+
+void esquerda() {  //--------------- virando para esquerda
+  Serial.println("ESQUERDA");
+  esqre();
+  dirfrente();
+}
+void devesquerda() {  //----------------- virando para esquerda devagar
+  Serial.println("DEVESQUERDA");
+  devesqre();
+  devdirfrente();
+}
+
+void direita() {  //----------------- virando para direta
+  Serial.println("DIREITA");
+  esqfrente();
+  dirre();
+}
+
+void devdireita() {  //----------------- virando para direita devagar
+  Serial.println("DEVDIREITA");
+  devesqfrente();
+  devdirre();
+}
+
+void pare() {
+  Serial.println("PARE");
+  esqpare();
+  dirpare();
+}
+
+
 void leiturainfra() {
   Serial.print(" S_esq: " + String(esq));
   Serial.print(" S_front: " + String(front));
@@ -187,70 +244,33 @@ void leiturainfra() {
   Serial.println(" S_resq: " + String(resq));
 }
 
-void leituraCor() {
+void leituraCorG() {
 
   tcs_real.getRawData(&r1, &g1, &b1, &c1);
   tcs_soft.getRawData(&r2, &g2, &b2, &c2);
-  
+
   uint16_t medrbg1 = (r1 + b1 + g1) / 3;
   uint16_t medrbg2 = (r2 + b2 + g2) / 3;
 
-  uint16_t med1 = medrbg1 * 1.05;
+  uint16_t med1 = medrbg1 * 1.06;
   uint16_t med2 = medrbg2 * 1.045;
 
   if (medrbg1 >= 7200) {
     dverde = 0;
-  } else if (g1 >= med1){
+  } else if (g1 >= med1) {
     dverde = 1;
-  }
-  else{
+  } else {
     dverde = 0;
   }
 
 
-  if (medrbg2 >= 7000)
-  { everde = 0;
-  }
-   else if (g2 >= med2){
+  if (medrbg2 >= 7000) {
+    everde = 0;
+  } else if (g2 >= med2) {
     everde = 1;
-  }
-  else{
+  } else {
     everde = 0;
   }
-//------------------------------------------------------------------------
-  if (r1 > medrbg1 && c1 <= 14000) {
-    dvermelho = 1;
-  }
-  else {
-    dvermelho = 0;
-  }
-
-
-  if (r2 > medrbg2 && c2 <= 14500) {
-    evermelho = 1;
-  }
-  else {
-    evermelho = 0;
-  }
-  // ---------------------------------------------------------------------
-  if (c1 >= 999999) {
-    dcinza = 1;
-  }
-  else {
-    dcinza = 0;
-  }
-
-
-  if (c2 >= 999999) {
-    ecinza = 1;
-  }
-  else {
-    ecinza = 0;
-  }
-  //----------------------------------------------------------------------
-
-
-
   Serial.print("ESQ (soft): ");
   Serial.print(", Verde: ");
   Serial.print(g2);
@@ -268,26 +288,94 @@ void leituraCor() {
   display.setFontSize(FONT_SIZE_SMALL);
   display.print("Esq G: ");
   display.println(g2);
-  display.print("Esq R: ");
-  display.println(r2);
   display.print("Esq M: ");
   display.println(med2);
   display.print("Dir G: ");
   display.println(g1);
-  display.print("Dir R: ");
-  display.println(r1);
   display.print("Dir M: ");
   display.println(med1);
-  delay(2500); // LEMBRAR DE TIRAR EH SO PARA DEBUG!!!!!!*/
+  delay(2500);  // LEMBRAR DE TIRAR EH SO PARA DEBUG!!!!!!*/
 
   Serial.print("ESQ (soft): ");
   Serial.print(everde);
 
   Serial.print(" | DIR (real): ");
   Serial.print(dverde);
-
-
 }
+
+void leituraCorR() {
+
+  tcs_real.getRawData(&r1, &g1, &b1, &c1);
+  tcs_soft.getRawData(&r2, &g2, &b2, &c2);
+
+  uint16_t medrbg1 = (r1 + b1 + g1) / 3;
+  uint16_t medrbg2 = (r2 + b2 + g2) / 3;
+
+  uint16_t med1 = medrbg1 * 1.05;
+  uint16_t med2 = medrbg2 * 1.045;
+
+  //------------------------------------------------------------------------
+  if (r1 > medrbg1 && c1 <= 14000) {
+    dvermelho = 1;
+  } else {
+    dvermelho = 0;
+  }
+
+
+  if (r2 > medrbg2 && c2 <= 14500) {
+    evermelho = 1;
+  } else {
+    evermelho = 0;
+  }
+  // ---------------------------------------------------------------------
+  if (medrbg1 <= 6300 && b1 > medrbg1) {  // ESQ (soft): Vermelho: 5359, Verde: 6707, Azul: 7441, Claro: 19596 | DIR (real): Vermelho: 4126, Verde: 5991, Azul: 7038, Claro: 16439
+    dcinza = 1;                           // ESQ (soft): Vermelho: 6780, Verde: 8229, Azul: 8984, Claro: 23597 | DIR (real): Vermelho: 6163, Verde: 8526, Azul: 9827, Claro: 23062
+  } else {
+    dcinza = 0;
+  }
+
+
+  if (medrbg2 <= 6900 && b2 > medrbg2) {
+    ecinza = 1;
+  } else {
+    ecinza = 0;
+  }
+  //----------------------------------------------------------------------
+
+
+
+  Serial.print("ESQ (soft): ");
+  Serial.print(", Vermelho: ");
+  Serial.print(r2);
+  Serial.print(", Media: ");
+  Serial.print(medrbg2);
+
+  Serial.print(" | DIR (real): ");
+  Serial.print(", Vermelho: ");
+  Serial.print(r1);
+  Serial.print(", Media: ");
+  Serial.println(medrbg1);
+
+  display.clear();
+  display.setCursor(0, 0);
+  display.setFontSize(FONT_SIZE_SMALL);
+  display.print("Esq R: ");
+  display.println(r2);
+  display.print("Esq M: ");
+  display.println(medrbg2);
+  display.print("Dir R: ");
+  display.println(r1);
+  display.print("Dir M: ");
+  display.println(medrbg1);
+  delay(1000);  // LEMBRAR DE TIRAR EH SO PARA DEBUG!!!!!!*/
+
+  Serial.print("ESQ (soft): ");
+  Serial.print(evermelho);
+
+  Serial.print(" | DIR (real): ");
+  Serial.print(dvermelho);
+}
+
 void verdes() {
   display.clear();
   display.setCursor(0, 0);
@@ -296,7 +384,18 @@ void verdes() {
   display.println(everde);
   display.print("Dir: ");
   display.println(dverde);
-  delay(600);
+  delay(500);
+}
+
+void vermelhos() {
+  display.clear();
+  display.setCursor(0, 0);
+  display.setFontSize(FONT_SIZE_LARGE);
+  display.print("Esq: ");
+  display.println(evermelho);
+  display.print("Dir: ");
+  display.println(dvermelho);
+  delay(500);
 }
 
 #endif
