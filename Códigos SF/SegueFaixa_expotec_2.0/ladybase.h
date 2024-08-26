@@ -46,11 +46,11 @@ bool dcinza;
 bool ecinza;
 
 // Limiares para os sensores de linha
-const int pretfront = 340;
-const int pretesq = 290;
-const int pretdir = 330;
-const int pretresq = 340;
-const int pretrdir = 320;
+const int pretfront = 360;
+const int pretesq = 295;
+const int pretdir = 340;
+const int pretresq = 360;
+const int pretrdir = 440;
 
 Ultrasonic ultrasonic(8, 9);  // trig primeiro depois echo
 int distancia;
@@ -242,6 +242,16 @@ void leiturainfra() {
   Serial.print(" S_dir: " + String(dir));
   Serial.print(" S_redir: " + String(rdir));
   Serial.println(" S_resq: " + String(resq));
+  Serial.print(analogRead(ESQ));
+  Serial.print("             ");
+  Serial.print(analogRead(RESQ));
+  Serial.print("             ");
+  Serial.print(analogRead(MEIO));
+  Serial.print("             ");
+  Serial.print(analogRead(REDIR));
+  Serial.print("             ");
+  Serial.println(analogRead(DIR));
+  
 }
 
 void leituraCorG() {
@@ -255,7 +265,7 @@ void leituraCorG() {
   uint16_t med1 = medrbg1 * 1.06;
   uint16_t med2 = medrbg2 * 1.045;
 
-  if (medrbg1 >= 7200) {
+  if (medrbg1 >= 8000) {
     dverde = 0;
   } else if (g1 >= med1) {
     dverde = 1;
@@ -264,7 +274,7 @@ void leituraCorG() {
   }
 
 
-  if (medrbg2 >= 7000) {
+  if (medrbg2 >= 9000) {
     everde = 0;
   } else if (g2 >= med2) {
     everde = 1;
@@ -283,25 +293,19 @@ void leituraCorG() {
   Serial.print(", Media: ");
   Serial.println(med1);
 
-  display.clear();
-  display.setCursor(0, 0);
-  display.setFontSize(FONT_SIZE_SMALL);
-  display.print("Esq G: ");
-  display.println(g2);
-  display.print("Esq M: ");
-  display.println(med2);
-  display.print("Dir G: ");
-  display.println(g1);
-  display.print("Dir M: ");
-  display.println(med1);
-  delay(2500);  // LEMBRAR DE TIRAR EH SO PARA DEBUG!!!!!!*/
-
-  Serial.print("ESQ (soft): ");
-  Serial.print(everde);
-
-  Serial.print(" | DIR (real): ");
-  Serial.print(dverde);
-}
+  // display.clear();
+  // display.setCursor(0, 0);
+  // display.setFontSize(FONT_SIZE_SMALL);
+  // display.print("Esq G: ");
+  // display.println(g2);
+  // display.print("Esq M: ");
+  // display.println(med2);
+  // display.print("Dir G: ");
+  // display.println(g1);
+  // display.print("Dir M: ");
+  // display.println(med1);
+  // delay(2500);  // LEMBRAR DE TIRAR EH SO PARA DEBUG!!!!!!*
+  }
 
 void leituraCorR() {
 
@@ -356,24 +360,18 @@ void leituraCorR() {
   Serial.print(", Media: ");
   Serial.println(medrbg1);
 
-  display.clear();
-  display.setCursor(0, 0);
-  display.setFontSize(FONT_SIZE_SMALL);
-  display.print("Esq R: ");
-  display.println(r2);
-  display.print("Esq M: ");
-  display.println(medrbg2);
-  display.print("Dir R: ");
-  display.println(r1);
-  display.print("Dir M: ");
-  display.println(medrbg1);
-  delay(1000);  // LEMBRAR DE TIRAR EH SO PARA DEBUG!!!!!!*/
-
-  Serial.print("ESQ (soft): ");
-  Serial.print(evermelho);
-
-  Serial.print(" | DIR (real): ");
-  Serial.print(dvermelho);
+  // display.clear();
+  // display.setCursor(0, 0);
+  // display.setFontSize(FONT_SIZE_SMALL);
+  // display.print("Esq R: ");
+  // display.println(r2);
+  // display.print("Esq M: ");
+  // display.println(medrbg2);
+  // display.print("Dir R: ");
+  // display.println(r1);
+  // display.print("Dir M: ");
+  // display.println(medrbg1);
+  // delay(1000);  // LEMBRAR DE TIRAR EH SO PARA DEBUG!!!!!!*/
 }
 
 void verdes() {
