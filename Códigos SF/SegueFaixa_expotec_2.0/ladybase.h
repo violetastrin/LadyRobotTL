@@ -1,5 +1,7 @@
 #ifndef rodar
 #define rodar
+//#define led 12
+//#define buzzer 11
 
 #include <Servo.h>       // Biblioteca do servo
 #include <Ultrasonic.h>  // Biblioteca do sensor de obstáculo
@@ -58,6 +60,13 @@ int distancia;
 Ultrasonic ultrasonic2(30, 31);
 int distancia2;
 //-----------------FUNÇOES SERVOS ------------------------------- FUNÇOES SERVOS --------------------------------- FUNÇOES SERVOS -------------------------------------
+
+//------------------- função giro 360º
+// void giro360(){                         
+//     direita2(); 
+//     delay(5600);
+// }
+
 //------------------- normal
 
 void esqfrente() {
@@ -395,5 +404,28 @@ void vermelhos() {
   display.println(dvermelho);
   delay(500);
 }
+
+//----------------------------------------------------------------------- caso peçam para acender um led ----------------------------------------------------------------------------
+
+//lembrar que é preciso descomentar o pino 12 e o pinMode no void setup
+
+// void ledpiscar(){                       //----------------- teste do que pode ser o desafio surpresa com o led 
+//     digitalWrite(led, HIGH);
+//     delay(2000);
+//     digitalWrite(led, LOW); 
+//   }
+// }
+
+
+//----------------------------------------------------------------------- caso peçam para tocar um buzzer ----------------------------------------------------------------------------
+
+// lemrar que é preciso descomenta o pino 11 do buzzer e o pinMode no void setup
+
+
+// void buzzerdesafio(){
+//   digitalWrite(buzzer, HIGH);
+//   delay(2000);
+//   digitalWrite(buzzer, LOW);
+// }
 
 #endif
