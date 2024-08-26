@@ -152,7 +152,7 @@ void novgrausd() {
   Serial.println("90 direita");
   frente();
   delay(210);
-  while (analogRead(MEIO) >= 310) {
+  while (analogRead(MEIO) >= 400) {
     leiturainfra();
     devdireita();
   }
@@ -166,7 +166,7 @@ void novgrause() {
   Serial.println("90 esquerda");
   frente();
   delay(210);
-  while (analogRead(MEIO) >= 310) {
+  while (analogRead(MEIO) >= 400) {
     devesquerda();
     leiturainfra();
   }
@@ -211,9 +211,9 @@ void encruzte() {
     frente();
     delay(300);
     esquerda();
-    delay(2200);
+    delay(2000);
 
-    while (analogRead(MEIO) >= pretfront) {
+    while (analogRead(MEIO) >= 420) {
       esquerda();
     }
 
@@ -223,9 +223,9 @@ void encruzte() {
     frente();
     delay(460);
     direita();
-    delay(600);
+    delay(360);
 
-    while (analogRead(MEIO) >= pretfront) {
+    while (analogRead(MEIO) >= 420) {
       direita();
     }
 
@@ -236,9 +236,9 @@ void encruzte() {
     frente();
     delay(460);
     esquerda();
-    delay(600);
+    delay(360);
 
-    while (analogRead(MEIO) >= pretfront) {
+    while (analogRead(MEIO) >= 420) {
       esquerda();
     }
 
@@ -278,7 +278,7 @@ void gapetc() {
   }
   else {
     frente();
-    delay(80);
+    delay(30);
   }
 }
 
