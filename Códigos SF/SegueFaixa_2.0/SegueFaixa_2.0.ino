@@ -1,6 +1,7 @@
 #include "ladybase.h"
 
 void setup() {
+
   Serial.begin(9600);
   display.begin();
 
@@ -14,6 +15,8 @@ void setup() {
   pinMode(MEIO, INPUT);
   pinMode(REDIR, INPUT);
   pinMode(DIR, INPUT);
+  //pinMode(led, OUTPUT);
+  //pinMode(buzzer, OUTPUT);
 
   if (tcs_soft.begin(&sWire)) {
     Serial.println("Found sensor soft");
@@ -40,7 +43,7 @@ void loop() {
   leiturainfra();
 
   //------------------------- sequencia de if's
-  if (distancia <= 5 && distancia > 0) {
+  if (distancia <= 5 && distancia > 0) {                       //--------- distancia do desvia obstaculo
     Serial.println("desviando");
     display.clear();
     display.setCursor(0, 0);
@@ -144,7 +147,7 @@ void loop() {
 
 //------------------------------------------------------- funções de ladrilhos---------------------------------------------------------------------
 
-void novgrausd() {
+void novgrausd() {                         //------------------------ 90º direita
   display.clear();
   display.setCursor(0, 0);
   display.setFontSize(FONT_SIZE_LARGE);
@@ -158,7 +161,7 @@ void novgrausd() {
   }
 }
 
-void novgrause() {
+void novgrause() {                       //------------------------ 90º esquerda
   display.clear();
   display.setCursor(0, 0);
   display.setFontSize(FONT_SIZE_LARGE);
@@ -172,7 +175,7 @@ void novgrause() {
   }
 }
 
-void reajd() {
+void reajd() {                            //------------------------ resjuste direita
   display.clear();
   display.setCursor(0, 0);
   display.setFontSize(FONT_SIZE_LARGE);
@@ -182,7 +185,7 @@ void reajd() {
   leiturainfra();
 }
 
-void reaje() {
+void reaje() {                            //------------------------ resjuste esquerda
   display.clear();
   display.setCursor(0, 0);
   display.setFontSize(FONT_SIZE_LARGE);
@@ -192,7 +195,7 @@ void reaje() {
   leiturainfra();
 }
 
-void encruzte() {
+void encruzte() {                            //------------------------ encruzilhada com T 
   display.clear();
   display.setCursor(0, 0);
   display.setFontSize(FONT_SIZE_LARGE);
@@ -205,7 +208,7 @@ void encruzte() {
   leituraCorG();
   verdes();
 
-  if (dverde == 1 && everde == 1) {
+  if (dverde == 1 && everde == 1) {            //------------------------ beco
     Serial.println("beco");
 
     frente();
