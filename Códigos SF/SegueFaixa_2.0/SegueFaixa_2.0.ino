@@ -259,7 +259,7 @@ void gapetc() {
   Serial.println("gap");
   pare();
   delay(200);
-  leituraCorR();
+  leituraCorReC();
 
   if (dvermelho == 1 && evermelho == 1) {
     Serial.println("vermelho");  // final
@@ -268,7 +268,7 @@ void gapetc() {
     display.setFontSize(FONT_SIZE_LARGE);
     display.println("vermelho");
     pare();
-    delay(7000);
+    delay(6000);
   } 
   else if (dcinza == 1 && ecinza == 1) {  // resgate
     Serial.print("cinza");
@@ -277,7 +277,7 @@ void gapetc() {
     display.setFontSize(FONT_SIZE_LARGE);
     display.println("cinza");
     pare();
-    delay(10000);
+    delay(6000);
   }
   else {
     frente();
