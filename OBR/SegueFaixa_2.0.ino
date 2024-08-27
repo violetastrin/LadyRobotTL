@@ -15,6 +15,9 @@ void setup() {
   pinMode(MEIO, INPUT);
   pinMode(REDIR, INPUT);
   pinMode(DIR, INPUT);
+  pinMode(blue, OUTPUT);
+  pinMode(green, OUTPUT);
+  pinMode(red, OUTPUT);
   //pinMode(led, OUTPUT);
   //pinMode(buzzer, OUTPUT);
 
@@ -38,18 +41,17 @@ void setup() {
 void loop() {
 
   distancia = ultrasonic.read();
-  distancia2 = ultrasonic2.read();
 
   leiturainfra();
 
   //------------------------- sequencia de if's
-  if (distancia <= 5 && distancia > 0) {                       //--------- distancia do desvia obstaculo
+  if (distancia <= 5 && distancia > 0) {  //--------- distancia do desvia obstaculo
     Serial.println("desviando");
     display.clear();
     display.setCursor(0, 0);
     display.setFontSize(FONT_SIZE_LARGE);
     display.println("desvia");
-    desviadir();
+    desviaesq();
   }
 
   if (analogRead(MEIO) >= pretfront) {
@@ -89,6 +91,7 @@ void loop() {
     //----------------------------------------------- frente--------------------------------------------------------------
     case 0b10001:
       frente();
+      roxo();
       break;
 
     //----------------------------------------------- 90 graus esquerda------------------------------------------------------
@@ -97,6 +100,7 @@ void loop() {
     case 0b01111:
     case 0b01101:
       novgrause();
+      roxo();
       break;
 
     case 0b10100:
@@ -104,15 +108,18 @@ void loop() {
     case 0b11110:
     case 0b10110:
       novgrausd();
+      roxo();
       break;
 
     //----------------------------------------------- Reajuste ---------------------------------------------------
     case 0b10011:
       reajd();
+      roxo();
       break;
 
     case 0b11001:
       reaje();
+      roxo();
       break;
 
     //----------------------------------------------verde-----------------------------------------------------------
@@ -129,9 +136,10 @@ void loop() {
     case 0b00011:
     case 0b01001:
       encruzte();
+      verde();
       break;
 
-      // ---------------------------------------------cinza & vermelhor-------------------------------------------------
+      // ---------------------------------------------cinza & vermelho-------------------------------------------------
 
     case 0b11111:
       gapetc();
@@ -147,7 +155,7 @@ void loop() {
 
 //------------------------------------------------------- funções de ladrilhos---------------------------------------------------------------------
 
-void novgrausd() {                         //------------------------ 90º direita
+void novgrausd() {  //------------------------ 90º direita
   display.clear();
   display.setCursor(0, 0);
   display.setFontSize(FONT_SIZE_LARGE);
@@ -155,13 +163,13 @@ void novgrausd() {                         //------------------------ 90º direi
   Serial.println("90 direita");
   frente();
   delay(210);
-  while (analogRead(MEIO) >= 400) {
+  while (analogRead(MEIO) >= 320) {
     leiturainfra();
     devdireita();
   }
 }
 
-void novgrause() {                       //------------------------ 90º esquerda
+void novgrause() {  //------------------------ 90º esquerda
   display.clear();
   display.setCursor(0, 0);
   display.setFontSize(FONT_SIZE_LARGE);
@@ -169,13 +177,13 @@ void novgrause() {                       //------------------------ 90º esquerd
   Serial.println("90 esquerda");
   frente();
   delay(210);
-  while (analogRead(MEIO) >= 400) {
+  while (analogRead(MEIO) >= 320) {
     devesquerda();
     leiturainfra();
   }
 }
 
-void reajd() {                            //------------------------ resjuste direita
+void reajd() {  //------------------------ resjuste direita
   display.clear();
   display.setCursor(0, 0);
   display.setFontSize(FONT_SIZE_LARGE);
@@ -185,7 +193,7 @@ void reajd() {                            //------------------------ resjuste di
   leiturainfra();
 }
 
-void reaje() {                            //------------------------ resjuste esquerda
+void reaje() {  //------------------------ resjuste esquerda
   display.clear();
   display.setCursor(0, 0);
   display.setFontSize(FONT_SIZE_LARGE);
@@ -195,7 +203,7 @@ void reaje() {                            //------------------------ resjuste es
   leiturainfra();
 }
 
-void encruzte() {                            //------------------------ encruzilhada com T 
+void encruzte() {  //------------------------ encruzilhada com T
   display.clear();
   display.setCursor(0, 0);
   display.setFontSize(FONT_SIZE_LARGE);
@@ -208,7 +216,7 @@ void encruzte() {                            //------------------------ encruzil
   leituraCorG();
   verdes();
 
-  if (dverde == 1 && everde == 1) {            //------------------------ beco
+  if (dverde == 1 && everde == 1) {  //------------------------ beco
     Serial.println("beco");
 
     frente();
@@ -216,7 +224,8 @@ void encruzte() {                            //------------------------ encruzil
     esquerda();
     delay(2000);
 
-    while (analogRead(MEIO) >= 420) {
+    while (analogRead(MEIO) >= 300
+    ) {
       esquerda();
     }
 
@@ -224,11 +233,11 @@ void encruzte() {                            //------------------------ encruzil
     Serial.print("direita verde");
 
     frente();
-    delay(460);
+    delay(390);
     direita();
-    delay(360);
+    delay(700);
 
-    while (analogRead(MEIO) >= 420) {
+    while (analogRead(MEIO) >= 340) {
       direita();
     }
 
@@ -237,11 +246,11 @@ void encruzte() {                            //------------------------ encruzil
 
 
     frente();
-    delay(460);
+    delay(390);
     esquerda();
-    delay(360);
+    delay(700);
 
-    while (analogRead(MEIO) >= 420) {
+    while (analogRead(MEIO) >= 340) {
       esquerda();
     }
 
@@ -269,8 +278,8 @@ void gapetc() {
     display.println("vermelho");
     pare();
     delay(6000);
-  } 
-  else if (dcinza == 1 && ecinza == 1) {  // resgate
+    resgate();
+  } else if (dcinza == 1 && ecinza == 1) {  // resgate
     Serial.print("cinza");
     display.clear();
     display.setCursor(0, 0);
@@ -278,8 +287,8 @@ void gapetc() {
     display.println("cinza");
     pare();
     delay(6000);
-  }
-  else {
+    resgate();
+  } else {
     frente();
     delay(30);
   }
@@ -287,6 +296,7 @@ void gapetc() {
 
 //----------------------  desvia obstáculo -------------------------------------------------------------------------
 void desviaesq() {
+  ciano();
   re2();
   delay(150);
   esquerda2();
@@ -296,20 +306,23 @@ void desviaesq() {
   direita2();
   delay(1500);
   frente2();
-  delay(2400);
+  delay(2300);
   direita2();
   delay(1500);
   frente2();
-  delay(200);
+  delay(500);
   while (analogRead(RESQ) > pretesq) {
     frente2();
   }
+  frente();
+  delay(100);
   while (analogRead(MEIO) > pretfront) {
     esquerda();
   }
 }
 
 void desviadir() {
+  ciano();
   re2();
   delay(150);
   direita2();
@@ -324,7 +337,7 @@ void desviadir() {
   delay(1500);
   frente2();
   delay(200);
-  while (analogRead(RESQ) > pretesq) {
+  while (analogRead(RESQ) > pretdir) {
     frente2();
   }
   while (analogRead(MEIO) > pretfront) {
@@ -333,7 +346,50 @@ void desviadir() {
 }
 
 void resgate() {
+  brancoo();
   frente();
   delay(1000);
-  //if ()
+  esquerda();
+  delay(1200);
+  display.clear();
+  display.setCursor(0, 0);
+  display.setFontSize(FONT_SIZE_LARGE);
+  display.println(ultrasonic.read());
+  pare();
+  delay(200);
+  if (ultrasonic.read() <= 20) {
+    direita();
+    delay(1800);
+    frente();
+    delay(4000);
+  } else {
+    frente();
+    delay(4000);
+  }
+  direita();
+  delay(1000);
+
+  while (ultrasonic.read() < 58) {
+    esquerdinha();
+    display.clear();
+    display.setCursor(0, 0);
+    display.setFontSize(FONT_SIZE_LARGE);
+    display.println(ultrasonic.read());
+  }
+
+  frente();
+  delay(2500);
+  direita();
+  delay(1000);
+
+  while(ultrasonic.read() < 50) {
+    esquerdinha();
+    display.clear();
+    display.setCursor(0, 0);
+    display.setFontSize(FONT_SIZE_LARGE);
+    display.println(ultrasonic.read());
+  }
+  while (analogRead(MEIO) > pretfront) {
+    frente();
+  }
 }
