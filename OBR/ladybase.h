@@ -52,10 +52,10 @@ bool ecinza;
 
 // Limiares para os sensores de linha
 const int pretfront = 290;
-const int pretesq = 250;
-const int pretdir = 350;
-const int pretresq = 370;
-const int pretrdir = 330;
+const int pretesq = 270;
+const int pretdir = 370;
+const int pretresq = 400;
+const int pretrdir = 360;
 
 Ultrasonic ultrasonic(8, 9);  // trig primeiro depois echo
 int distancia;
