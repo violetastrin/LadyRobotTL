@@ -85,6 +85,7 @@ void loop() {
   }
 
   int estadoSensores = (esq << 4) | (resq << 3) | (front << 2) | (rdir << 1) | dir;
+  
 
   switch (estadoSensores) {
 
@@ -113,11 +114,13 @@ void loop() {
 
     //----------------------------------------------- Reajuste ---------------------------------------------------
     case 0b10011:
+    case 0b10111:
       reajd();
       roxo();
       break;
 
     case 0b11001:
+    case 0b11101:
       reaje();
       roxo();
       break;
@@ -162,7 +165,8 @@ void novgrausd() {  //------------------------ 90º direita
   display.println("90 graus - d");
   Serial.println("90 direita");
   frente();
-  delay(210);
+  delay(50);
+
   while (analogRead(MEIO) >= 320) {
     leiturainfra();
     devdireita();
@@ -176,7 +180,8 @@ void novgrause() {  //------------------------ 90º esquerda
   display.println("90 graus - e");
   Serial.println("90 esquerda");
   frente();
-  delay(210);
+  delay(50);
+
   while (analogRead(MEIO) >= 320) {
     devesquerda();
     leiturainfra();
@@ -210,7 +215,7 @@ void encruzte() {  //------------------------ encruzilhada com T
   display.println("encruzted");
   Serial.println("encruzilhada ou T");
   re();
-  delay(160);
+  delay(180);
   pare();
   delay(200);
   leituraCorG();
@@ -224,8 +229,7 @@ void encruzte() {  //------------------------ encruzilhada com T
     esquerda();
     delay(2000);
 
-    while (analogRead(MEIO) >= 300
-    ) {
+    while (analogRead(MEIO) >= 290) {
       esquerda();
     }
 
