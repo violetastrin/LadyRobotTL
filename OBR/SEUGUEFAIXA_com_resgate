@@ -165,9 +165,9 @@ void novgrausd() {  //------------------------ 90º direita
   display.println("90 graus - d");
   Serial.println("90 direita");
   frente();
-  delay(50);
+  delay(40);
 
-  while (analogRead(MEIO) >= 320) {
+  while (analogRead(MEIO) >= 390) {
     leiturainfra();
     devdireita();
   }
@@ -180,9 +180,9 @@ void novgrause() {  //------------------------ 90º esquerda
   display.println("90 graus - e");
   Serial.println("90 esquerda");
   frente();
-  delay(50);
+  delay(40);
 
-  while (analogRead(MEIO) >= 320) {
+  while (analogRead(MEIO) >= 390) {
     devesquerda();
     leiturainfra();
   }
@@ -282,7 +282,7 @@ void gapetc() {
     display.println("vermelho");
     pare();
     delay(6000);
-    resgateE1();                         //---------------------------------- esses resgates aqui é so escolher qual caso 
+    resgateE2();                         //---------------------------------- esses resgates aqui é so escolher qual caso 
   } else if (dcinza == 1 && ecinza == 1) {  // resgate
     Serial.print("cinza");
     display.clear();
@@ -291,7 +291,7 @@ void gapetc() {
     display.println("cinza");
     pare();
     delay(6000);
-    resgateE1();
+    resgateE2();
   } else {
     frente();
     delay(30);
