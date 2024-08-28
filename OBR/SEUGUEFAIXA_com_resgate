@@ -282,7 +282,7 @@ void gapetc() {
     display.println("vermelho");
     pare();
     delay(6000);
-    resgateE2();                         //---------------------------------- esses resgates aqui é so escolher qual caso 
+    resgateD2();                         //---------------------------------- esses resgates aqui é so escolher qual caso 
   } else if (dcinza == 1 && ecinza == 1) {  // resgate
     Serial.print("cinza");
     display.clear();
@@ -291,7 +291,7 @@ void gapetc() {
     display.println("cinza");
     pare();
     delay(6000);
-    resgateE2();
+    resgateD2();
   } else {
     frente();
     delay(30);
