@@ -52,8 +52,8 @@ bool ecinza;
 
 // Limiares para os sensores de linha
 const int pretfront = 300;
-const int pretesq = 280;
-const int pretdir = 360;
+const int pretesq = 290;
+const int pretdir = 370;
 const int pretresq = 410;
 const int pretrdir = 300;
 
@@ -290,8 +290,8 @@ void leituraCorG() {
   uint16_t medrbg1 = (r1 + b1 + g1) / 3;
   uint16_t medrbg2 = (r2 + b2 + g2) / 3;
 
-  uint16_t med1 = medrbg1 * 1.06;
-  uint16_t med2 = medrbg2 * 1.045;
+  uint16_t med1 = medrbg1 * 1.062;
+  uint16_t med2 = medrbg2 * 1.025;
 
   if (medrbg1 >= 8000) {
     dverde = 0;
@@ -302,7 +302,7 @@ void leituraCorG() {
   }
 
 
-  if (medrbg2 >= 9000) {
+  if (medrbg2 >= 8000) {
     everde = 0;
   } else if (g2 >= med2) {
     everde = 1;
@@ -321,18 +321,18 @@ void leituraCorG() {
   Serial.print(", Media: ");
   Serial.println(med1);
 
-  // display.clear();
-  // display.setCursor(0, 0);
-  // display.setFontSize(FONT_SIZE_SMALL);
-  // display.print("Esq G: ");
-  // display.println(g2);
-  // display.print("Esq M: ");
-  // display.println(med2);
-  // display.print("Dir G: ");
-  // display.println(g1);
-  // display.print("Dir M: ");
-  // display.println(med1);
-  // delay(2500);  // LEMBRAR DE TIRAR EH SO PARA DEBUG!!!!!!*
+  display.clear();
+  display.setCursor(0, 0);
+  display.setFontSize(FONT_SIZE_SMALL);
+  display.print("Esq G: ");
+  display.println(g2);
+  display.print("Esq M: ");
+  display.println(med2);
+  display.print("Dir G: ");
+  display.println(g1);
+  display.print("Dir M: ");
+  display.println(med1);
+  delay(2500);  // LEMBRAR DE TIRAR EH SO PARA DEBUG!!!!!!*
 }
 
 void leituraCorReC() {
@@ -363,7 +363,7 @@ void leituraCorReC() {
     Serial.println("branco esquerda");
   }
   // ---------------------------------------------------------------------
-  if (medrbg1 < 6800 && c1 > medrbg1) {  // ESQ (soft): Vermelho: 5359, Verde: 6707, Azul: 7441, Claro: 19596 | DIR (real): Vermelho: 4126, Verde: 5991, Azul: 7038, Claro: 16439
+  if (medrbg1 < 7200 && c1 > medrbg1) {  // ESQ (soft): Vermelho: 5359, Verde: 6707, Azul: 7441, Claro: 19596 | DIR (real): Vermelho: 4126, Verde: 5991, Azul: 7038, Claro: 16439
     dcinza = 1;
     Serial.println("cinza direita");  // ESQ (soft): Vermelho: 6780, Verde: 8229, Azul: 8984, Claro: 23597 | DIR (real): Vermelho: 6163, Verde: 8526, Azul: 9827, Claro: 23062
   } else {
@@ -372,7 +372,7 @@ void leituraCorReC() {
   }
 
 
-  if (medrbg2 <= 6100 && c2 > medrbg2) {
+  if (medrbg2 <= 8000 && c2 > medrbg2) {
     ecinza = 1;
     Serial.println("cinza esquerda");
   } else {
@@ -544,25 +544,25 @@ void resgateD2() {  //--------- resgate sala esquerda lado maior ---------------
   if (ultrasonic.read() <= 20) {
     direita();
     delay(1200);
-    while (ultrasonic.read() > 9) {
-      frente();
-    }
+  }
+
+  frente();
+  delay(3100);
+
+  direitinha();
+  delay(1200);
+
+  frente();
+  delay(3800);
+
+  while (ultrasonic.read() <= 9){
+    frente();
   }
 
   direitinha();
-  delay(2900);
+  delay(1400);
 
-
-  frente();
-  delay(2900);
-
-  direitinha();
-  delay(2000);
-
-  frente();
-  delay(4500);
-
-  while (ultrasonic.read() > 10) {
+  while (ultrasonic.read() > 6) {
     frente();
   }
 
