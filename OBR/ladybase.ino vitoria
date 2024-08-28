@@ -52,8 +52,8 @@ bool ecinza;
 
 // Limiares para os sensores de linha
 const int pretfront = 300;
-const int pretesq = 290;
-const int pretdir = 370;
+const int pretesq = 310;
+const int pretdir = 390;
 const int pretresq = 410;
 const int pretrdir = 300;
 
@@ -131,10 +131,10 @@ void frente() {
   display.setFontSize(FONT_SIZE_LARGE);
   display.println("frente");
   Serial.println("FRENTE");
-  servoef.write(120);
-  servoet.write(120);
-  servodf.write(60);
-  servodt.write(60);
+  servoef.write(110);
+  servoet.write(110);
+  servodf.write(70);
+  servodt.write(70);
 }
 
 //------------------------- esquerda para resgate
@@ -312,25 +312,43 @@ void leituraCorG() {
   Serial.print("ESQ (soft): ");
   Serial.print(", Verde: ");
   Serial.print(g2);
+  Serial.print(", vermelho: ");
+  Serial.print(r2);
+  Serial.print(", azul: ");
+  Serial.print(b2);
   Serial.print(", Media: ");
-  Serial.print(med2);
+  Serial.println(med2);
+
 
   Serial.print(" | DIR (real): ");
   Serial.print(", Verde: ");
   Serial.print(g1);
+  Serial.print(", vermelho: ");
+  Serial.print(r1);
+  Serial.print(", azul: ");
+  Serial.print(b1);
   Serial.print(", Media: ");
-  Serial.println(med1);
+  Serial.println(med2);
 
   display.clear();
   display.setCursor(0, 0);
   display.setFontSize(FONT_SIZE_SMALL);
-  display.print("Esq G: ");
-  display.println(g2);
-  display.print("Esq M: ");
+  display.print("EG: ");
+  display.print(g2);
+  display.print("ER: ");
+  display.println(r2);
+  display.print("EB: ");
+  display.print(b2);
+  display.print("EM: ");
   display.println(med2);
-  display.print("Dir G: ");
-  display.println(g1);
-  display.print("Dir M: ");
+
+  display.print(" DG: ");
+  display.print(g1);
+  display.print(" DR: ");
+  display.println(r1);
+  display.print(" DB: ");
+  display.print(b1);
+  display.print(" DM: ");
   display.println(med1);
   delay(2500);  // LEMBRAR DE TIRAR EH SO PARA DEBUG!!!!!!*
 }
