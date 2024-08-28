@@ -144,9 +144,9 @@ void loop() {
 
       // ---------------------------------------------cinza & vermelho-------------------------------------------------
 
-    case 0b11111:
-      gapetc();
-      break;
+    // case 0b11111:
+    //   gapetc();
+    //   break;
 
       //--------------------------------------------------------------------------------------------------------------------
     default:
@@ -229,7 +229,7 @@ void encruzte() {  //------------------------ encruzilhada com T
     esquerda();
     delay(2000);
 
-    while (analogRead(MEIO) >= 290) {
+    while (analogRead(MEIO) >= 350) {
       esquerda();
     }
 
@@ -264,7 +264,8 @@ void encruzte() {  //------------------------ encruzilhada com T
   }
 }
 
-void gapetc() {
+
+/*void gapetc() {
   display.clear();
   display.setCursor(0, 0);
   display.setFontSize(FONT_SIZE_LARGE);
@@ -296,4 +297,4 @@ void gapetc() {
     frente();
     delay(30);
   }
-}
+}*/
