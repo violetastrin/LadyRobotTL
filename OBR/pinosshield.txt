@@ -1,0 +1,7 @@
+verde a5 a6
+
+servo 6 12
+
+verde 4 5
+
+ultrassonico a5 a6
