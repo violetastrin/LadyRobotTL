@@ -1,6 +1,6 @@
 servo 6 a 12
 
-verde 4 5
+verde 5 4
 
 ultrassonico a5 a6
 
