@@ -16,7 +16,7 @@
 
 LCD_SSD1306 display; /* for SSD1306 OLED module */
 
-SoftwareWire sWire(A6, A7);
+SoftwareWire sWire(5, 4);
 
 Adafruit_TCS34725_SWwire tcs_real = Adafruit_TCS34725_SWwire(TCS34725_INTEGRATIONTIME_180MS, TCS34725_GAIN_16X);
 Adafruit_TCS34725_SWwire tcs_soft = Adafruit_TCS34725_SWwire(TCS34725_INTEGRATIONTIME_180MS, TCS34725_GAIN_16X);
@@ -32,10 +32,10 @@ Servo servodt;
 Servo servoef;
 Servo servoet;
 
-#define ESQ A2
+#define ESQ A0
 #define RESQ A3
-#define MEIO A0
-#define REDIR A4
+#define MEIO A4
+#define REDIR A5
 #define DIR A1
 
 bool front;
