@@ -5,10 +5,10 @@ void setup() {
   Serial.begin(9600);
   display.begin();
 
-  servodf.attach(6);
-  servodt.attach(7);
-  servoef.attach(4);
-  servoet.attach(5);
+  servodf.attach(9);
+  servodt.attach(6);
+  servoef.attach(8);
+  servoet.attach(7);
 
   pinMode(ESQ, INPUT);
   pinMode(RESQ, INPUT);
@@ -43,6 +43,10 @@ void loop() {
   distancia = ultrasonic.read();
 
   leiturainfra();
+
+  while(true) {
+    frente();
+  }
 
   //------------------------- sequencia de if's
   if (distancia <= 5 && distancia > 0) {  //--------- distancia do desvia obstaculo
@@ -297,4 +301,4 @@ void encruzte() {  //------------------------ encruzilhada com T
     frente();
     delay(30);
   }
-}*/
+}*/  
