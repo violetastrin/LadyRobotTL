@@ -4,4 +4,4 @@ verde 4 5
 
 ultrassonico a5 a6
 
-infrared a0 a a4
+a0 rdir a1 resq a2 esq a3 dir a4 front
