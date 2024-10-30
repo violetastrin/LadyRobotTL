@@ -5,10 +5,10 @@ void setup() {
   Serial.begin(9600);
   display.begin();
 
-  servodf.attach(9);
-  servodt.attach(6);
-  servoef.attach(8);
-  servoet.attach(7);
+  servodf.attach(8);
+  servodt.attach(7);
+  servoef.attach(9);
+  servoet.attach(6);
 
   pinMode(ESQ, INPUT);
   pinMode(RESQ, INPUT);
