@@ -1,6 +1,6 @@
 servo 6 a 12
 
-verde 5 4
+verde 5 (sda) 4 (scl)
 
 ultrassonico a5 a6
 
