@@ -1,8 +1,8 @@
-#define sensor1 A1
-#define sensor2 A2
-#define sensor3 A3
-#define sensor4 A4
-#define sensor5 A0
+#define sensor1 A1           // direita
+#define sensor2 A2          // r dir queimado capenga 
+#define sensor3 A3          //r esq 
+#define sensor4 A4          // frente
+#define sensor5 A0           // esquerda
 
 void setup() {
 
