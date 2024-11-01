@@ -51,11 +51,16 @@ bool dcinza;
 bool ecinza;
 
 // Limiares para os sensores de linha
-const int pretfront = 300;
+// ORDEM: ESQUERDA, REAJUSTE ESQUERDA, FRENTE, REAJUSTE DIREITA, DIREITA
+int valoresPreto[] = {325, 184, 450, 445, 434};
+
+int valoresBranco[] = {984, 982, 988, 986, 988};
+
+/*const int pretfront = 300;
 const int pretesq = 310;
 const int pretdir = 390;
 const int pretresq = 410;
-const int pretrdir = 300;
+const int pretrdir = 300;*/
 
 Ultrasonic ultrasonic(8, 9);  // trig primeiro depois echo
 int distancia;
