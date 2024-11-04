@@ -67,6 +67,23 @@ void direita(){
     esquerdaFrente();
     direitaRe();
 }
+
+void reajusteDireita() {  
+  Serial.println("reajuste direita");
+  servoEsq_f.write(125);
+  servoEsq_t.write(125);
+  servoDir_f.write(75);
+  servoDir_t.write(75);
+}
+
+void reajusteEsquerda() {                   
+  Serial.println("reajuste esquerda");
+  servoEsq_f.write(105);
+  servoEsq_t.write(105);
+  servoDir_f.write(55);
+  ServoDir_t.write(55);
+}
+
 void parar(){
     esquerdaPara();
     direitaPara();
