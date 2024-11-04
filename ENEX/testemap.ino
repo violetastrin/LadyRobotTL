@@ -1,5 +1,8 @@
-//ORDEM: ESQUERDA, REAJUSTE ESQUERDA, FRENTE, REAJUSTE DIREITA, DIREITA
+#include "definir.h"
 
+
+
+//ORDEM: ESQUERDA, REAJUSTE ESQUERDA, FRENTE, REAJUSTE DIREITA, DIREITA
 const int sensor[] = {A1, A0, A4, A2, A3};
 
 const int valorPreto[] = {550, 320, 210, 445, 570};
@@ -14,6 +17,17 @@ int sensorMap[5] = {};
 
 bool valorSensor[5] = {};
 
+void leiturainfra(){
+for(int i = 0; i<5; i++){
+  leituraSensor[i] = analogRead(sensor[i]);
+  }
+
+for (int i = 0; i<5; i++){
+  sensorMap[i] = map(leituraSensor[i], valorPreto[i], valorBranco[i], 0, 100);
+  sensorMap[i] = constrain(sensorMap[i], 0, 100);
+}
+}
+
 void setup() {
   Serial.begin(9600);
 
@@ -25,7 +39,7 @@ void setup() {
 
 void loop() {
 
-leituraInfra();
+leiturainfra();
 
 // for (int i = 0; i<5; i++){
 //   Serial.print(leituraSensor[i]);
@@ -88,13 +102,11 @@ switch (leitura) {
     case 0b10011:
     case 0b10111:
       reajd();
-      roxo();
       break;
 
     case 0b11001:
     case 0b11101:
       reaje();
-      roxo();
       break;
 
     //----------------------------------------------verde-----------------------------------------------------------
@@ -131,62 +143,53 @@ switch (leitura) {
 //------------------------------------------------------- funções de ladrilhos---------------------------------------------------------------------
 
 void novgrausDireita() {  //90º direita
-  display.clear();
-  display.setCursor(0, 0);
-  display.setFontSize(FONT_SIZE_LARGE);
-  display.println("90 graus - d");
+  // display.clear();
+  // display.setCursor(0, 0);
+  // display.setFontSize(FONT_SIZE_LARGE);
+  // display.println("90 graus - d");
   Serial.println("90 direita");
   frente();
   delay(40);
 
-  while (analogRead(MEIO) >= 390) {
+  while (analogRead(sensor[2]) >= 390) {
     leiturainfra();
     devagarDireita();
   }
 }
 
 void novgrausEsquerda() {  // 90º esquerda
-  display.clear();
-  display.setCursor(0, 0);
-  display.setFontSize(FONT_SIZE_LARGE);
-  display.println("90 graus - e");
+  // display.clear();
+  // display.setCursor(0, 0);
+  // display.setFontSize(FONT_SIZE_LARGE);
+  // display.println("90 graus - e");
   Serial.println("90 esquerda");
   frente();
   delay(40);
 
-  while (analogRead(MEIO) >= 390) {
+  while (analogRead(sensor[2]) >= 390) {
     devagarEsquerda();
     leiturainfra();
   }
+}
 
 void reajd() {  //resjuste direita
-  display.clear();
-  display.setCursor(0, 0);
-  display.setFontSize(FONT_SIZE_LARGE);
-  display.println("reaj - d");
+  // display.clear();
+  // display.setCursor(0, 0);
+  // display.setFontSize(FONT_SIZE_LARGE);
+  // display.println("reaj - d");
   Serial.println("reajuste direita");
   reajusteDireita();
   leiturainfra();
 }
 
 void reaje() {  //resjuste esquerda
-  display.clear();
-  display.setCursor(0, 0);
-  display.setFontSize(FONT_SIZE_LARGE);
-  display.println("reaj - e");
+  // display.clear();
+  // display.setCursor(0, 0);
+  // display.setFontSize(FONT_SIZE_LARGE);
+  // display.println("reaj - e");
   Serial.println("reajuste esquerda");
   reajusteEsquerda();
   leiturainfra();
 }
-}
 
-void leiturainfra(){
-for(int i = 0; i<5; i++){
-  leituraSensor[i] = analogRead(sensor[i]);
-  }
 
-for (int i = 0; i<5; i++){
-  sensorMap[i] = map(leituraSensor[i], valorPreto[i], valorBranco[i], 0, 100);
-  sensorMap[i] = constrain(sensorMap[i], 0, 100);
-}
-}

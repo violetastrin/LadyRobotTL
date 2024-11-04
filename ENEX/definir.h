@@ -8,12 +8,13 @@
 #include <Wire.h>
 #include <Adafruit_TCS34725_SWwire.h>
 #include <Arduino.h>
-#include <MicroLCD.h>
+// #include <MicroLCD.h>
 
-Servo servoDir_f;
+
 Servo servoDir_t;
 Servo servoEsq_f;
 Servo servoEsq_t;
+Servo servoDir_f;
 
 //Funções motores 
 
@@ -52,10 +53,10 @@ void direitaPara() {
 //////////////////////////////
 
 void frente(){
-    servoDir_f(70);
-    servoDir_t(70);
-    servoEsq_f(110);
-    servoEsq_t(110);
+    servoDir_f.write(70);
+    servoDir_t.write(70);
+    servoEsq_f.write(110);
+    servoEsq_t.write(110);
 }
 
 void esquerda(){
