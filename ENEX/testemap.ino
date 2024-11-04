@@ -180,7 +180,7 @@ void reaje() {  //resjuste esquerda
 }
 }
 
-void leituraInfra(){
+void leiturainfra(){
 for(int i = 0; i<5; i++){
   leituraSensor[i] = analogRead(sensor[i]);
   }
