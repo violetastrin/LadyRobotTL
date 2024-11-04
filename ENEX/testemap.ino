@@ -16,6 +16,11 @@ bool valorSensor[5] = {};
 
 void setup() {
   Serial.begin(9600);
+
+  ServoDir_f.attach(8);
+  ServoDir_t.attach(7);
+  ServoEsq_f.attach(9);
+  ServoEsq_t.attach(6);
 }
 
 void loop() {
@@ -30,6 +35,8 @@ leituraInfra();
 //}
   //Serial.println();
 
+//*caso o valor mapeado seja igual ou menor que a média pré-definida, 
+//*o valor booleano do sensor será 0 (preto), caso contrário, será 1 (branco)
   if (sensorMap[0] <= media[0] ){valorSensor[0] = 0;} else{valorSensor[0] = 1;}
 
   if (sensorMap[1] <= media[1] ){valorSensor[1] = 0;} else {valorSensor[1] = 1;}
