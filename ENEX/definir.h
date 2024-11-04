@@ -41,7 +41,7 @@ void direitaFrente() {
 
 void direitaRe() {
   servoDir_f.write(130);
-  ServoDir_t.write(130);
+  servoDir_t.write(130);
 }
 
 void direitaPara() {
@@ -68,6 +68,22 @@ void direita(){
     direitaRe();
 }
 
+void devagarEsquerda() {  //----------------- virando para esquerda devagar
+  Serial.println("DEVESQUERDA");
+  servoEsq_f.write(60);
+  servoEsq_t.write(60);
+  servoDir_f.write(60);
+  servoDir_t.write(60);
+}
+
+void devagarDireita() {  //----------------- virando para direita devagar
+  Serial.println("DEVDIREITA");
+  servoEsq_f.write(120);
+  servoEsq_t.write(120);  
+  servoDir_f.write(120);
+  servoDir_t.write(120);
+}
+
 void reajusteDireita() {  
   Serial.println("reajuste direita");
   servoEsq_f.write(125);
@@ -81,7 +97,7 @@ void reajusteEsquerda() {
   servoEsq_f.write(105);
   servoEsq_t.write(105);
   servoDir_f.write(55);
-  ServoDir_t.write(55);
+  servoDir_t.write(55);
 }
 
 void parar(){
