@@ -17,10 +17,10 @@ bool valorSensor[5] = {};
 void setup() {
   Serial.begin(9600);
 
-  ServoDir_f.attach(8);
-  ServoDir_t.attach(7);
-  ServoEsq_f.attach(9);
-  ServoEsq_t.attach(6);
+  servoDir_f.attach(8);
+  servoDir_t.attach(7);
+  servoEsq_f.attach(9);
+  servoEsq_t.attach(6);
 }
 
 void loop() {
