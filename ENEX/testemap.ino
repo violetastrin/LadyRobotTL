@@ -6,7 +6,7 @@ const int valorPreto[] = {550, 320, 210, 445, 570};
 
 const int valorBranco[] = {984, 982, 988, 986, 988};
 
-const int media[] = {50, 50, 50, 50, 50};
+const int media[] = {50, 50, 50, 50, 50}; //!ver valores pra cada um dps
 
 int leituraSensor[5] = {};
 
@@ -20,14 +20,7 @@ void setup() {
 
 void loop() {
 
-for(int i = 0; i<5; i++){
-  leituraSensor[i] = analogRead(sensor[i]);
-  }
-
-for (int i = 0; i<5; i++){
-  sensorMap[i] = map(leituraSensor[i], valorPreto[i], valorBranco[i], 0, 100);
-  sensorMap[i] = constrain(sensorMap[i], 0, 100);
-}
+leituraInfra();
 
 // for (int i = 0; i<5; i++){
 //   Serial.print(leituraSensor[i]);
@@ -51,7 +44,7 @@ for (int i = 0; i<5; i++){
 //  Serial.print(valorSensor[i]);
 // Serial.print(" /// "); 
 // }
-// Serial.println();
+//Serial.println();
 
 byte leitura = 0;
   for(int i =  0; i<5; i++){
@@ -61,4 +54,15 @@ byte leitura = 0;
 Serial.print("Valor lido: ");
 Serial.println(leitura, BIN);
 
+}
+
+void leituraInfra(){
+for(int i = 0; i<5; i++){
+  leituraSensor[i] = analogRead(sensor[i]);
+  }
+
+for (int i = 0; i<5; i++){
+  sensorMap[i] = map(leituraSensor[i], valorPreto[i], valorBranco[i], 0, 100);
+  sensorMap[i] = constrain(sensorMap[i], 0, 100);
+}
 }

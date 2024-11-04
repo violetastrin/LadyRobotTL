@@ -10,4 +10,9 @@
 #include <Arduino.h>
 #include <MicroLCD.h>
 
+Servo ServoDir_f;
+Servo ServoDir_t;
+Servo ServoEsq_f;
+Servo ServoEsq_t;
+
 #endif
