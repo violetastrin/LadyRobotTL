@@ -20,7 +20,7 @@ void loop() {
 
 for(int i = 0; i<5; i++){
   leituraSensor[i] = analogRead(sensor[i]);
-  }
+}
 
 for (int i = 0; i<5; i++){
   sensorMap[i] = map(leituraSensor[i], valorPreto[i], valorBranco[i], 0, 100);
