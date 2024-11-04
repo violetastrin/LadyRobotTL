@@ -1,10 +1,10 @@
 //ORDEM: ESQUERDA, REAJUSTE ESQUERDA, FRENTE, REAJUSTE DIREITA, DIREITA
 
-int sensor[] = {A1, A0, A4, A2, A3};
+const int sensor[] = {A1, A0, A4, A2, A3};
 
-int valorPreto[] = {325, 184, 450, 445, 434};
+const int valorPreto[] = {325, 184, 450, 445, 434};
 
-int valorBranco[] = {984, 982, 988, 986, 988};
+const int valorBranco[] = {984, 982, 988, 986, 988};
 
 int valorSensor[] = {0, 0, 0, 0, 0};
 
