@@ -8,11 +8,11 @@ const int valorBranco[] = {984, 982, 988, 986, 988};
 
 const int media[] = {50, 50, 50, 50, 50};
 
-int leituraSensor[] = {0, 0, 0, 0, 0};
+int leituraSensor[5] = {};
 
-int sensorMap[] = {0, 0, 0, 0, 0};
+int sensorMap[5] = {};
 
-int valorSensor[] = {0, 0, 0, 0, 0};
+bool valorSensor[5] = {};
 
 void setup() {
   Serial.begin(9600);
@@ -47,10 +47,18 @@ for (int i = 0; i<5; i++){
     
   if (sensorMap[4] <= media[4] ){valorSensor[4] = 0;} else {valorSensor[4] = 1;}
 
- for (int i = 0; i<5; i++){
-  Serial.print(valorSensor[i]);
-  Serial.print(" /// "); 
- }
- Serial.println();
+// for (int i = 0; i<5; i++){
+//  Serial.print(valorSensor[i]);
+// Serial.print(" /// "); 
+// }
+// Serial.println();
+
+byte leitura = 0;
+  for(int i =  0; i<5; i++){
+  leitura |= valorSensor[i] << (4-i);
+  }
+
+Serial.print("Valor lido: ");
+Serial.println(leitura, BIN);
 
 }
