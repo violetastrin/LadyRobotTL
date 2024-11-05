@@ -1,6 +1,6 @@
 #include "definir.h"
 
-//ORDEM: ESQUERDA, REAJUSTE ESQUERDA, FRENTE, REAJUSTE 
+//ORDEM: ESQUERDA, REAJUSTE ESQUERDA, FRENTE, REAJUSTE DIREITA, DIREITA
 const int sensor[] = {A1, A0, A4, A2, A3};
 
 const int valorPreto[] = {550, 320, 210, 445, 570};
