@@ -16,7 +16,7 @@ Servo servoEsq_f;
 Servo servoEsq_t;
 Servo servoDir_f;
 
-//Funções motores 
+//Funções motor 
 
 void esquerdaFrente() {
   servoEsq_f.write(130);
