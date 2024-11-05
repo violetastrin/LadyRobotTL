@@ -105,7 +105,7 @@ switch (leitura) {
     case 0b00001:  //esquerda
     case 0b00011:
     case 0b01001:
-      encruzte();
+      encruzte();aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaiiiiiiiiiiiiiiirrrrrrrrrrrrrrrrraaaaaaaaaaaaaaaaammmmmmmmmmmmmmmmmmm
       verde();
       break;*/
 
