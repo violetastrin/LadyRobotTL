@@ -41,14 +41,6 @@ void loop() {
 
 leiturainfra();
 
-// for (int i = 0; i<5; i++){
-//   Serial.print(leituraSensor[i]);
-//   Serial.print(" /// ");
-//   Serial.print(sensorMap[i]);
-//   Serial.print(" /// "); 
-//}
-  //Serial.println();
-
 //*caso o valor mapeado seja igual ou menor que a média pré-definida, 
 //*o valor booleano do sensor será 0 (preto), caso contrário, será 1 (branco)
   if (sensorMap[0] <= media[0] ){valorSensor[0] = 0;} else{valorSensor[0] = 1;}
@@ -61,11 +53,6 @@ leiturainfra();
     
   if (sensorMap[4] <= media[4] ){valorSensor[4] = 0;} else {valorSensor[4] = 1;}
 
-// for (int i = 0; i<5; i++){
-//  Serial.print(valorSensor[i]);
-// Serial.print(" /// "); 
-// }
-//Serial.println();
 
 byte leitura = 0;
   for(int i =  0; i<5; i++){
@@ -98,7 +85,7 @@ switch (leitura) {
       novgrausDireita();
       break;
 
-    //----------------------------------------------- Reajuste ---------------------------------------------------
+    //Reajuste 
     case 0b10011:
     case 0b10111:
       reajd();
@@ -109,7 +96,7 @@ switch (leitura) {
       reaje();
       break;
 
-    //----------------------------------------------verde-----------------------------------------------------------
+    //verde
     /*case 0b00100:  // T
     case 0b00000:
     case 0b00010:
@@ -126,13 +113,13 @@ switch (leitura) {
       verde();
       break;*/
 
-      // ---------------------------------------------cinza & vermelho-------------------------------------------------
+      // cinza & vermelho
 
     // case 0b11111:
     //   gapetc();
     //   break;
 
-      //--------------------------------------------------------------------------------------------------------------------
+      
     default:
       frente();
       break;
@@ -140,14 +127,10 @@ switch (leitura) {
 }
 
 
-//------------------------------------------------------- funções de ladrilhos---------------------------------------------------------------------
+// funções de ladrilhos
 
 void novgrausDireita() {  //90º direita
-  // display.clear();
-  // display.setCursor(0, 0);
-  // display.setFontSize(FONT_SIZE_LARGE);
-  // display.println("90 graus - d");
-  Serial.println("90 direita");
+ // Serial.println("90 direita");
   frente();
   delay(40);
 
@@ -158,11 +141,7 @@ void novgrausDireita() {  //90º direita
 }
 
 void novgrausEsquerda() {  // 90º esquerda
-  // display.clear();
-  // display.setCursor(0, 0);
-  // display.setFontSize(FONT_SIZE_LARGE);
-  // display.println("90 graus - e");
-  Serial.println("90 esquerda");
+  //Serial.println("90 esquerda");
   frente();
   delay(40);
 
@@ -177,7 +156,7 @@ void reajd() {  //resjuste direita
   // display.setCursor(0, 0);
   // display.setFontSize(FONT_SIZE_LARGE);
   // display.println("reaj - d");
-  Serial.println("reajuste direita");
+  //Serial.println("reajuste direita");
   reajusteDireita();
   leiturainfra();
 }
@@ -187,7 +166,7 @@ void reaje() {  //resjuste esquerda
   // display.setCursor(0, 0);
   // display.setFontSize(FONT_SIZE_LARGE);
   // display.println("reaj - e");
-  Serial.println("reajuste esquerda");
+  //Serial.println("reajuste esquerda");
   reajusteEsquerda();
   leiturainfra();
 }
