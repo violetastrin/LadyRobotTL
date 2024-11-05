@@ -41,8 +41,6 @@ void loop() {
 
 leiturainfra();
 
-//*caso o valor mapeado seja igual ou menor que a média pré-definida, 
-//*o valor booleano do sensor será 0 (preto), caso contrário, será 1 (branco)
   if (sensorMap[0] <= media[0] ){valorSensor[0] = 0;} else{valorSensor[0] = 1;}
 
   if (sensorMap[1] <= media[1] ){valorSensor[1] = 0;} else {valorSensor[1] = 1;}
