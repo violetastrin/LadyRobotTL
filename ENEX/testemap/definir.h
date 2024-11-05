@@ -69,7 +69,7 @@ void direita(){
     direitaRe();
 }
 
-void devagarEsquerda() {  //----------------- virando para esquerda devagar
+void devagarEsquerda() {  // virando para esquerda devagar
   Serial.println("DEVESQUERDA");
   servoEsq_f.write(60);
   servoEsq_t.write(60);
@@ -77,7 +77,7 @@ void devagarEsquerda() {  //----------------- virando para esquerda devagar
   servoDir_t.write(60);
 }
 
-void devagarDireita() {  //----------------- virando para direita devagar
+void devagarDireita() {  // virando para direita devagar
   Serial.println("DEVDIREITA");
   servoEsq_f.write(120);
   servoEsq_t.write(120);  
