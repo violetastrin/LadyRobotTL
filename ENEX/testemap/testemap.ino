@@ -1,7 +1,5 @@
 #include "definir.h"
 
-
-
 //ORDEM: ESQUERDA, REAJUSTE ESQUERDA, FRENTE, REAJUSTE 
 const int sensor[] = {A1, A0, A4, A2, A3};
 
