@@ -22,6 +22,7 @@ void setup() {
   servoDir_t.attach(7);
   servoEsq_f.attach(9);
   servoEsq_t.attach(6);
+
 }
 
 void loop() {
