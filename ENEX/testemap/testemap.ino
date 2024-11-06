@@ -106,7 +106,7 @@ switch (leitura) {
       
     default:
       frente();
-      Serial.println("frente")
+      Serial.println("frente");
       break;
   }
 }
