@@ -10,7 +10,6 @@
 #include <Arduino.h>
 #include <MicroLCD.h>
 
-
 Servo servoDir_t;
 Servo servoEsq_f;
 Servo servoEsq_t;
