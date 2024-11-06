@@ -15,17 +15,6 @@ int sensorMap[5] = {};
 
 bool valorSensor[5] = {};
 
-void leiturainfra(){
-for(int i = 0; i<5; i++){
-  leituraSensor[i] = analogRead(sensor[i]);
-  }
-
-for (int i = 0; i<5; i++){
-  sensorMap[i] = map(leituraSensor[i], valorPreto[i], valorBranco[i], 0, 100);
-  sensorMap[i] = constrain(sensorMap[i], 0, 100);
-}
-}
-
 void setup() {
   Serial.begin(9600);
 
@@ -57,39 +46,39 @@ byte leitura = 0;
 
 Serial.println(leitura, BIN);
 
-// switch (leitura) {
+switch (leitura) {
 
-//     //frente
-//     case 0b10001:
-//       frente();
-//       break;
+    //frente
+    case 0b10001:
+      frente();
+      break;
 
-//     //90 graus, esquerda
-//     case 0b00101:
-//     case 0b00111:
-//     case 0b01111:
-//     case 0b01101:
-//       novgrausEsquerda();
-//       break;
+    //90 graus, esquerda
+    case 0b00101:
+    case 0b00111:
+    case 0b01111:
+    case 0b01101:
+      novgrausEsquerda();
+      break;
       
-//     //90 graus, direita
-//     case 0b10100:
-//     case 0b11100:
-//     case 0b11110:
-//     case 0b10110:
-//       novgrausDireita();
-//       break;
+    //90 graus, direita
+    case 0b10100:
+    case 0b11100:
+    case 0b11110:
+    case 0b10110:
+      novgrausDireita();
+      break;
 
-//     //Reajuste 
-//     case 0b10011:
-//     case 0b10111:
-//       reajd();
-//       break;
+    //Reajuste 
+    case 0b10011:
+    case 0b10111:
+      reajd();
+      break;
 
-//     case 0b11001:
-//     case 0b11101:
-//       reaje();
-//       break;
+    case 0b11001:
+    case 0b11101:
+      reaje();
+      break;
 
     //verde
     /*case 0b00100:  // T
@@ -108,24 +97,35 @@ Serial.println(leitura, BIN);
       verde();
       break;*/
 
-//       // cinza & vermelho
+      // cinza & vermelho
 
-//     // case 0b11111:
-//     //   gapetc();
-//     //   break;
+    // case 0b11111:
+    //   gapetc();
+    //   break;
 
       
-//     default:
-//       frente();
-//       break;
-//   }
+    default:
+      frente();
+      Serial.println("frente");
+      break;
+  }
 }
 
+void leiturainfra(){
+for(int i = 0; i<5; i++){
+  leituraSensor[i] = analogRead(sensor[i]);
+  }
+
+for (int i = 0; i<5; i++){
+  sensorMap[i] = map(leituraSensor[i], valorPreto[i], valorBranco[i], 0, 100);
+  sensorMap[i] = constrain(sensorMap[i], 0, 100);
+}
+}
 
 // funções de ladrilhos
 
 void novgrausDireita() {  //90º direita
- // Serial.println("90 direita");
+  Serial.println("90 direita");
   frente();
   delay(40);
 
@@ -136,7 +136,7 @@ void novgrausDireita() {  //90º direita
 }
 
 void novgrausEsquerda() {  // 90º esquerda
-  //Serial.println("90 esquerda");
+  Serial.println("90 esquerda");
   frente();
   delay(40);
 
@@ -151,7 +151,7 @@ void reajd() {  //resjuste direita
   // display.setCursor(0, 0);
   // display.setFontSize(FONT_SIZE_LARGE);
   // display.println("reaj - d");
-  //Serial.println("reajuste direita");
+  Serial.println("reajuste direita");
   reajusteDireita();
   leiturainfra();
 }
@@ -161,7 +161,7 @@ void reaje() {  //resjuste esquerda
   // display.setCursor(0, 0);
   // display.setFontSize(FONT_SIZE_LARGE);
   // display.println("reaj - e");
-  //Serial.println("reajuste esquerda");
+  Serial.println("reajuste esquerda");
   reajusteEsquerda();
   leiturainfra();
 }
