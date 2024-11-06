@@ -385,6 +385,7 @@ void leituraCorReC() {
     evermelho = 0;
     Serial.println("branco esquerda");
   }
+  
   // ---------------------------------------------------------------------
   if (medrbg1 < 7200 && c1 > medrbg1) {  // ESQ (soft): Vermelho: 5359, Verde: 6707, Azul: 7441, Claro: 19596 | DIR (real): Vermelho: 4126, Verde: 5991, Azul: 7038, Claro: 16439
     dcinza = 1;

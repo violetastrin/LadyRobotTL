@@ -10,19 +10,31 @@
 #include <Arduino.h>
 #include <MicroLCD.h>
 
+//servos
 Servo servoDir_t;
 Servo servoEsq_f;
 Servo servoEsq_t;
 Servo servoDir_f;
 
+//display oled
 LCD_SSD1306 display; /* for SSD1306 OLED module */
 
+//ultra sonico
 Ultrasonic ultrasonic(A5, A6);  // trig primeiro depois echo
 
+//sensor de cor
 SoftwareWire sWire(5, 4);
 
 Adafruit_TCS34725_SWwire tcs_real = Adafruit_TCS34725_SWwire(TCS34725_INTEGRATIONTIME_180MS, TCS34725_GAIN_4X);
 Adafruit_TCS34725_SWwire tcs_soft = Adafruit_TCS34725_SWwire(TCS34725_INTEGRATIONTIME_180MS, TCS34725_GAIN_4X);
+
+uint16_t r1, g1, b1, c1;
+uint16_t r2, g2, b2, c2;
+
+uint16_t media_rbg1;
+uint16_t media_rbg2;
+
+bool direita_verde, esquerda_verde, direita_vermelho, esquerda_vermelho, direita_cinza, esquerda_cinza;
 
 //ORDEM: ESQUERDA, REAJUSTE ESQUERDA, FRENTE, REAJUSTE DIREITA, DIREITA
 const int sensor[] = {A2, A1, A4, A0, A3};
@@ -50,6 +62,78 @@ for (int i = 0; i<5; i++){
   sensorMap[i] = map(leituraSensor[i], valorPreto[i], valorBranco[i], 0, 100);
   sensorMap[i] = constrain(sensorMap[i], 0, 100);
 }
+}
+
+
+void leituraCorG() {
+
+  tcs_real.getRawData(&r1, &g1, &b1, &c1);
+  tcs_soft.getRawData(&r2, &g2, &b2, &c2);
+
+  media_rbg1 = (r1 + b1 + g1) / 3;
+  media_rbg2 = (r2 + b2 + g2) / 3;
+
+  uint16_t media1 = media_rbg1 * 1.062;
+  uint16_t media2 = media_rbg2 * 1.025;
+
+  if (media_rbg1 >= 8000) {
+    direita_verde = 0;
+  } else if (g1 >= media1) {
+    direita_verde = 1;
+  } else {
+    direita_verde = 0;
+  }
+
+
+  if (media_rbg2 >= 8000) {
+    esquerda_verde = 0;
+  } else if (g2 >= media2) {
+    esquerda_verde = 1;
+  } else {
+    esquerda_verde = 0;
+  }
+  Serial.print("ESQ (soft): ");
+  Serial.print(", Verde: ");
+  Serial.print(g2);
+  Serial.print(", vermelho: ");
+  Serial.print(r2);
+  Serial.print(", azul: ");
+  Serial.print(b2);
+  Serial.print(", Media: ");
+  Serial.println(media2);
+
+
+  Serial.print(" | DIR (real): ");
+  Serial.print(", Verde: ");
+  Serial.print(g1);
+  Serial.print(", vermelho: ");
+  Serial.print(r1);
+  Serial.print(", azul: ");
+  Serial.print(b1);
+  Serial.print(", Media: ");
+  Serial.println(media2);
+
+  display.clear();
+  display.setCursor(0, 0);
+  display.setFontSize(FONT_SIZE_SMALL);
+  display.print("EG: ");
+  display.print(g2);
+  display.print("ER: ");
+  display.println(r2);
+  display.print("EB: ");
+  display.print(b2);
+  display.print("EM: ");
+  display.println(media2);
+
+  display.print(" DG: ");
+  display.print(g1);
+  display.print(" DR: ");
+  display.println(r1);
+  display.print(" DB: ");
+  display.print(b1);
+  display.print(" DM: ");
+  display.println(media1);
+  //delay(2500);  // LEMBRAR DE TIRAR EH SO PARA DEBUG!!!!!!*
 }
 
 //Funções motor 
