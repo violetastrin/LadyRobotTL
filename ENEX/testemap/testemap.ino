@@ -30,8 +30,6 @@ void setup() {
 void loop() {
 
 leiturainfra();
-leituraCorG();
-return;
 
   if (sensorMap[0] <= media[0] ){valorSensor[0] = 0;} else{valorSensor[0] = 1;}
 
@@ -177,10 +175,10 @@ void encruzte() {  //------------------------ encruzilhada com T
   display.setFontSize(FONT_SIZE_LARGE);
   display.println("encruzted");
   Serial.println("encruzilhada ou T");
-  re();
-  delay(180);
+  // re();
+  // delay(180);
   parar();
-  delay(200);
+  // delay(200);
   leituraCorG();
   //verdes();
 
@@ -192,51 +190,51 @@ void encruzte() {  //------------------------ encruzilhada com T
     display.setFontSize(FONT_SIZE_LARGE);
     display.println("beco");
 
-    frente();
-    delay(300);
-    esquerda();
-    delay(2000);
+    // frente();
+    // delay(300);
+    // esquerda();
+    // delay(2000);
 
-    while (analogRead(sensor[2]) >= 350) {
-      esquerda();
-    }
+    // while (analogRead(sensor[2]) >= 350) {
+    //   esquerda();
+   // }
 
   } else if (esquerda_verde == 0 && direita_verde == 1) {  // direita verde
-    Serial.print("direita verde");
+    Serial.println("direita verde");
 
     display.clear();
     display.setCursor(0, 0);
     display.setFontSize(FONT_SIZE_LARGE);
     display.println("direita verde");
 
-    frente();
-    delay(390);
-    direita();
-    delay(700);
+    // frente();
+    // delay(390);
+    // direita();
+    // delay(700);
 
-    while (analogRead(sensor[2]) >= 340) {
-      direita();
-    }
+    // while (analogRead(sensor[2]) >= 340) {
+    //   direita();
+    // }
 
   } else if (esquerda_verde == 1 && direita_verde == 0) {  // esquerda verde
-    Serial.print("esquerda verde");
+    Serial.println("esquerda verde");
 
   display.clear();
   display.setCursor(0, 0);
   display.setFontSize(FONT_SIZE_LARGE);
   display.println("esquerda verde");
 
-    frente();
-    delay(390);
-    esquerda();
-    delay(700);
+    // frente();
+    // delay(390);
+    // esquerda();
+    // delay(700);
 
-    while (analogRead(sensor[2]) >= 340) {
-      esquerda();
-    }
+    // while (analogRead(sensor[2]) >= 340) {
+    //   esquerda();
+    // }
 
-  } else {
-    frente();
-    delay(410);
-  }
+  } //else {
+  //   frente();
+  //   delay(410);
+  // }
 }
