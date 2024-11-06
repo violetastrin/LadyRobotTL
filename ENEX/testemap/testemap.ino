@@ -1,22 +1,9 @@
 #include "definir.h"
 
-//ORDEM: ESQUERDA, REAJUSTE ESQUERDA, FRENTE, REAJUSTE DIREITA, DIREITA
-const int sensor[] = {A2, A1, A4, A0, A3};
-
-const int valorPreto[] = {550, 320, 210, 445, 570};
-
-const int valorBranco[] = {984, 982, 988, 986, 988};
-
-const int media[] = {50, 50, 50, 50, 50}; //!ver valores pra cada um dps
-
-int leituraSensor[5] = {};
-
-int sensorMap[5] = {};
-
-bool valorSensor[5] = {};
-
 void setup() {
   Serial.begin(9600);
+  display.begin();
+
 
   servoDir_f.attach(8);
   servoDir_t.attach(7);
@@ -112,21 +99,17 @@ switch (leitura) {
   }
 }
 
-void leiturainfra(){
-for(int i = 0; i<5; i++){
-  leituraSensor[i] = analogRead(sensor[i]);
-  }
-
-for (int i = 0; i<5; i++){
-  sensorMap[i] = map(leituraSensor[i], valorPreto[i], valorBranco[i], 0, 100);
-  sensorMap[i] = constrain(sensorMap[i], 0, 100);
-}
-}
 
 // funções de ladrilhos
 
 void novgrausDireita() {  //90º direita
+  display.clear();
+  display.setCursor(0, 0);
+  display.setFontSize(FONT_SIZE_LARGE);
+  display.println("90 graus - d");
+
   Serial.println("90 direita");
+
   frente();
   delay(40);
 
@@ -137,6 +120,11 @@ void novgrausDireita() {  //90º direita
 }
 
 void novgrausEsquerda() {  // 90º esquerda
+  display.clear();
+  display.setCursor(0, 0);
+  display.setFontSize(FONT_SIZE_LARGE);
+  display.println("90 graus - e");
+
   Serial.println("90 esquerda");
   frente();
   delay(40);
@@ -148,20 +136,20 @@ void novgrausEsquerda() {  // 90º esquerda
 }
 
 void reajd() {  //resjuste direita
-  // display.clear();
-  // display.setCursor(0, 0);
-  // display.setFontSize(FONT_SIZE_LARGE);
-  // display.println("reaj - d");
+  display.clear();
+  display.setCursor(0, 0);
+  display.setFontSize(FONT_SIZE_LARGE);
+  display.println("reaj - d");
   Serial.println("reajuste direita");
   reajusteDireita();
   leiturainfra();
 }
 
 void reaje() {  //resjuste esquerda
-  // display.clear();
-  // display.setCursor(0, 0);
-  // display.setFontSize(FONT_SIZE_LARGE);
-  // display.println("reaj - e");
+  display.clear();
+  display.setCursor(0, 0);
+  display.setFontSize(FONT_SIZE_LARGE);
+  display.println("reaj - e");
   Serial.println("reajuste esquerda");
   reajusteEsquerda();
   leiturainfra();
