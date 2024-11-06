@@ -17,6 +17,8 @@ Servo servoDir_f;
 
 LCD_SSD1306 display; /* for SSD1306 OLED module */
 
+Ultrasonic ultrasonic(A5, A6);  // trig primeiro depois echo
+
 //ORDEM: ESQUERDA, REAJUSTE ESQUERDA, FRENTE, REAJUSTE DIREITA, DIREITA
 const int sensor[] = {A2, A1, A4, A0, A3};
 

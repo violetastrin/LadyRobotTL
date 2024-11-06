@@ -4,7 +4,7 @@ void setup() {
   Serial.begin(9600);
   display.begin();
 
-
+ 
   servoDir_f.attach(8);
   servoDir_t.attach(7);
   servoEsq_f.attach(9);
