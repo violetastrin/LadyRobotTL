@@ -86,7 +86,7 @@ switch (leitura) {
       break;
 
     //verde
-    /*case 0b00100:  // T
+    case 0b00100:  // T
     case 0b00000:
     case 0b00010:
     case 0b00110:
@@ -99,8 +99,7 @@ switch (leitura) {
     case 0b00011:
     case 0b01001:
       encruzte();
-      verde();
-      break;*/
+      break;
 
       // cinza & vermelho
 
@@ -172,4 +171,72 @@ void reaje() {  //resjuste esquerda
   leiturainfra();
 }
 
+void encruzte() {  //------------------------ encruzilhada com T
+  display.clear();
+  display.setCursor(0, 0);
+  display.setFontSize(FONT_SIZE_LARGE);
+  display.println("encruzted");
+  Serial.println("encruzilhada ou T");
+  re();
+  delay(180);
+  parar();
+  delay(200);
+  leituraCorG();
+  //verdes();
 
+  if (direita_verde == 1 && esquerda_verde == 1) {  //------------------------ beco
+    Serial.println("beco");
+
+    display.clear();
+    display.setCursor(0, 0);
+    display.setFontSize(FONT_SIZE_LARGE);
+    display.println("beco");
+
+    frente();
+    delay(300);
+    esquerda();
+    delay(2000);
+
+    while (analogRead(sensor[2]) >= 350) {
+      esquerda();
+    }
+
+  } else if (esquerda_verde == 0 && direita_verde == 1) {  // direita verde
+    Serial.print("direita verde");
+
+    display.clear();
+    display.setCursor(0, 0);
+    display.setFontSize(FONT_SIZE_LARGE);
+    display.println("direita verde");
+
+    frente();
+    delay(390);
+    direita();
+    delay(700);
+
+    while (analogRead(sensor[2]) >= 340) {
+      direita();
+    }
+
+  } else if (esquerda_verde == 1 && direita_verde == 0) {  // esquerda verde
+    Serial.print("esquerda verde");
+
+  display.clear();
+  display.setCursor(0, 0);
+  display.setFontSize(FONT_SIZE_LARGE);
+  display.println("esquerda verde");
+
+    frente();
+    delay(390);
+    esquerda();
+    delay(700);
+
+    while (analogRead(sensor[2]) >= 340) {
+      esquerda();
+    }
+
+  } else {
+    frente();
+    delay(410);
+  }
+}

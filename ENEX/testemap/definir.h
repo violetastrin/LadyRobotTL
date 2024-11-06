@@ -73,10 +73,10 @@ void leituraCorG() {
   media_rbg1 = (r1 + b1 + g1) / 3;
   media_rbg2 = (r2 + b2 + g2) / 3;
 
-  uint16_t media1 = media_rbg1 * 1.062;
-  uint16_t media2 = media_rbg2 * 1.025;
+  uint16_t media1 = media_rbg1 * 1.065;
+  uint16_t media2 = media_rbg2 * 1.08;
 
-  if (media_rbg1 >= 8000) {
+  if (media_rbg1 <= 3000) {
     esquerda_verde = 0;
   } else if (g1 >= media1) {
     esquerda_verde = 1;
@@ -84,14 +84,26 @@ void leituraCorG() {
     esquerda_verde = 0;
   }
 
-  if (media_rbg2 >= 8000) {
+  if (media_rbg2 <= 2000) {
     direita_verde = 0;
   } else if (g2 >= media2) {
     direita_verde = 1;
   } else {
     direita_verde = 0;
   }
-  Serial.print("dir: ");
+  Serial.print(" esq: ");
+  Serial.print(", Verde: ");
+  Serial.print(g1);
+  Serial.print(", vermelho: ");
+  Serial.print(r1);
+  Serial.print(", azul: ");
+  Serial.print(b1);
+  Serial.print(", Media: ");
+  Serial.print(media1);
+  Serial.print(", esq verde: ");
+  Serial.print(esquerda_verde);
+
+    Serial.print("  | | |  dir: ");
   Serial.print(", Verde: ");
   Serial.print(g2);
   Serial.print(", vermelho: ");
@@ -103,18 +115,6 @@ void leituraCorG() {
   Serial.print(", dir verde: ");
   Serial.print(direita_verde);
 
-
-  Serial.print(" | esq: ");
-  Serial.print(", Verde: ");
-  Serial.print(g1);
-  Serial.print(", vermelho: ");
-  Serial.print(r1);
-  Serial.print(", azul: ");
-  Serial.print(b1);
-  Serial.print(", Media: ");
-  Serial.print(media1);
-  Serial.print(", esq verde: ");
-  Serial.print(esquerda_verde);
 
   Serial.println();
 
