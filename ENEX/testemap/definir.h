@@ -19,6 +19,11 @@ LCD_SSD1306 display; /* for SSD1306 OLED module */
 
 Ultrasonic ultrasonic(A5, A6);  // trig primeiro depois echo
 
+SoftwareWire sWire(5, 4);
+
+Adafruit_TCS34725_SWwire tcs_real = Adafruit_TCS34725_SWwire(TCS34725_INTEGRATIONTIME_180MS, TCS34725_GAIN_4X);
+Adafruit_TCS34725_SWwire tcs_soft = Adafruit_TCS34725_SWwire(TCS34725_INTEGRATIONTIME_180MS, TCS34725_GAIN_4X);
+
 //ORDEM: ESQUERDA, REAJUSTE ESQUERDA, FRENTE, REAJUSTE DIREITA, DIREITA
 const int sensor[] = {A2, A1, A4, A0, A3};
 
