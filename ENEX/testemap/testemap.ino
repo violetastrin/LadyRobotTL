@@ -1,7 +1,7 @@
 #include "definir.h"
 
 //ORDEM: ESQUERDA, REAJUSTE ESQUERDA, FRENTE, REAJUSTE DIREITA, DIREITA
-const int sensor[] = {A1, A0, A4, A2, A3};
+const int sensor[] = {A2, A1, A4, A0, A3};
 
 const int valorPreto[] = {550, 320, 210, 445, 570};
 
@@ -55,71 +55,70 @@ byte leitura = 0;
   leitura |= valorSensor[i] << (4-i);
   }
 
-Serial.print("Valor lido: ");
 Serial.println(leitura, BIN);
 
-switch (leitura) {
+// switch (leitura) {
 
-    //frente
-    case 0b10001:
-      frente();
-      break;
+//     //frente
+//     case 0b10001:
+//       frente();
+//       break;
 
-    //90 graus, esquerda
-    case 0b00101:
-    case 0b00111:
-    case 0b01111:
-    case 0b01101:
-      novgrausEsquerda();
-      break;
+//     //90 graus, esquerda
+//     case 0b00101:
+//     case 0b00111:
+//     case 0b01111:
+//     case 0b01101:
+//       novgrausEsquerda();
+//       break;
       
-    //90 graus, direita
-    case 0b10100:
-    case 0b11100:
-    case 0b11110:
-    case 0b10110:
-      novgrausDireita();
-      break;
+//     //90 graus, direita
+//     case 0b10100:
+//     case 0b11100:
+//     case 0b11110:
+//     case 0b10110:
+//       novgrausDireita();
+//       break;
 
-    //Reajuste 
-    case 0b10011:
-    case 0b10111:
-      reajd();
-      break;
+//     //Reajuste 
+//     case 0b10011:
+//     case 0b10111:
+//       reajd();
+//       break;
 
-    case 0b11001:
-    case 0b11101:
-      reaje();
-      break;
+//     case 0b11001:
+//     case 0b11101:
+//       reaje();
+//       break;
 
-    //verde
-    /*case 0b00100:  // T
-    case 0b00000:
-    case 0b00010:
-    case 0b00110:
-    case 0b01000:
-    case 0b01100:
-    case 0b10000:  //direita
-    case 0b10010:
-    case 0b11000:
-    case 0b00001:  //esquerda
-    case 0b00011:
-    case 0b01001:
-      encruzte();
-      verde();
-      break;*/
+//     //verde
+//     /*case 0b00100:  // T
+//     case 0b00000:
+//     case 0b00010:
+//     case 0b00110:
+//     case 0b01000:
+//     case 0b01100:
+//     case 0b10000:  //direita
+//     case 0b10010:
+//     case 0b11000:
+//     case 0b00001:  //esquerda
+//     case 0b00011:
+//     case 0b01001:
+//       encruzte();
+//       verde();
+//       break;*/
 
-      // cinza & vermelho
+//       // cinza & vermelho
 
-    // case 0b11111:
-    //   gapetc();
-    //   break;
+//     // case 0b11111:
+//     //   gapetc();
+//     //   break;
 
       
-    default:
-      frente();
-      break;
-  }
+//     default:
+//       frente();
+//       break;
+//   }
 }
 
 
