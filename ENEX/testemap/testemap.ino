@@ -10,11 +10,28 @@ void setup() {
   servoEsq_f.attach(9);
   servoEsq_t.attach(6);
 
+ if (tcs_soft.begin(&sWire)) {
+    Serial.println("Found sensor soft");
+  } else {
+    display.println("No TCS soft found");
+    Serial.println("No TCS34725 found ... check your connections (soft)");
+    while (1);
+  }
+
+  if (tcs_real.begin(&Wire)) {
+    Serial.println("Found sensor real");
+  } else {
+    display.println("No TCS real found");
+    Serial.println("No TCS34725 found ... check your connections (real)");
+    while (1);
+  }
 }
 
 void loop() {
 
 leiturainfra();
+leituraCorG();
+return;
 
   if (sensorMap[0] <= media[0] ){valorSensor[0] = 0;} else{valorSensor[0] = 1;}
 

@@ -77,22 +77,21 @@ void leituraCorG() {
   uint16_t media2 = media_rbg2 * 1.025;
 
   if (media_rbg1 >= 8000) {
-    direita_verde = 0;
-  } else if (g1 >= media1) {
-    direita_verde = 1;
-  } else {
-    direita_verde = 0;
-  }
-
-
-  if (media_rbg2 >= 8000) {
     esquerda_verde = 0;
-  } else if (g2 >= media2) {
+  } else if (g1 >= media1) {
     esquerda_verde = 1;
   } else {
     esquerda_verde = 0;
   }
-  Serial.print("ESQ (soft): ");
+
+  if (media_rbg2 >= 8000) {
+    direita_verde = 0;
+  } else if (g2 >= media2) {
+    direita_verde = 1;
+  } else {
+    direita_verde = 0;
+  }
+  Serial.print("dir: ");
   Serial.print(", Verde: ");
   Serial.print(g2);
   Serial.print(", vermelho: ");
@@ -100,10 +99,12 @@ void leituraCorG() {
   Serial.print(", azul: ");
   Serial.print(b2);
   Serial.print(", Media: ");
-  Serial.println(media2);
+  Serial.print(media2);
+  Serial.print(", dir verde: ");
+  Serial.print(direita_verde);
 
 
-  Serial.print(" | DIR (real): ");
+  Serial.print(" | esq: ");
   Serial.print(", Verde: ");
   Serial.print(g1);
   Serial.print(", vermelho: ");
@@ -111,27 +112,31 @@ void leituraCorG() {
   Serial.print(", azul: ");
   Serial.print(b1);
   Serial.print(", Media: ");
-  Serial.println(media2);
+  Serial.print(media1);
+  Serial.print(", esq verde: ");
+  Serial.print(esquerda_verde);
+
+  Serial.println();
 
   display.clear();
   display.setCursor(0, 0);
   display.setFontSize(FONT_SIZE_SMALL);
-  display.print("EG: ");
+  display.print("DG: ");
   display.print(g2);
-  display.print("ER: ");
+  display.print("DR: ");
   display.println(r2);
-  display.print("EB: ");
+  display.print("DB: ");
   display.print(b2);
-  display.print("EM: ");
+  display.print("DM: ");
   display.println(media2);
 
-  display.print(" DG: ");
+  display.print(" EG: ");
   display.print(g1);
-  display.print(" DR: ");
+  display.print(" ER: ");
   display.println(r1);
-  display.print(" DB: ");
+  display.print(" EB: ");
   display.print(b1);
-  display.print(" DM: ");
+  display.print(" EM: ");
   display.println(media1);
   //delay(2500);  // LEMBRAR DE TIRAR EH SO PARA DEBUG!!!!!!*
 }
