@@ -39,7 +39,7 @@ bool direita_verde, esquerda_verde, direita_vermelho, esquerda_vermelho, direita
 //ORDEM: ESQUERDA, REAJUSTE ESQUERDA, FRENTE, REAJUSTE DIREITA, DIREITA
 const int sensor[] = {A2, A1, A4, A0, A3};
 
-const int valorPreto[] = {550, 320, 210, 445, 570};
+const int valorPreto[] = {550, 625, 320, 730, 620};
 
 const int valorBranco[] = {984, 982, 988, 986, 988};
 
@@ -232,10 +232,10 @@ void reajusteDireita() {
 
 void reajusteEsquerda() {                   
   Serial.println("reajuste esquerda");
-  servoEsq_f.write(100);
-  servoEsq_t.write(100); 
-  servoDir_f.write(50);
-  servoDir_t.write(50);
+  servoEsq_f.write(125);
+  servoEsq_t.write(125); 
+  servoDir_f.write(80);
+  servoDir_t.write(80);
 }
 
 void parar(){
