@@ -239,5 +239,5 @@ void encruzte() {  //------------------------ encruzilhada com T
   } //else {
   //   frente();
   //   delay(410);
-  // }
+  // } /
 }
