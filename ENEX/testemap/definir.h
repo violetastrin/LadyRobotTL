@@ -224,16 +224,16 @@ void devagarDireita() {  // virando para direita devagar
 
 void reajusteDireita() {  
   Serial.println("reajuste direita");
-  servoEsq_f.write(130);
-  servoEsq_t.write(130); //40
+  servoEsq_f.write(125);
+  servoEsq_t.write(125); //35
   servoDir_f.write(80);  //10
   servoDir_t.write(80);
 }
 
 void reajusteEsquerda() {                   
   Serial.println("reajuste esquerda");
-  servoEsq_f.write(100);
-  servoEsq_t.write(100);
+  servoEsq_f.write(105);
+  servoEsq_t.write(105);
   servoDir_f.write(50);
   servoDir_t.write(50);
 }

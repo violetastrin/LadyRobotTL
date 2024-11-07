@@ -30,6 +30,8 @@ void setup() {
 void loop() {
 
 leiturainfra();
+reajd();
+return;
 
   if (sensorMap[0] <= media[0] ){valorSensor[0] = 0;} else{valorSensor[0] = 1;}
 
