@@ -1,5 +1,4 @@
-
-int sensor[] = {A1, A0, A4, A2, A3};
+int sensor[] = {A2, A1, A4, A0, A3};
 // ORDEM: ESQUERDA, REAJUSTE ESQUERDA, FRENTE, REAJUSTE DIREITA, DIREITA
 
 void setup() {
@@ -14,14 +13,14 @@ for(int i = 0; i>5; i++){
 
 void loop() {
   //-----------------------------------------Testando os Sensores--------------------------------------------------------
-  Serial.print(" sensor1 = ");
+  Serial.print(" sensorESQ = ");
   Serial.println(analogRead(sensor[0]));
-  Serial.print(" sensor2 = ");
+  Serial.print(" sensorRE = ");
   Serial.print(analogRead(sensor[1]));
-  Serial.print(" sensor3 = ");
+  Serial.print(" sensorMEIO = ");
   Serial.print(analogRead(sensor[2]));
-  Serial.print(" sensor4 = ");
+  Serial.print(" sensorRD = ");
   Serial.print(analogRead(sensor[3]));
-  Serial.print(" sensor5 = ");
+  Serial.print(" sensorDIR = ");
   Serial.print(analogRead(sensor[4]));
 }
