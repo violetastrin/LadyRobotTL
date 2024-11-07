@@ -155,7 +155,7 @@ void reajd() {  //resjuste direita
   display.clear();
   display.setCursor(0, 0);
   display.setFontSize(FONT_SIZE_LARGE);
-  display.println("reaj - d");
+  display.println("reaj d");
   Serial.println("reajuste direita");
   reajusteDireita();
   leiturainfra();
@@ -165,7 +165,7 @@ void reaje() {  //resjuste esquerda
   display.clear();
   display.setCursor(0, 0);
   display.setFontSize(FONT_SIZE_LARGE);
-  display.println("reaj - e");
+  display.println("reaj e");
   Serial.println("reajuste esquerda");
   reajusteEsquerda();
   leiturainfra();
@@ -177,12 +177,11 @@ void encruzte() {  //------------------------ encruzilhada com T
   display.setFontSize(FONT_SIZE_LARGE);
   display.println("encruzted");
   Serial.println("encruzilhada ou T");
-  // re();
-  // delay(180);
+  re();
+  delay(180);
   parar();
-  // delay(200);
+  delay(200);
   leituraCorG();
-  //verdes();
 
   if (direita_verde == 1 && esquerda_verde == 1) {  //------------------------ beco
     Serial.println("beco");
