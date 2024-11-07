@@ -92,9 +92,11 @@ switch (leitura) {
     case 0b00110:
     case 0b01000:
     case 0b01100:
+
     case 0b10000:  //direita
     case 0b10010:
     case 0b11000:
+    
     case 0b00001:  //esquerda
     case 0b00011:
     case 0b01001:
