@@ -75,12 +75,12 @@ switch (leitura) {
     //Reajuste 
     case 0b10011:
     case 0b10111:
-      reajd();
+      reaje();
       break;
 
     case 0b11001:
     case 0b11101:
-      reaje();
+      reajd();
       break;
 
     //verde
