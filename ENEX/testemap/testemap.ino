@@ -2,8 +2,8 @@
 
 void setup() {
   Serial.begin(9600);
+  
   display.begin();
-
  
   servoDir_f.attach(8);
   servoDir_t.attach(7);
@@ -30,8 +30,8 @@ void setup() {
 void loop() {
 
 leiturainfra();
-reajd();
-return;
+//reajd();
+//return;
 
   if (sensorMap[0] <= media[0] ){valorSensor[0] = 0;} else{valorSensor[0] = 1;}
 
@@ -96,7 +96,7 @@ switch (leitura) {
     case 0b10000:  //direita
     case 0b10010:
     case 0b11000:
-    
+
     case 0b00001:  //esquerda
     case 0b00011:
     case 0b01001:
