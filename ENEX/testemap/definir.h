@@ -121,6 +121,13 @@ void leituraCorG() {
   display.clear();
   display.setCursor(0, 0);
   display.setFontSize(FONT_SIZE_SMALL);
+
+  display.print(esquerda_verde);
+  display.print("||");
+  display.println(direita_verde);
+
+  display.println();
+
   display.print("DG: ");
   display.print(g2);
   display.print("DR: ");
@@ -217,18 +224,18 @@ void devagarDireita() {  // virando para direita devagar
 
 void reajusteDireita() {  
   Serial.println("reajuste direita");
-  servoEsq_f.write(125);
-  servoEsq_t.write(125);
-  servoDir_f.write(75);
-  servoDir_t.write(75);
+  servoEsq_f.write(130);
+  servoEsq_t.write(130); //40
+  servoDir_f.write(80);  //10
+  servoDir_t.write(80);
 }
 
 void reajusteEsquerda() {                   
   Serial.println("reajuste esquerda");
-  servoEsq_f.write(105);
-  servoEsq_t.write(105);
-  servoDir_f.write(55);
-  servoDir_t.write(55);
+  servoEsq_f.write(100);
+  servoEsq_t.write(100);
+  servoDir_f.write(50);
+  servoDir_t.write(50);
 }
 
 void parar(){
