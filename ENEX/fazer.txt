@@ -7,3 +7,8 @@ switch case segue faixa
 desvia obstaculo
 
 verde
+
+
+
+servos da esquerda andam pra frente acima de 90 e pra trás abaixo.  180 max p/ frente, 90 para, 0 max p/ trás  x - 90 = y
+servos da direita andam pra frente abaixo de 90 e pra trás acima.    0 máx p/ trás, 90 para, 180 máx p/ trás   90 - x = y
