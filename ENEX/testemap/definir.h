@@ -16,6 +16,7 @@ Servo servoEsq_f;
 Servo servoEsq_t;
 Servo servoDir_f;
 
+
 //display oled
 LCD_SSD1306 display; /* for SSD1306 OLED module */
 
@@ -148,6 +149,13 @@ void leituraCorG() {
   //delay(2500);  // LEMBRAR DE TIRAR EH SO PARA DEBUG!!!!!!*
 }
 
+int velEsq(int x){
+  return x + 90;
+}
+
+int velDir(int y){
+  return 90 - y;
+}
 //Funções motor 
 
 void esquerdaFrente() {
@@ -168,13 +176,13 @@ void esquerdaPara() {
 ///////////////////////////////
 
 void direitaFrente() {
-  servoDir_f.write(50);
-  servoDir_t.write(50);
+  servoDir_f.write(40);
+  servoDir_t.write(40);
 }
 
 void direitaRe() {
-  servoDir_f.write(130);
-  servoDir_t.write(130);
+  servoDir_f.write(140);
+  servoDir_t.write(140);
 }
 
 void direitaPara() {
@@ -190,10 +198,10 @@ void frente(){
   display.setFontSize(FONT_SIZE_LARGE);
   display.println("frente");
   
-    servoDir_f.write(70);
-    servoDir_t.write(70);
-    servoEsq_f.write(110);
-    servoEsq_t.write(110);
+  servoDir_f.write(velDir(50));
+  servoDir_t.write(velDir(50));
+  servoEsq_f.write(velEsq(50));
+  servoEsq_t.write(velEsq(50));
 }
 
 void esquerda(){
@@ -207,35 +215,34 @@ void direita(){
 }
 
 void devagarEsquerda() {  // virando para esquerda devagar
-  Serial.println("Esquerda devagar");
-  servoEsq_f.write(60);  
-  servoEsq_t.write(60); //-30
-  servoDir_f.write(60); //30
-  servoDir_t.write(60);
+  servoEsq_f.write(velEsq(-30));
+  servoEsq_t.write(velEsq(-30));
+  servoDir_f.write(velDir(30));
+  servoDir_t.write(velDir(30));
+  
 }
 
 void devagarDireita() {  // virando para direita devagar
-  Serial.println("Direita devagar");
-  servoEsq_f.write(120);
-  servoEsq_t.write(120); //30
-  servoDir_f.write(120); //-30
-  servoDir_t.write(120);
+  servoEsq_f.write(velEsq(30));
+  servoEsq_t.write(velEsq(30));
+  servoDir_f.write(velDir(-30));
+  servoDir_t.write(velDir(-30));
 }
 
 void reajusteDireita() {  
   Serial.println("reajuste direita");
-  servoEsq_f.write(125);
-  servoEsq_t.write(125); //35
+  servoEsq_f.write(110);
+  servoEsq_t.write(110); //20
   servoDir_f.write(80);  //10
   servoDir_t.write(80);
 }
 
 void reajusteEsquerda() {                   
   Serial.println("reajuste esquerda");
-  servoEsq_f.write(125);
-  servoEsq_t.write(125); 
-  servoDir_f.write(80);
-  servoDir_t.write(80);
+  servoEsq_f.write(105);
+  servoEsq_t.write(105); 
+  servoDir_f.write(70);
+  servoDir_t.write(70);
 }
 
 void parar(){
@@ -246,5 +253,8 @@ void re(){
     esquerdaRe();
     direitaRe();
 }
+
+
+
 
 #endif
