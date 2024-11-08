@@ -2,20 +2,21 @@
 
 void setup() {
   Serial.begin(9600);
-  
+
   display.begin();
- 
+
   servoDir_f.attach(8);
   servoDir_t.attach(7);
   servoEsq_f.attach(9);
   servoEsq_t.attach(6);
 
- if (tcs_soft.begin(&sWire)) {
+  if (tcs_soft.begin(&sWire)) {
     Serial.println("Found sensor soft");
   } else {
     display.println("No TCS soft found");
     Serial.println("No TCS34725 found ... check your connections (soft)");
-    while (1);
+    while (1)
+      ;
   }
 
   if (tcs_real.begin(&Wire)) {
@@ -23,35 +24,57 @@ void setup() {
   } else {
     display.println("No TCS real found");
     Serial.println("No TCS34725 found ... check your connections (real)");
-    while (1);
+    while (1)
+      ;
   }
 }
 
 void loop() {
 
-leiturainfra();
-//reajd();
-//return;
 
-  if (sensorMap[0] <= media[0] ){valorSensor[0] = 0;} else{valorSensor[0] = 1;}
+  leiturainfra();
+  frente();
+  return;
 
-  if (sensorMap[1] <= media[1] ){valorSensor[1] = 0;} else {valorSensor[1] = 1;}
-    
-  if (sensorMap[2] <= media[2] ){valorSensor[2] = 0;} else {valorSensor[2] = 1;}
-    
-  if (sensorMap[3] <= media[3] ){valorSensor[3] = 0;} else {valorSensor[3] = 1;}
-    
-  if (sensorMap[4] <= media[4] ){valorSensor[4] = 0;} else {valorSensor[4] = 1;}
-
-
-byte leitura = 0;
-  for(int i =  0; i<5; i++){
-  leitura |= valorSensor[i] << (4-i);
+  if (sensorMap[0] <= media[0]) {
+    valorSensor[0] = 0;
+  } else {
+    valorSensor[0] = 1;
   }
 
-Serial.println(leitura, BIN);
+  if (sensorMap[1] <= media[1]) {
+    valorSensor[1] = 0;
+  } else {
+    valorSensor[1] = 1;
+  }
 
-switch (leitura) {
+  if (sensorMap[2] <= media[2]) {
+    valorSensor[2] = 0;
+  } else {
+    valorSensor[2] = 1;
+  }
+
+  if (sensorMap[3] <= media[3]) {
+    valorSensor[3] = 0;
+  } else {
+    valorSensor[3] = 1;
+  }
+
+  if (sensorMap[4] <= media[4]) {
+    valorSensor[4] = 0;
+  } else {
+    valorSensor[4] = 1;
+  }
+
+
+  byte leitura = 0;
+  for (int i = 0; i < 5; i++) {
+    leitura |= valorSensor[i] << (4 - i);
+  }
+
+  Serial.println(leitura, BIN);
+
+  switch (leitura) {
 
     //frente
     case 0b10001:
@@ -65,7 +88,7 @@ switch (leitura) {
     case 0b01101:
       novgrausEsquerda();
       break;
-      
+
     //90 graus, direita
     case 0b10100:
     case 0b11100:
@@ -74,7 +97,7 @@ switch (leitura) {
       novgrausDireita();
       break;
 
-    //Reajuste 
+    //Reajuste
     case 0b10011:
     case 0b10111:
       reaje();
@@ -105,11 +128,11 @@ switch (leitura) {
 
       // cinza & vermelho
 
-    // case 0b11111:
-    //   gapetc();
-    //   break;
+      // case 0b11111:
+      //   gapetc();
+      //   break;
 
-      
+
     default:
       frente();
       Serial.println("frente");
@@ -180,7 +203,7 @@ void encruzte() {  //------------------------ encruzilhada com T
   display.println("encruzted");
   Serial.println("encruzilhada ou T");
   re();
-  delay(180);
+  delay(120);
   parar();
   delay(200);
   leituraCorG();
@@ -193,6 +216,9 @@ void encruzte() {  //------------------------ encruzilhada com T
     display.setFontSize(FONT_SIZE_LARGE);
     display.println("beco");
 
+    parar();
+    delay(5000);
+
     // frente();
     // delay(300);
     // esquerda();
@@ -200,7 +226,7 @@ void encruzte() {  //------------------------ encruzilhada com T
 
     // while (analogRead(sensor[2]) >= 350) {
     //   esquerda();
-   // }
+    // }
 
   } else if (esquerda_verde == 0 && direita_verde == 1) {  // direita verde
     Serial.println("direita verde");
@@ -210,6 +236,8 @@ void encruzte() {  //------------------------ encruzilhada com T
     display.setFontSize(FONT_SIZE_LARGE);
     display.println("direita verde");
 
+    parar();
+    delay(5000);
     // frente();
     // delay(390);
     // direita();
@@ -222,11 +250,13 @@ void encruzte() {  //------------------------ encruzilhada com T
   } else if (esquerda_verde == 1 && direita_verde == 0) {  // esquerda verde
     Serial.println("esquerda verde");
 
-  display.clear();
-  display.setCursor(0, 0);
-  display.setFontSize(FONT_SIZE_LARGE);
-  display.println("esquerda verde");
+    display.clear();
+    display.setCursor(0, 0);
+    display.setFontSize(FONT_SIZE_LARGE);
+    display.println("esquerda verde");
 
+    parar();
+    delay(5000);
     // frente();
     // delay(390);
     // esquerda();
@@ -236,7 +266,7 @@ void encruzte() {  //------------------------ encruzilhada com T
     //   esquerda();
     // }
 
-  } //else {
+  }  //else {
   //   frente();
   //   delay(410);
   // } /
