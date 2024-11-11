@@ -21,7 +21,8 @@ Servo servoDir_f;
 LCD_SSD1306 display; /* for SSD1306 OLED module */
 
 //ultra sonico
-Ultrasonic ultrasonic(A5, A6);  // trig primeiro depois echo
+Ultrasonic ultrasonic(A6, A5);  // trig primeiro depois echo
+int distancia;
 
 //sensor de cor
 SoftwareWire sWire(5, 4);
@@ -269,13 +270,13 @@ void dirfrente2() {
 }
 
 void dirre2() {
-  servoDir_f.write(velDir(35));
-  servoDir_t.write(velDir(35));
+  servoDir_f.write(velDir(-35));
+  servoDir_t.write(velDir(-35));
 }
 
 void esqre2() {
-  servoEsq_f.write(velEsq(35));
-  servoEsq_f.write(velEsq(35));
+  servoEsq_f.write(velEsq(-35));
+  servoEsq_t.write(velEsq(-35));
 }
 
 void re2() {
@@ -304,13 +305,13 @@ void desviaesq() {
   re2();
   delay(150);
   esquerda2();
-  delay(1500);
+  delay(1400);
   frente2();
   delay(1300);
   direita2();
-  delay(1500);
+  delay(1650);
   frente2();
-  delay(2300);
+  delay(2800);
   direita2();
   delay(1500);
   frente2();
