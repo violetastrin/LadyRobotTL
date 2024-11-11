@@ -40,7 +40,7 @@ bool direita_verde, esquerda_verde, direita_vermelho, esquerda_vermelho, direita
 //ORDEM: ESQUERDA, REAJUSTE ESQUERDA, FRENTE, REAJUSTE DIREITA, DIREITA
 const int sensor[] = {A2, A1, A4, A0, A3};
 
-const int valorPreto[] = {550, 625, 320, 730, 620};
+const int valorPreto[] = {325, 475, 180, 503, 470};
 
 const int valorBranco[] = {984, 982, 988, 986, 988};
 
@@ -65,6 +65,13 @@ for (int i = 0; i<5; i++){
 }
 }
 
+int velEsq(int x){
+  return x + 90;
+}
+
+int velDir(int y){
+  return 90 - y;
+}
 
 void leituraCorG() {
 
@@ -129,23 +136,23 @@ void leituraCorG() {
 
   display.println();
 
-  display.print("DG: ");
-  display.print(g2);
-  display.print("DR: ");
-  display.println(r2);
-  display.print("DB: ");
-  display.print(b2);
-  display.print("DM: ");
-  display.println(media2);
+  // display.print("DG: ");
+  // display.print(g2);
+  // display.print("DR: ");
+  // display.println(r2);
+  // display.print("DB: ");
+  // display.print(b2);
+  // display.print("DM: ");
+  // display.println(media2);
 
-  display.print(" EG: ");
-  display.print(g1);
-  display.print(" ER: ");
-  display.println(r1);
-  display.print(" EB: ");
-  display.print(b1);
-  display.print(" EM: ");
-  display.println(media1);
+  // display.print(" EG: ");
+  // display.print(g1);
+  // display.print(" ER: ");
+  // display.println(r1);
+  // display.print(" EB: ");
+  // display.print(b1);
+  // display.print(" EM: ");
+  // display.println(media1);
   //delay(2500);  // LEMBRAR DE TIRAR EH SO PARA DEBUG!!!!!!*
 }
 
@@ -154,13 +161,7 @@ sendo -90 a velocidade máxima para trás; 0 para parar o motor e 90 a velocidad
 Os valores funcionam de forma igual na esquerda e direita.
 
 obs: os motores provavelmente ficarão parados caso os valores estejam entre -10 e o 10.*/
-int velEsq(int x){
-  return x + 90;
-}
 
-int velDir(int y){
-  return 90 - y;
-}
 //Funções motor 
 
 void esquerdaFrente() {
@@ -174,8 +175,8 @@ void esquerdaRe() {
 }
 
 void esquerdaPara() {
-  servoEsq_f.write(90);
-  servoEsq_t.write(90);
+  servoEsq_f.write(velEsq(0));
+  servoEsq_t.write(velEsq(0));
 }
 
 ///////////////////////////////
@@ -191,18 +192,18 @@ void direitaRe() {
 }
 
 void direitaPara() {
-  servoDir_f.write(90);
-  servoDir_t.write(90);
+  servoDir_f.write(velDir(0));
+  servoDir_t.write(velDir(0));
 }
 
 //////////////////////////////
 
 void frente(){
   
-  servoDir_f.write(velDir(50));
-  servoDir_t.write(velDir(50));
-  servoEsq_f.write(velEsq(50));
-  servoEsq_t.write(velEsq(50));
+  servoDir_f.write(velDir(20));
+  servoDir_t.write(velDir(20));
+  servoEsq_f.write(velEsq(20));
+  servoEsq_t.write(velEsq(20));
 }
 
 void esquerda(){
@@ -232,18 +233,18 @@ void devagarDireita() {  // virando para direita devagar
 
 void reajusteDireita() {  
   Serial.println("reajuste direita");
-  servoEsq_f.write(velEsq(20));
-  servoEsq_t.write(velEsq(20)); //20
+  servoEsq_f.write(velEsq(15));
+  servoEsq_t.write(velEsq(15)); //20
   servoDir_f.write(velDir(10));  //10
   servoDir_t.write(velDir(10)); 
 }
 
 void reajusteEsquerda() {                   
   Serial.println("reajuste esquerda");
-  servoEsq_f.write(105);
-  servoEsq_t.write(105); 
-  servoDir_f.write(70);
-  servoDir_t.write(70);
+  servoEsq_f.write(velEsq(10));
+  servoEsq_t.write(velEsq(10)); 
+  servoDir_f.write(velDir(15));
+  servoDir_t.write(velDir(15));
 }
 
 void parar(){
@@ -253,6 +254,98 @@ void parar(){
 void re(){
     esquerdaRe();
     direitaRe();
+}
+
+//---------------------- funções desvia obstáculo (NAO MUDAR!)
+
+void esqfrente2() {
+  servoEsq_f.write(velEsq(35)); 
+  servoEsq_t.write(velEsq(35)); 
+}
+
+void dirfrente2() {
+  servoDir_f.write(velDir(35)); 
+  servoDir_t.write(velDir(35));
+}
+
+void dirre2() {
+  servoDir_f.write(velDir(35));
+  servoDir_t.write(velDir(35));
+}
+
+void esqre2() {
+  servoEsq_f.write(velEsq(35));
+  servoEsq_f.write(velEsq(35));
+}
+
+void re2() {
+  esqre2();
+  dirre2();
+}
+
+void esquerda2() {
+  esqre2();
+  dirfrente2();
+}
+
+void direita2() {
+  esqfrente2();
+  dirre2();
+}
+
+void frente2() {
+  dirfrente2();
+  esqfrente2();
+}
+
+//----------------------  desvia obstáculo -------------------------------------------------------------------------
+
+void desviaesq() {
+  re2();
+  delay(150);
+  esquerda2();
+  delay(1500);
+  frente2();
+  delay(1300);
+  direita2();
+  delay(1500);
+  frente2();
+  delay(2300);
+  direita2();
+  delay(1500);
+  frente2();
+  delay(500);
+  while (analogRead(sensor[1]) > valorSensor[1]) {
+    frente2();
+  }
+  frente2();
+  delay(100);
+  while (analogRead(sensor[2]) > valorSensor[2]) {
+    esquerda2();
+  }
+}
+
+void desviadir() {
+  re2();
+  delay(150);
+  direita2();
+  delay(1500);
+  frente2();
+  delay(1300);
+  esquerda2();
+  delay(1500);
+  frente2();
+  delay(2400);
+  esquerda2();
+  delay(1500);
+  frente2();
+  delay(200);
+  while (analogRead(sensor[1]) > valorSensor[1]) {
+    frente2();
+  }
+  while (analogRead(sensor[2]) > valorSensor[2]) {
+    direita2();
+  }
 }
 
 
