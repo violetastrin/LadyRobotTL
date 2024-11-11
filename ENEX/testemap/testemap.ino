@@ -33,8 +33,6 @@ void loop() {
 
 
   leiturainfra();
-  frente();
-  return;
 
   if (sensorMap[0] <= media[0]) {
     valorSensor[0] = 0;
@@ -79,6 +77,10 @@ void loop() {
     //frente
     case 0b10001:
       frente();
+        display.clear();
+        display.setCursor(0, 0);
+        display.setFontSize(FONT_SIZE_LARGE);
+        display.println("frente");
       break;
 
     //90 graus, esquerda
@@ -135,7 +137,13 @@ void loop() {
 
     default:
       frente();
+      display.clear();
+      display.setCursor(0, 0);
+      display.setFontSize(FONT_SIZE_LARGE);
+      display.println("default");
+      display.println(leitura, BIN);
       Serial.println("frente");
+
       break;
   }
 }
