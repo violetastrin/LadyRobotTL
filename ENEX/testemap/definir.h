@@ -154,7 +154,6 @@ sendo -90 a velocidade máxima para trás; 0 para parar o motor e 90 a velocidad
 Os valores funcionam de forma igual na esquerda e direita.
 
 obs: os motores provavelmente ficarão parados caso os valores estejam entre -10 e o 10.*/
-
 int velEsq(int x){
   return x + 90;
 }
@@ -199,10 +198,6 @@ void direitaPara() {
 //////////////////////////////
 
 void frente(){
-  display.clear();
-  display.setCursor(0, 0);
-  display.setFontSize(FONT_SIZE_LARGE);
-  display.println("frente");
   
   servoDir_f.write(velDir(50));
   servoDir_t.write(velDir(50));
@@ -237,10 +232,10 @@ void devagarDireita() {  // virando para direita devagar
 
 void reajusteDireita() {  
   Serial.println("reajuste direita");
-  servoEsq_f.write(110);
-  servoEsq_t.write(110); //20
-  servoDir_f.write(80);  //10
-  servoDir_t.write(80);
+  servoEsq_f.write(velEsq(20));
+  servoEsq_t.write(velEsq(20)); //20
+  servoDir_f.write(velDir(10));  //10
+  servoDir_t.write(velDir(10)); 
 }
 
 void reajusteEsquerda() {                   
