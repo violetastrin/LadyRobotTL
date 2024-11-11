@@ -4,6 +4,7 @@ void setup() {
   Serial.begin(9600);
 
   display.begin();
+  display.setFontSize(FONT_SIZE_LARGE);
 
   servoDir_f.attach(8);
   servoDir_t.attach(7);
@@ -30,9 +31,12 @@ void setup() {
 }
 
 void loop() {
-
+  display.clearLine(0);
+  display.setCursor(0, 0);
 
   leiturainfra();
+  //printar(0);
+  //return;
 
   if (sensorMap[0] <= media[0]) {
     valorSensor[0] = 0;
@@ -64,23 +68,25 @@ void loop() {
     valorSensor[4] = 1;
   }
 
-
   byte leitura = 0;
   for (int i = 0; i < 5; i++) {
     leitura |= valorSensor[i] << (4 - i);
   }
 
-  Serial.println(leitura, BIN);
+  Serial.print(leitura, BIN);
+  Serial.print(" / ");
+  Serial.println(analogRead(A2));
+  display.println(leitura,BIN);
 
   switch (leitura) {
 
     //frente
     case 0b10001:
       frente();
-        display.clear();
-        display.setCursor(0, 0);
-        display.setFontSize(FONT_SIZE_LARGE);
-        display.println("frente");
+      //display.clear();
+      //display.setCursor(0, 0);
+      //display.setFontSize(FONT_SIZE_LARGE);
+      display.println("frente");
       break;
 
     //90 graus, esquerda
@@ -88,14 +94,17 @@ void loop() {
     case 0b00111:
     case 0b01111:
     case 0b01101:
+      parar();
+      delay(2000);
       novgrausEsquerda();
       break;
-
     //90 graus, direita
     case 0b10100:
     case 0b11100:
     case 0b11110:
     case 0b10110:
+      parar();
+      delay(2000);
       novgrausDireita();
       break;
 
@@ -117,6 +126,8 @@ void loop() {
     case 0b00110:
     case 0b01000:
     case 0b01100:
+    case 0b01011:
+    case 0b11010:
 
     case 0b10000:  //direita
     case 0b10010:
@@ -125,6 +136,8 @@ void loop() {
     case 0b00001:  //esquerda
     case 0b00011:
     case 0b01001:
+    parar();
+  delay(2000);
       encruzte();
       break;
 
@@ -137,12 +150,15 @@ void loop() {
 
     default:
       frente();
-      display.clear();
-      display.setCursor(0, 0);
-      display.setFontSize(FONT_SIZE_LARGE);
-      display.println("default");
-      display.println(leitura, BIN);
-      Serial.println("frente");
+      //display.clear();
+      //display.setCursor(0, 0);
+      //display.setFontSize(FONT_SIZE_LARGE);
+      //display.println("default");
+      //display.println(leitura, BIN);
+      //display.print(analogRead(sensor[0]));
+      // display.print(" ||| ");
+      // display.print(analogRead(sensor[3]));
+      //Serial.println("frente");
 
       break;
   }
@@ -151,16 +167,23 @@ void loop() {
 
 // funções de ladrilhos
 
+
+void printar(int i) {
+  //display.clear();
+  //display.setCursor(0, 0);
+  //display.setFontSize(FONT_SIZE_LARGE);
+  display.print(analogRead(sensor[i]));
+}
 void novgrausDireita() {  //90º direita
-  display.clear();
-  display.setCursor(0, 0);
-  display.setFontSize(FONT_SIZE_LARGE);
+  //display.clear();
+  //display.setCursor(0, 0);
+  //display.setFontSize(FONT_SIZE_LARGE);
   display.println("90 graus - d");
 
   Serial.println("90 direita");
 
   frente();
-  delay(40);
+  delay(60);
 
   while (analogRead(sensor[2]) >= 390) {
     leiturainfra();
@@ -169,14 +192,14 @@ void novgrausDireita() {  //90º direita
 }
 
 void novgrausEsquerda() {  // 90º esquerda
-  display.clear();
-  display.setCursor(0, 0);
-  display.setFontSize(FONT_SIZE_LARGE);
+  //display.clear();
+  //display.setCursor(0, 0);
+  //display.setFontSize(FONT_SIZE_LARGE);
   display.println("90 graus - e");
 
   Serial.println("90 esquerda");
   frente();
-  delay(40);
+  delay(60);
 
   while (analogRead(sensor[2]) >= 390) {
     devagarEsquerda();
@@ -185,29 +208,29 @@ void novgrausEsquerda() {  // 90º esquerda
 }
 
 void reajd() {  //resjuste direita
-  display.clear();
-  display.setCursor(0, 0);
-  display.setFontSize(FONT_SIZE_LARGE);
+  //display.clear();
+  //display.setCursor(0, 0);
+  //display.setFontSize(FONT_SIZE_LARGE);
   display.println("reaj d");
-  Serial.println("reajuste direita");
+  //Serial.println("reajuste direita");
   reajusteDireita();
-  leiturainfra();
+  //leiturainfra();
 }
 
 void reaje() {  //resjuste esquerda
-  display.clear();
-  display.setCursor(0, 0);
-  display.setFontSize(FONT_SIZE_LARGE);
+  //display.clear();
+  //display.setCursor(0, 0);
+  //display.setFontSize(FONT_SIZE_LARGE);
   display.println("reaj e");
-  Serial.println("reajuste esquerda");
+  //Serial.println("reajuste esquerda");
   reajusteEsquerda();
-  leiturainfra();
+  //leiturainfra();
 }
 
 void encruzte() {  //------------------------ encruzilhada com T
-  display.clear();
-  display.setCursor(0, 0);
-  display.setFontSize(FONT_SIZE_LARGE);
+  //display.clear();
+  //display.setCursor(0, 0);
+  //display.setFontSize(FONT_SIZE_LARGE);
   display.println("encruzted");
   Serial.println("encruzilhada ou T");
   re();
@@ -219,9 +242,9 @@ void encruzte() {  //------------------------ encruzilhada com T
   if (direita_verde == 1 && esquerda_verde == 1) {  //------------------------ beco
     Serial.println("beco");
 
-    display.clear();
-    display.setCursor(0, 0);
-    display.setFontSize(FONT_SIZE_LARGE);
+    //display.clear();
+    //display.setCursor(0, 0);
+    //display.setFontSize(FONT_SIZE_LARGE);
     display.println("beco");
 
     parar();
@@ -239,9 +262,9 @@ void encruzte() {  //------------------------ encruzilhada com T
   } else if (esquerda_verde == 0 && direita_verde == 1) {  // direita verde
     Serial.println("direita verde");
 
-    display.clear();
-    display.setCursor(0, 0);
-    display.setFontSize(FONT_SIZE_LARGE);
+    //display.clear();
+    //display.setCursor(0, 0);
+    //display.setFontSize(FONT_SIZE_LARGE);
     display.println("direita verde");
 
     parar();
@@ -258,9 +281,9 @@ void encruzte() {  //------------------------ encruzilhada com T
   } else if (esquerda_verde == 1 && direita_verde == 0) {  // esquerda verde
     Serial.println("esquerda verde");
 
-    display.clear();
-    display.setCursor(0, 0);
-    display.setFontSize(FONT_SIZE_LARGE);
+    //display.clear();
+    //display.setCursor(0, 0);
+    //display.setFontSize(FONT_SIZE_LARGE);
     display.println("esquerda verde");
 
     parar();
