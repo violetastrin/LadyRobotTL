@@ -149,6 +149,12 @@ void leituraCorG() {
   //delay(2500);  // LEMBRAR DE TIRAR EH SO PARA DEBUG!!!!!!*
 }
 
+/*Os valores variam de -90 até 90, 
+sendo -90 a velocidade máxima para trás; 0 para parar o motor e 90 a velocidade máxima para frente.
+Os valores funcionam de forma igual na esquerda e direita.
+
+obs: os motores provavelmente ficarão parados caso os valores estejam entre -10 e o 10.*/
+
 int velEsq(int x){
   return x + 90;
 }
