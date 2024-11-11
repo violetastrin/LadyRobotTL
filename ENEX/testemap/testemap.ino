@@ -31,12 +31,24 @@ void setup() {
 }
 
 void loop() {
+
+  distancia = ultrasonic.read();
+
   display.clearLine(0);
   display.setCursor(0, 0);
 
   leiturainfra();
   //printar(0);
   //return;
+
+   if (distancia <= 4 && distancia > 0) {  //--------- distancia do desvia obstaculo
+    Serial.println("desviando");
+    display.clear();
+    display.setCursor(0, 0);
+    display.setFontSize(FONT_SIZE_LARGE);
+    display.println("desvia");
+    desviaesq();
+  }
 
   if (sensorMap[0] <= media[0]) {
     valorSensor[0] = 0;
