@@ -201,8 +201,8 @@ void direitaPara() {
 
 void frente(){
   
-  servoDir_f.write(velDir(20));
-  servoDir_t.write(velDir(20));
+  servoDir_f.write(velDir(25));
+  servoDir_t.write(velDir(25));
   servoEsq_f.write(velEsq(20));
   servoEsq_t.write(velEsq(20));
 }
@@ -309,19 +309,18 @@ void desviaesq() {
   frente2();
   delay(1300);
   direita2();
-  delay(1650);
+  delay(1500);
   frente2();
   delay(2800);
   direita2();
   delay(1500);
   frente2();
-  delay(500);
-  while (analogRead(sensor[1]) > valorSensor[1]) {
+  delay(50);
+  while (analogRead(sensor[3]) > 600) {
     frente2();
   }
-  frente2();
-  delay(100);
-  while (analogRead(sensor[2]) > valorSensor[2]) {
+
+  while (analogRead(sensor[2]) > 400) {
     esquerda2();
   }
 }
@@ -332,19 +331,20 @@ void desviadir() {
   direita2();
   delay(1500);
   frente2();
-  delay(1300);
+  delay(1350);
   esquerda2();
-  delay(1500);
+  delay(1250);
   frente2();
-  delay(2400);
+  delay(2300);
   esquerda2();
-  delay(1500);
+  delay(1000);
   frente2();
-  delay(200);
-  while (analogRead(sensor[1]) > valorSensor[1]) {
+  delay(50);
+  while (analogRead(sensor[3]) > 650) {
     frente2();
   }
-  while (analogRead(sensor[2]) > valorSensor[2]) {
+
+  while (analogRead(sensor[2]) > 400) {
     direita2();
   }
 }
