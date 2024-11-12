@@ -1,316 +1,355 @@
-#include "definir.h"
+#ifndef rodar
+#define rodar
 
-void setup() {
-  Serial.begin(9600);
+//Bibliotecas
+#include <Servo.h>    
+#include <Ultrasonic.h>  
+#include <SoftwareWire.h>
+#include <Wire.h>
+#include <Adafruit_TCS34725_SWwire.h>
+#include <Arduino.h>
+#include <MicroLCD.h>
 
-  display.begin();
-  display.setFontSize(FONT_SIZE_LARGE);
+//servos
+Servo servoDir_t;
+Servo servoEsq_f;
+Servo servoEsq_t;
+Servo servoDir_f;
 
-  servoDir_f.attach(8);
-  servoDir_t.attach(7);
-  servoEsq_f.attach(9);
-  servoEsq_t.attach(6);
 
-  if (tcs_soft.begin(&sWire)) {
-    Serial.println("Found sensor soft");
-  } else {
-    display.println("No TCS soft found");
-    Serial.println("No TCS34725 found ... check your connections (soft)");
-    while (1)
-      ;
+//display oled
+LCD_SSD1306 display; /* for SSD1306 OLED module */
+
+//ultra sonico
+Ultrasonic ultrasonic(A6, A5);  // trig primeiro depois echo
+int distancia;
+
+//sensor de cor
+SoftwareWire sWire(5, 4);
+
+Adafruit_TCS34725_SWwire tcs_real = Adafruit_TCS34725_SWwire(TCS34725_INTEGRATIONTIME_180MS, TCS34725_GAIN_4X);
+Adafruit_TCS34725_SWwire tcs_soft = Adafruit_TCS34725_SWwire(TCS34725_INTEGRATIONTIME_180MS, TCS34725_GAIN_4X);
+
+uint16_t r1, g1, b1, c1;
+uint16_t r2, g2, b2, c2;
+
+uint16_t media_rbg1;
+uint16_t media_rbg2;
+
+bool direita_verde, esquerda_verde, direita_vermelho, esquerda_vermelho, direita_cinza, esquerda_cinza;
+
+//ORDEM: ESQUERDA, REAJUSTE ESQUERDA, FRENTE, REAJUSTE DIREITA, DIREITA
+const int sensor[] = {A2, A1, A4, A0, A3};
+
+const int valorPreto[] = {325, 475, 180, 503, 470};
+
+const int valorBranco[] = {984, 982, 988, 986, 988};
+
+const int media[] = {50, 50, 50, 50, 50}; //!ver valores pra cada um dps
+
+int leituraSensor[5] = {};
+
+int sensorMap[5] = {};
+
+bool valorSensor[5] = {};
+
+
+// Função Leitura
+void leiturainfra(){
+for(int i = 0; i<5; i++){
+  leituraSensor[i] = analogRead(sensor[i]);
   }
 
-  if (tcs_real.begin(&Wire)) {
-    Serial.println("Found sensor real");
-  } else {
-    display.println("No TCS real found");
-    Serial.println("No TCS34725 found ... check your connections (real)");
-    while (1)
-      ;
-  }
+for (int i = 0; i<5; i++){
+  sensorMap[i] = map(leituraSensor[i], valorPreto[i], valorBranco[i], 0, 100);
+  sensorMap[i] = constrain(sensorMap[i], 0, 100);
+}
 }
 
-void loop() {
+int velEsq(int x){
+  return x + 90;
+}
 
-  distancia = ultrasonic.read();
+int velDir(int y){
+  return 90 - y;
+}
 
-  display.clearLine(0);
+void leituraCorG() {
+
+  tcs_real.getRawData(&r1, &g1, &b1, &c1);
+  tcs_soft.getRawData(&r2, &g2, &b2, &c2);
+
+  media_rbg1 = (r1 + b1 + g1) / 3;
+  media_rbg2 = (r2 + b2 + g2) / 3;
+
+  uint16_t media1 = media_rbg1 * 1.065;
+  uint16_t media2 = media_rbg2 * 1.08;
+
+  if (media_rbg1 <= 3000) {
+    esquerda_verde = 0;
+  } else if (g1 >= media1) {
+    esquerda_verde = 1;
+  } else {
+    esquerda_verde = 0;
+  }
+
+  if (media_rbg2 <= 2000) {
+    direita_verde = 0;
+  } else if (g2 >= media2) {
+    direita_verde = 1;
+  } else {
+    direita_verde = 0;
+  }
+  Serial.print(" esq: ");
+  Serial.print(", Verde: ");
+  Serial.print(g1);
+  Serial.print(", vermelho: ");
+  Serial.print(r1);
+  Serial.print(", azul: ");
+  Serial.print(b1);
+  Serial.print(", Media: ");
+  Serial.print(media1);
+  Serial.print(", esq verde: ");
+  Serial.print(esquerda_verde);
+
+    Serial.print("  | | |  dir: ");
+  Serial.print(", Verde: ");
+  Serial.print(g2);
+  Serial.print(", vermelho: ");
+  Serial.print(r2);
+  Serial.print(", azul: ");
+  Serial.print(b2);
+  Serial.print(", Media: ");
+  Serial.print(media2);
+  Serial.print(", dir verde: ");
+  Serial.print(direita_verde);
+
+
+  Serial.println();
+
+  display.clear();
   display.setCursor(0, 0);
+  display.setFontSize(FONT_SIZE_SMALL);
 
-  leiturainfra();
-  //printar(0);
-  //return;
+  display.print(esquerda_verde);
+  display.print("||");
+  display.println(direita_verde);
 
-   if (distancia <= 4 && distancia > 0) {  //--------- distancia do desvia obstaculo
-    Serial.println("desviando");
-    display.clear();
-    display.setCursor(0, 0);
-    display.setFontSize(FONT_SIZE_LARGE);
-    display.println("desvia");
-    desviaesq();
+  display.println();
+
+  // display.print("DG: ");
+  // display.print(g2);
+  // display.print("DR: ");
+  // display.println(r2);
+  // display.print("DB: ");
+  // display.print(b2);
+  // display.print("DM: ");
+  // display.println(media2);
+
+  // display.print(" EG: ");
+  // display.print(g1);
+  // display.print(" ER: ");
+  // display.println(r1);
+  // display.print(" EB: ");
+  // display.print(b1);
+  // display.print(" EM: ");
+  // display.println(media1);
+  //delay(2500);  // LEMBRAR DE TIRAR EH SO PARA DEBUG!!!!!!*
+}
+
+/*Os valores variam de -90 até 90, 
+sendo -90 a velocidade máxima para trás; 0 para parar o motor e 90 a velocidade máxima para frente.
+Os valores funcionam de forma igual na esquerda e direita.
+
+obs: os motores provavelmente ficarão parados caso os valores estejam entre -10 e o 10.*/
+
+//Funções motor 
+
+void esquerdaFrente() {
+  servoEsq_f.write(130);
+  servoEsq_t.write(130);
+}
+
+void esquerdaRe() {
+  servoEsq_f.write(50);
+  servoEsq_t.write(50);
+}
+
+void esquerdaPara() {
+  servoEsq_f.write(velEsq(0));
+  servoEsq_t.write(velEsq(0));
+}
+
+///////////////////////////////
+
+void direitaFrente() {
+  servoDir_f.write(40);
+  servoDir_t.write(40);
+}
+
+void direitaRe() {
+  servoDir_f.write(140);
+  servoDir_t.write(140);
+}
+
+void direitaPara() {
+  servoDir_f.write(velDir(0));
+  servoDir_t.write(velDir(0));
+}
+
+//////////////////////////////
+
+void frente(){
+  
+  servoDir_f.write(velDir(25));
+  servoDir_t.write(velDir(25));
+  servoEsq_f.write(velEsq(20));
+  servoEsq_t.write(velEsq(20));
+}
+
+void esquerda(){
+    esquerdaRe();
+    direitaFrente();
+}
+
+void direita(){
+    esquerdaFrente();
+    direitaRe();
+}
+
+void devagarEsquerda() {  // virando para esquerda devagar
+  servoEsq_f.write(velEsq(-30));
+  servoEsq_t.write(velEsq(-30));
+  servoDir_f.write(velDir(30));
+  servoDir_t.write(velDir(30));
+  
+}
+
+void devagarDireita() {  // virando para direita devagar
+  servoEsq_f.write(velEsq(30));
+  servoEsq_t.write(velEsq(30));
+  servoDir_f.write(velDir(-30));
+  servoDir_t.write(velDir(-30));
+}
+
+void reajusteDireita() {  
+  Serial.println("reajuste direita");
+  servoEsq_f.write(velEsq(15));
+  servoEsq_t.write(velEsq(15)); //20
+  servoDir_f.write(velDir(10));  //10
+  servoDir_t.write(velDir(10)); 
+}
+
+void reajusteEsquerda() {                   
+  Serial.println("reajuste esquerda");
+  servoEsq_f.write(velEsq(10));
+  servoEsq_t.write(velEsq(10)); 
+  servoDir_f.write(velDir(15));
+  servoDir_t.write(velDir(15));
+}
+
+void parar(){
+    esquerdaPara();
+    direitaPara();
+}
+void re(){
+    esquerdaRe();
+    direitaRe();
+}
+
+//---------------------- funções desvia obstáculo (NAO MUDAR!)
+
+void esqfrente2() {
+  servoEsq_f.write(velEsq(35)); 
+  servoEsq_t.write(velEsq(35)); 
+}
+
+void dirfrente2() {
+  servoDir_f.write(velDir(35)); 
+  servoDir_t.write(velDir(35));
+}
+
+void dirre2() {
+  servoDir_f.write(velDir(-35));
+  servoDir_t.write(velDir(-35));
+}
+
+void esqre2() {
+  servoEsq_f.write(velEsq(-35));
+  servoEsq_t.write(velEsq(-35));
+}
+
+void re2() {
+  esqre2();
+  dirre2();
+}
+
+void esquerda2() {
+  esqre2();
+  dirfrente2();
+}
+
+void direita2() {
+  esqfrente2();
+  dirre2();
+}
+
+void frente2() {
+  dirfrente2();
+  esqfrente2();
+}
+
+//----------------------  desvia obstáculo -------------------------------------------------------------------------
+
+void desviaesq() {
+  re2();
+  delay(150);
+  esquerda2();
+  delay(1400);
+  frente2();
+  delay(1300);
+  direita2();
+  delay(1500);
+  frente2();
+  delay(2800);
+  direita2();
+  delay(1500);
+  frente2();
+  delay(50);
+  while (analogRead(sensor[3]) > 600) {
+    frente2();
   }
 
-  if (sensorMap[0] <= media[0]) {
-    valorSensor[0] = 0;
-  } else {
-    valorSensor[0] = 1;
+  while (analogRead(sensor[2]) > 400) {
+    esquerda2();
+  }
+}
+
+void desviadir() {
+  re2();
+  delay(150);
+  direita2();
+  delay(1500);
+  frente2();
+  delay(1350);
+  esquerda2();
+  delay(1250);
+  frente2();
+  delay(2300);
+  esquerda2();
+  delay(1000);
+  frente2();
+  delay(50);
+  while (analogRead(sensor[3]) > 650) {
+    frente2();
   }
 
-  if (sensorMap[1] <= media[1]) {
-    valorSensor[1] = 0;
-  } else {
-    valorSensor[1] = 1;
-  }
-
-  if (sensorMap[2] <= media[2]) {
-    valorSensor[2] = 0;
-  } else {
-    valorSensor[2] = 1;
-  }
-
-  if (sensorMap[3] <= media[3]) {
-    valorSensor[3] = 0;
-  } else {
-    valorSensor[3] = 1;
-  }
-
-  if (sensorMap[4] <= media[4]) {
-    valorSensor[4] = 0;
-  } else {
-    valorSensor[4] = 1;
-  }
-
-  byte leitura = 0;
-  for (int i = 0; i < 5; i++) {
-    leitura |= valorSensor[i] << (4 - i);
-  }
-
-  Serial.print(leitura, BIN);
-  Serial.print(" / ");
-  Serial.println(analogRead(A2));
-  display.println(leitura,BIN);
-
-  switch (leitura) {
-
-    //frente
-    case 0b10001:
-      frente();
-      //display.clear();
-      //display.setCursor(0, 0);
-      //display.setFontSize(FONT_SIZE_LARGE);
-      display.println("frente");
-      break;
-
-    //90 graus, esquerda
-    case 0b00101:
-    case 0b00111:
-    case 0b01111:
-    case 0b01101:
-      parar();
-      delay(2000);
-      novgrausEsquerda();
-      break;
-    //90 graus, direita
-    case 0b10100:
-    case 0b11100:
-    case 0b11110:
-    case 0b10110:
-      parar();
-      delay(2000);
-      novgrausDireita();
-      break;
-
-    //Reajuste
-    case 0b10011:
-    case 0b10111:
-      reaje();
-      break;
-
-    case 0b11001:
-    case 0b11101:
-      reajd();
-      break;
-
-    //verde
-    case 0b00100:  // T
-    case 0b00000:
-    case 0b00010:
-    case 0b00110:
-    case 0b01000:
-    case 0b01100:
-    case 0b01011:
-    case 0b11010:
-
-    case 0b10000:  //direita
-    case 0b10010:
-    case 0b11000:
-
-    case 0b00001:  //esquerda
-    case 0b00011:
-    case 0b01001:
-    parar();
-  delay(2000);
-      encruzte();
-      break;
-
-      // cinza & vermelho
-
-      // case 0b11111:
-      //   gapetc();
-      //   break;
-
-
-    default:
-      frente();
-      //display.clear();
-      //display.setCursor(0, 0);
-      //display.setFontSize(FONT_SIZE_LARGE);
-      //display.println("default");
-      //display.println(leitura, BIN);
-      //display.print(analogRead(sensor[0]));
-      // display.print(" ||| ");
-      // display.print(analogRead(sensor[3]));
-      //Serial.println("frente");
-
-      break;
+  while (analogRead(sensor[2]) > 400) {
+    direita2();
   }
 }
 
 
-// funções de ladrilhos
 
 
-void printar(int i) {
-  //display.clear();
-  //display.setCursor(0, 0);
-  //display.setFontSize(FONT_SIZE_LARGE);
-  display.print(analogRead(sensor[i]));
-}
-void novgrausDireita() {  //90º direita
-  //display.clear();
-  //display.setCursor(0, 0);
-  //display.setFontSize(FONT_SIZE_LARGE);
-  display.println("90 graus - d");
-
-  Serial.println("90 direita");
-
-  frente();
-  delay(60);
-
-  while (analogRead(sensor[2]) >= 390) {
-    leiturainfra();
-    devagarDireita();
-  }
-}
-
-void novgrausEsquerda() {  // 90º esquerda
-  //display.clear();
-  //display.setCursor(0, 0);
-  //display.setFontSize(FONT_SIZE_LARGE);
-  display.println("90 graus - e");
-
-  Serial.println("90 esquerda");
-  frente();
-  delay(60);
-
-  while (analogRead(sensor[2]) >= 390) {
-    devagarEsquerda();
-    leiturainfra();
-  }
-}
-
-void reajd() {  //resjuste direita
-  //display.clear();
-  //display.setCursor(0, 0);
-  //display.setFontSize(FONT_SIZE_LARGE);
-  display.println("reaj d");
-  //Serial.println("reajuste direita");
-  reajusteDireita();
-  //leiturainfra();
-}
-
-void reaje() {  //resjuste esquerda
-  //display.clear();
-  //display.setCursor(0, 0);
-  //display.setFontSize(FONT_SIZE_LARGE);
-  display.println("reaj e");
-  //Serial.println("reajuste esquerda");
-  reajusteEsquerda();
-  //leiturainfra();
-}
-
-void encruzte() {  //------------------------ encruzilhada com T
-  //display.clear();
-  //display.setCursor(0, 0);
-  //display.setFontSize(FONT_SIZE_LARGE);
-  display.println("encruzted");
-  Serial.println("encruzilhada ou T");
-  re();
-  delay(120);
-  parar();
-  delay(200);
-  leituraCorG();
-
-  if (direita_verde == 1 && esquerda_verde == 1) {  //------------------------ beco
-    Serial.println("beco");
-
-    //display.clear();
-    //display.setCursor(0, 0);
-    //display.setFontSize(FONT_SIZE_LARGE);
-    display.println("beco");
-
-    parar();
-    delay(5000);
-
-    // frente();
-    // delay(300);
-    // esquerda();
-    // delay(2000);
-
-    // while (analogRead(sensor[2]) >= 350) {
-    //   esquerda();
-    // }
-
-  } else if (esquerda_verde == 0 && direita_verde == 1) {  // direita verde
-    Serial.println("direita verde");
-
-    //display.clear();
-    //display.setCursor(0, 0);
-    //display.setFontSize(FONT_SIZE_LARGE);
-    display.println("direita verde");
-
-    parar();
-    delay(5000);
-    // frente();
-    // delay(390);
-    // direita();
-    // delay(700);
-
-    // while (analogRead(sensor[2]) >= 340) {
-    //   direita();
-    // }
-
-  } else if (esquerda_verde == 1 && direita_verde == 0) {  // esquerda verde
-    Serial.println("esquerda verde");
-
-    //display.clear();
-    //display.setCursor(0, 0);
-    //display.setFontSize(FONT_SIZE_LARGE);
-    display.println("esquerda verde");
-
-    parar();
-    delay(5000);
-    // frente();
-    // delay(390);
-    // esquerda();
-    // delay(700);
-
-    // while (analogRead(sensor[2]) >= 340) {
-    //   esquerda();
-    // }
-
-  }  //else {
-  //   frente();
-  //   delay(410);
-  // } /
-}
+#endif
