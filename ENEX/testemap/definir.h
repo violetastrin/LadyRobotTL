@@ -203,8 +203,8 @@ void frente(){
   
   servoDir_f.write(velDir(25));
   servoDir_t.write(velDir(25));
-  servoEsq_f.write(velEsq(20));
-  servoEsq_t.write(velEsq(20));
+  servoEsq_f.write(velEsq(25));
+  servoEsq_t.write(velEsq(25));
 }
 
 void esquerda(){
@@ -234,8 +234,8 @@ void devagarDireita() {  // virando para direita devagar
 
 void reajusteDireita() {  
   Serial.println("reajuste direita");
-  servoEsq_f.write(velEsq(15));
-  servoEsq_t.write(velEsq(15)); //20
+  servoEsq_f.write(velEsq(17));
+  servoEsq_t.write(velEsq(17)); //20
   servoDir_f.write(velDir(10));  //10
   servoDir_t.write(velDir(10)); 
 }
@@ -244,8 +244,8 @@ void reajusteEsquerda() {
   Serial.println("reajuste esquerda");
   servoEsq_f.write(velEsq(10));
   servoEsq_t.write(velEsq(10)); 
-  servoDir_f.write(velDir(15));
-  servoDir_t.write(velDir(15));
+  servoDir_f.write(velDir(17));
+  servoDir_t.write(velDir(17));
 }
 
 void parar(){
