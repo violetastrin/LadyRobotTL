@@ -41,14 +41,14 @@ void loop() {
   //printar(0);
   //return;
 
-   if (distancia <= 4 && distancia > 0) {  //--------- distancia do desvia obstaculo
-    Serial.println("desviando");
-    display.clear();
-    display.setCursor(0, 0);
-    display.setFontSize(FONT_SIZE_LARGE);
-    display.println("desvia");
-    desviadir();
-  }
+  //  if (distancia <= 4 && distancia > 0) {  //--------- distancia do desvia obstaculo
+  //   Serial.println("desviando");
+  //   display.clear();
+  //   display.setCursor(0, 0);
+  //   display.setFontSize(FONT_SIZE_LARGE);
+  //   display.println("desvia");
+  //   desviadir();
+  // }
 
   if (sensorMap[0] <= media[0]) {
     valorSensor[0] = 0;
@@ -95,9 +95,6 @@ void loop() {
     //frente
     case 0b10001:
       frente();
-      //display.clear();
-      //display.setCursor(0, 0);
-      //display.setFontSize(FONT_SIZE_LARGE);
       display.println("frente");
       break;
 
@@ -107,7 +104,7 @@ void loop() {
     case 0b01111:
     case 0b01101:
       parar();
-      delay(1000);
+      delay(100);
       novgrausEsquerda();
       break;
     //90 graus, direita
@@ -116,7 +113,7 @@ void loop() {
     case 0b11110:
     case 0b10110:
       parar();
-      delay(1000);
+      delay(100);
       novgrausDireita();
       break;
 
@@ -148,9 +145,7 @@ void loop() {
     case 0b00001:  //esquerda
     case 0b00011:
     case 0b01001:
-    parar();
-    delay(2000);
-      encruzte();
+    frente();
       break;
 
       // cinza & vermelho
@@ -197,7 +192,7 @@ void novgrausDireita() {  //90º direita
   frente();
   delay(150);
 
-  while (analogRead(sensor[2]) >= 390) {
+  while (analogRead(sensor[2]) >= 450) {
     leiturainfra();
     devagarDireita();
   }
@@ -213,7 +208,6 @@ void novgrausEsquerda() {  // 90º esquerda
   frente();
   delay(150);
 
-  while (analogRead(sensor[2]) >= 390) {
     devagarEsquerda();
     leiturainfra();
   }
