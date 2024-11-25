@@ -6,9 +6,9 @@ void setup() {
   display.begin();
   display.setFontSize(FONT_SIZE_LARGE);
 
-  servoDir_f.attach(8);
-  servoDir_t.attach(7);
-  servoEsq_f.attach(9);
+  servoDir_f.attach(12);
+  servoDir_t.attach(11);
+  servoEsq_f.attach(7);
   servoEsq_t.attach(6);
 
   if (tcs_soft.begin(&sWire)) {
