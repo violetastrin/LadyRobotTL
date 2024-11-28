@@ -21,7 +21,7 @@ Servo servoDir_f;
 LCD_SSD1306 display; /* for SSD1306 OLED module */
 
 //ultra sonico
-Ultrasonic ultrasonic(A6, A5);  // trig primeiro depois echo
+Ultrasonic ultrasonic(A5, A6);  // trig primeiro depois echo
 int distancia;
 
 //sensor de cor
@@ -41,9 +41,9 @@ bool direita_verde, esquerda_verde, direita_vermelho, esquerda_vermelho, direita
 //ORDEM: ESQUERDA, REAJUSTE ESQUERDA, FRENTE, REAJUSTE DIREITA, DIREITA
 const int sensor[] = {A2, A1, A4, A0, A3};
 
-const int valorPreto[] = {325, 475, 180, 503, 470};
+const int valorPreto[] = {243, 430, 506, 418, 476}; //sensorRE = 430 sensorMEIO = 506 sensorRD = 418 sensorDIR = 476 sensorESQ = 243
 
-const int valorBranco[] = {984, 982, 988, 986, 988};
+const int valorBranco[] = {969, 973, 967, 974, 974}; //sensorRE = 973 sensorMEIO = 967 sensorRD = 974 sensorDIR = 974 sensorESQ = 969
 
 const int media[] = {50, 50, 50, 50, 50}; //!ver valores pra cada um dps
 
@@ -305,15 +305,15 @@ void desviaesq() {
   re2();
   delay(150);
   esquerda2();
+  delay(1300);
+  frente2();
+  delay(1200);
+  direita2();
   delay(1400);
   frente2();
-  delay(1300);
+  delay(2700);
   direita2();
-  delay(1500);
-  frente2();
-  delay(2800);
-  direita2();
-  delay(1500);
+  delay(1400);
   frente2();
   delay(50);
   while (analogRead(sensor[3]) > 600) {
