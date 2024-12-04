@@ -5,9 +5,9 @@ void setup() {
   
   display.begin();
  
-  servoDir_f.attach(8);
-  servoDir_t.attach(7);
-  servoEsq_f.attach(9);
+  servoDir_f.attach(12);
+  servoDir_t.attach(11);
+  servoEsq_f.attach(7);
   servoEsq_t.attach(6);
 
 
@@ -32,8 +32,8 @@ void setup() {
 void loop() {
 
 leiturainfra();
-//reajd();
-//return;
+// frente();
+// return;
 
   if (sensorMap[0] <= media[0] ){valorSensor[0] = 0;} else{valorSensor[0] = 1;}
 
@@ -79,12 +79,9 @@ switch (leitura) {
     //Reajuste 
     case 0b10011:
     case 0b10111:
-      reaje();
-      break;
-
     case 0b11001:
     case 0b11101:
-      reajd();
+      pid();
       break;
 
     //verde
@@ -242,4 +239,38 @@ void encruzte() {  //------------------------ encruzilhada com T
   //   frente();
   //   delay(410);
   // }
+}
+
+void pid(){
+    kp = 0.2;
+    kd = 0.5;
+
+    int leituraDireita = (analogRead(sensor[3])); 
+    int leituraEsquerda = (analogRead(sensor[1])); 
+
+    int err = leituraEsquerda - (leituraDireita);  // erro positivo -> robo a direita
+    int d = err - error_passado;
+
+    float pwme = 90 + vbase + err * kp + d * kd;
+    float pwmd = 90 - vbase + err * kp + d * kd;
+
+
+    servoDir_f.write(pwmd);
+    servoDir_t.write(pwmd);
+
+    servoEsq_f.write(pwme);
+    servoEsq_t.write(pwme);
+
+
+    error_passado = err;
+
+  display.clear();
+  display.setCursor(0, 0);
+  display.setFontSize(FONT_SIZE_LARGE);
+  display.println("reajuste pid");
+
+    Serial.print(pwme);
+    Serial.print(" / ");
+    Serial.println(pwmd); 
+    Serial.println(err);
 }

@@ -10,6 +10,13 @@
 #include <Arduino.h>
 #include <MicroLCD.h>
 
+//pid
+float kp;
+float kd;
+float error_passado = 0;
+int vbase = 30;
+
+
 //servos
 Servo servoDir_t;
 Servo servoEsq_f;
