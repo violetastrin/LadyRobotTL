@@ -10,6 +10,8 @@ void setup() {
   servoEsq_f.attach(9);
   servoEsq_t.attach(6);
 
+
+
  if (tcs_soft.begin(&sWire)) {
     Serial.println("Found sensor soft");
   } else {
