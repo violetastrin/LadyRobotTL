@@ -4,24 +4,20 @@ void setup() {
   Serial.begin(9600);
 
   display.begin();
-<<<<<<< HEAD
  
 =======
   display.setFontSize(FONT_SIZE_LARGE);
 
->>>>>>> ff71d9d0c80c9ab97d831d1f20b0b361d9d1c3ad
   servoDir_f.attach(12);
   servoDir_t.attach(11);
   servoEsq_f.attach(7);
   servoEsq_t.attach(6);
 
-<<<<<<< HEAD
 
 
  if (tcs_soft.begin(&sWire)) {
 =======
   if (tcs_soft.begin(&sWire)) {
->>>>>>> ff71d9d0c80c9ab97d831d1f20b0b361d9d1c3ad
     Serial.println("Found sensor soft");
   } else {
     display.println("No TCS soft found");
@@ -42,13 +38,11 @@ void setup() {
 
 void loop() {
 
-<<<<<<< HEAD
 leiturainfra();
 // frente();
 // return;
 =======
   distancia = ultrasonic.read();
->>>>>>> ff71d9d0c80c9ab97d831d1f20b0b361d9d1c3ad
 
   display.clearLine(0);
   display.setCursor(0, 0);
