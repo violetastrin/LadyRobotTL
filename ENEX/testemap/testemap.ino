@@ -4,24 +4,18 @@ void setup() {
   Serial.begin(9600);
 
   display.begin();
-<<<<<<< HEAD
  
-=======
   display.setFontSize(FONT_SIZE_LARGE);
 
->>>>>>> ff71d9d0c80c9ab97d831d1f20b0b361d9d1c3ad
   servoDir_f.attach(12);
   servoDir_t.attach(11);
   servoEsq_f.attach(7);
   servoEsq_t.attach(6);
 
-<<<<<<< HEAD
 
 
  if (tcs_soft.begin(&sWire)) {
-=======
   if (tcs_soft.begin(&sWire)) {
->>>>>>> ff71d9d0c80c9ab97d831d1f20b0b361d9d1c3ad
     Serial.println("Found sensor soft");
   } else {
     display.println("No TCS soft found");
@@ -38,17 +32,13 @@ void setup() {
     while (1)
       ;
   }
-}
-
+}}
 void loop() {
 
-<<<<<<< HEAD
 leiturainfra();
 // frente();
 // return;
-=======
   distancia = ultrasonic.read();
->>>>>>> ff71d9d0c80c9ab97d831d1f20b0b361d9d1c3ad
 
   display.clearLine(0);
   display.setCursor(0, 0);
@@ -136,9 +126,11 @@ leiturainfra();
     //Reajuste
     case 0b10011:
     case 0b10111:
+      reajd();
+      break;
     case 0b11001:
     case 0b11101:
-      pid();
+      reaje();
       break;
 
     //verde
@@ -203,9 +195,9 @@ void novgrausDireita() {  //90º direita
   Serial.println("90 direita");
 
   frente();
-  delay(90);
+  delay(150);
 
-  while (analogRead(sensor[2]) >= 450) {
+  while (analogRead(sensor[2]) >= 300) {
     leiturainfra();
     devagarDireita();
   }
@@ -219,8 +211,8 @@ void novgrausEsquerda() {  // 90º esquerda
 
   Serial.println("90 esquerda");
   frente();
-  delay(90);
-while (analogRead(sensor[2]) >= 450) {
+  delay(150);
+while (analogRead(sensor[2]) >= 300) {
     devagarEsquerda();
     leiturainfra();
   }

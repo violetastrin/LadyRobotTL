@@ -12,3 +12,69 @@ verde
 
 servos da esquerda andam pra frente acima de 90 e pra trás abaixo.  180 max p/ frente, 90 para, 0 max p/ trás  x - 90 = y
 servos da direita andam pra frente abaixo de 90 e pra trás acima.    0 máx p/ trás, 90 para, 180 máx p/ trás   90 - x = y
+
+
+
+
+
+
+    //90 graus, esquerda
+   sem reajuste tds ficam case 011:
+    
+    //90 graus, direita
+    sem reajuste tds ficam   case 110:
+
+
+    //Reajuste
+    sem reajuste tds ficam  case 101 e case 111:
+
+
+        //verde
+    sem reajuste tds ficam   case 010 e case 000 e vcase 001:
+    case 100:
+
+    case 100:  //direita
+    case 100:
+    case 100:
+
+    case 001:  //esquerda
+    case 001:
+    case 001:
+
+
+000  --- verde
+001  --- verde e esquerda
+010  --- verde
+011  --- nov g esquerda
+100  --- verde e direita
+101  --- reajuste
+110  --- nov g direita
+111  --- reajuste
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
