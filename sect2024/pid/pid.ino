@@ -4,35 +4,13 @@ void setup() {
   Serial.begin(9600);
 
   display.begin();
- 
+
   display.setFontSize(FONT_SIZE_LARGE);
 
   servoDir_f.attach(12);
   servoDir_t.attach(11);
   servoEsq_f.attach(7);
   servoEsq_t.attach(6);
-
-
-
-//  if (tcs_soft.begin(&sWire)) {
-//   if (tcs_soft.begin(&sWire)) {
-//     Serial.println("Found sensor soft");
-//   } else {
-//     display.println("No TCS soft found");
-//     Serial.println("No TCS34725 found ... check your connections (soft)");
-//     while (1)
-//       ;
-//   }
-
-//   if (tcs_real.begin(&Wire)) {
-//     Serial.println("Found sensor real");
-//   } else {
-//     display.println("No TCS real found");
-//     Serial.println("No TCS34725 found ... check your connections (real)");
-//     while (1)
-//       ;
-//   }
-// }
 }
 void loop() {
 
@@ -45,7 +23,7 @@ void loop() {
 
   leiturainfra();
 
-   if (distancia <= 4 && distancia > 0) {  //--------- distancia do desvia obstaculo
+  if (distancia <= 4 && distancia > 0) {  //--------- distancia do desvia obstaculo
     Serial.println("desviando");
     display.clear();
     display.setCursor(0, 0);
@@ -78,7 +56,7 @@ void loop() {
   }
 
   Serial.print(leitura, BIN);
-  display.println(leitura,BIN);
+  display.println(leitura, BIN);
 
   switch (leitura) {
     case 0b011:
@@ -108,11 +86,11 @@ void novgrausDireita() {  //90º direita
   Serial.println("90 direita");
 
   frente();
-  delay(150);
+  delay(400);
 
-  while (analogRead(sensor[2]) >= 300) {
+  while (analogRead(sensor[1]) >= 500) {
     leiturainfra();
-    devagarDireita();
+    direita();
   }
 }
 
@@ -121,21 +99,22 @@ void novgrausEsquerda() {  // 90º esquerda
 
   Serial.println("90 esquerda");
   frente();
-  delay(150);
-while (analogRead(sensor[2]) >= 300) {
-    devagarEsquerda();
+  delay(400);
+  while (analogRead(sensor[1]) >= 500) {
+    esquerda();
     leiturainfra();
   }
 }
 
-void pid(){
-    kp = 0.2;
-    kd = 0.5;
+void pid() {
 
-    int leituraDireita = (analogRead(A0)); 
-    int leituraEsquerda = (analogRead(A1)); 
+    kp = 0.03;
+    kd = 0.005;
 
-    int err = leituraEsquerda - (leituraDireita);  // erro positivo -> robo a direita
+    int leituraDireita = (analogRead(A0));
+    int leituraEsquerda = (analogRead(A1));
+
+    int err = leituraEsquerda - (leituraDireita);
     int d = err - error_passado;
 
     float pwme = 90 + vbase + err * kp + d * kd;
@@ -151,13 +130,14 @@ void pid(){
 
     error_passado = err;
 
-  display.clear();
-  display.setCursor(0, 0);
-  display.setFontSize(FONT_SIZE_LARGE);
-  display.println("reajuste pid");
+    display.clear();
+    display.setCursor(0, 0);
+    display.setFontSize(FONT_SIZE_LARGE);
+    display.println("reajuste pid");
 
     Serial.print(pwme);
     Serial.print(" / ");
-    Serial.println(pwmd); 
+    Serial.println(pwmd);
     Serial.println(err);
+  
 }
