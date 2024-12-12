@@ -47,9 +47,9 @@ bool direita_verde, esquerda_verde, direita_vermelho, esquerda_vermelho, direita
 //ORDEM: ESQUERDA, REAJUSTE ESQUERDA, FRENTE, REAJUSTE DIREITA, DIREITA
 const int sensor[] = {A2, A1, A4, A0, A3};
 
-const int valorPreto[] = {580, 430, 300, 418, 440}; //sensorRE = 430 sensorMEIO = 506 sensorRD = 418 sensorDIR = 476 sensorESQ = 243
+const int valorPreto[] = {325, 350, 150, 324, 280}; 
 
-const int valorBranco[] = {969, 973, 967, 974, 974}; //sensorRE = 973 sensorMEIO = 967 sensorRD = 974 sensorDIR = 974 sensorESQ = 969
+const int valorBranco[] = {984, 982, 988, 986, 988};
 
 const int media[] = {50, 50, 50, 50, 50}; //!ver valores pra cada um dps
 
