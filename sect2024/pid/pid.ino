@@ -59,15 +59,28 @@ void loop() {
   display.println(leitura, BIN);
 
   switch (leitura) {
+
     case 0b011:
+    if(analogRead(A1) <= 500){
       novgrausEsquerda();
       break;
+    }
+    else{
+      break;
+    }
+
     case 0b101:
       pid();
       break;
     case 0b110:
       novgrausDireita();
+          if(analogRead(A0) <= 500){
+      novgrausDireita();
       break;
+    }
+    else{
+      break;
+    }
     case 0b111:
       frente();
       break;

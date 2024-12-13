@@ -31,6 +31,8 @@ int distancia;
 //ORDEM: ESQUERDA, REAJUSTE ESQUERDA, FRENTE, REAJUSTE DIREITA, DIREITA
 const int sensor[] = {A2, A4, A3};
 
+const int esq_dir[] = {A1, A0}
+
 const int valorPreto[] = {90, 330, 600}; 
 
 const int valorBranco[] = {340, 988, 988};
