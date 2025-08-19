@@ -10,6 +10,7 @@ void setup() {
  }
 
 void loop() {
+
   leiturainfra();
   distancia = ultrasonic.read();
 
