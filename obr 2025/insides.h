@@ -5,13 +5,13 @@
 #include <Servo.h>    
 #include <Ultrasonic.h> 
 
-#define eledverde x
+#define eledverde X
 #define eledverm x
 #define dledverde x
 #define dledverm x
 
-#define core x
-#define cord x
+#define core A8
+#define cord A9
 
 const int sensor[] = {A2, A1, A4, A0, A3};
 
