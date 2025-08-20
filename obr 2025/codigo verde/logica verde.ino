@@ -110,20 +110,52 @@ void loop() {
   }
  
     //                                                                 --verde--
-    // case 0b00000:
-    // case 0b00011:
-    // case 0b11000:
-    // case 0b00100:
-    // case 0b10000:
-    // case 0b00001:
-    //   verde();
-    //   break;
+    case 0b00000:
+    case 0b00011:
+    case 0b11000:
+    case 0b00100:
+    case 0b10000:
+    case 0b00001:
+       verde();
+       break;
    
 
     // case 0b00101:             90 esquerda       com EP, EM e DM
     // case 0b01101:             90 esquerda       com EP e DM
     // case 0b10100:             90 direita        com EM, DM e DP
     // case 0b10110:             90 direita        com EM e DP
+}
+
+void verde (){
+  digitalWrite(eledverde, HIGH);
+  digitalWrite(dledverde, HIGH);
+  if (esquerdaverde == 1 && direitaverde == 1){
+    parar();
+    delay(1000);
+    frente();
+    delay(300);
+    esquerda();
+    delay(2000);
+
+    while (analogRead(sensor[2]) <= 500) {
+      esquerda();
+    }
+  } else if (esquerdaverde == 1 && direitaverde == 0) {
+
+  } else if (esquerdaverde == 0 && direitaverde == 1) {
+    parar();
+    delay(1000);
+    frente();
+    delay(20);
+    direita();
+    delay(500);
+
+    while (analogRead(sensor[2]) <= 500) {
+      direita();
+    }
+  } else {
+
+  }
 }
 
 void novgrausDireita() {  
