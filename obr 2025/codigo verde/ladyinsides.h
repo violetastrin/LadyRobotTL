@@ -51,6 +51,8 @@ int velDir(int y){
   return 90 - y;
 }
 
+bool esquerdaverde, direitaverde, esquerdaverm, direitaverm
+
 void leiturainfra(){
 for(int i = 0; i<5; i++){
   leituraSensor[i] = analogRead(sensor[i]);
