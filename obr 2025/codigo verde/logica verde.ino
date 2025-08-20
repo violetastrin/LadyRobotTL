@@ -141,7 +141,16 @@ void verde (){
       esquerda();
     }
   } else if (esquerdaverde == 1 && direitaverde == 0) {
+    parar();
+    delay(1000);
+    frente();
+    delay(300);
+    esquerda();
+    delay(500);
 
+    while (analogRead(sensor[2]) <= 500) {
+      esquerda();
+    }
   } else if (esquerdaverde == 0 && direitaverde == 1) {
     parar();
     delay(1000);
@@ -154,7 +163,46 @@ void verde (){
       direita();
     }
   } else {
+    frente();
+    delay(300);
+  }
+}
 
+void everde (){
+  digitalWrite(eledverde, HIGH);
+  if (esquerdaverde == 1) {
+    parar();
+    delay(1000);
+    frente();
+    delay(300);
+    esquerda();
+    delay(2000);
+
+    while (analogRead(sensor[2]) <= 500) {
+      esquerda();
+    }
+  } else {
+    frente();
+    delay(300);
+  }
+}
+
+void dverde (){
+  digitalWrite(eledverde, HIGH);
+  if (direitaverde == 1) {
+    parar();
+    delay(1000);
+    frente();
+    delay(20);
+    direita();
+    delay(500);
+
+    while (analogRead(sensor[2]) <= 500) {
+      direita();
+    }
+  } else {
+    frente();
+    delay(300);
   }
 }
 
