@@ -188,7 +188,7 @@ void everde (){
 }
 
 void dverde (){
-  digitalWrite(eledverde, HIGH);
+  digitalWrite(dledverde, HIGH);
   if (direitaverde == 1) {
     parar();
     delay(1000);
