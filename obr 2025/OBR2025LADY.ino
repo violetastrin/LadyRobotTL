@@ -1,4 +1,4 @@
-#include "insides.h"
+#include "ladyinsides.h"
 
 void setup() {
   Serial.begin(9600);
@@ -29,31 +29,31 @@ void loop() {
     desviaesq();
   }
 
-  if (sensorMap[0] <= media[0]) {
+  if (sensorMap[0] >= media[0]) {
     valorSensor[0] = 0;
   } else {
     valorSensor[0] = 1;
   }
 
-  if (sensorMap[1] <= media[1]) {
+  if (sensorMap[1] >= media[1]) {
     valorSensor[1] = 0;
   } else {
     valorSensor[1] = 1;
   }
 
-  if (sensorMap[2] <= media[2]) {
+  if (sensorMap[2] >= media[2]) {
     valorSensor[2] = 0;
   } else {
     valorSensor[2] = 1;
   }
 
-  if (sensorMap[3] <= media[3]) {
+  if (sensorMap[3] >= media[3]) {
     valorSensor[3] = 0;
   } else {
     valorSensor[3] = 1;
   }
 
-  if (sensorMap[4] <= media[4]) {
+  if (sensorMap[4] >= media[4]) {
     valorSensor[4] = 0;
   } else {
     valorSensor[4] = 1;
@@ -68,46 +68,48 @@ void loop() {
   Serial.print(" / ");
   Serial.println(analogRead(A2));
 
- switch (leitura) {
-
-    //frente
-    case 0b11011:
+  switch (leitura) {
+   
+    //                    0 = preto; 1 = branco
+    //                                                                  --frente--
+    case 0b11011:           //frente (F)
       frente();
       break;
 
-    //90 graus, esquerda
-    // case 0b00101:
-
-    case 0b00111:
-    case 0b01111:
-    // case 0b01101:
+    //                                                            --90 graus esquerda--
+    case 0b00111:       //esquerda ponta (EP); esquerda meio(E)
+    case 0b01111:       //esquerda ponta (EP)
       parar();
       delay(100);
       novgrausEsquerda();
       break;
 
-    //90 graus, direita
-    // case 0b10100:
-
-    case 0b11100:
-    case 0b11110:
-    // case 0b10110:
+    //                                                            --90 graus direita--
+    case 0b11100:       //direita ponta (DP); direita meio(D)
+    case 0b11110:       //direita ponta (DP);
       parar();
       delay(100);
       novgrausDireita();
       break;
 
-    //Reajuste
-    case 0b10011:
-    case 0b10111:
+    //                                                                --Reajuste--
+    case 0b10011:       //esquerda meio(EM); meio (M)
+    case 0b10111:       //esquerda meio(E)
       reajd();
       break;
 
-    case 0b11001:
-    case 0b11101:
+    case 0b11001:       //direita meio(DM); meio (M)
+    case 0b11101:       //direita meio(DM)
       reaje();
       break;
 
+    //                                                                  --gap--
+    default:
+      frente();
+      break;
+  }
+ 
+    //                                                                 --verde--
     // case 0b00000:
     // case 0b00011:
     // case 0b11000:
@@ -116,11 +118,12 @@ void loop() {
     // case 0b00001:
     //   verde();
     //   break;
+   
 
-    default:
-      frente();
-      break;
-  }
+    // case 0b00101:             90 esquerda       com EP, EM e DM
+    // case 0b01101:             90 esquerda       com EP e DM
+    // case 0b10100:             90 direita        com EM, DM e DP
+    // case 0b10110:             90 direita        com EM e DP
 }
 
 void novgrausDireita() {  
@@ -128,8 +131,8 @@ void novgrausDireita() {
   frente();
   delay(150);
 
-  while (analogRead(sensor[2]) >= 300) {
-    devagarDireita();
+  while (analogRead(sensor[2]) <= 400) {
+    direita();
   }
 }
 
@@ -138,8 +141,8 @@ void novgrausEsquerda() {
   frente();
   delay(150);
 
-while (analogRead(sensor[2]) >= 300) {
-    devagarEsquerda();
+while (analogRead(sensor[2]) <= 400) {
+    esquerda();
   }
 }
 
