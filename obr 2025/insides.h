@@ -5,21 +5,29 @@
 #include <Servo.h>    
 #include <Ultrasonic.h> 
 
-#define eledverde X
-#define eledverm x
-#define dledverde x
-#define dledverm x
 
-#define core A8
-#define cord A9
+//  sensor de cor              26 LED VERDE RGB ESQUERDA; 28 LED VERMELHO RGB ESQUERDA; 22 LED VERDE RGB DIREITA; 24 LED VERMELHO RGB DIREITA;
+#define eledverde 26
+#define eledverm 28
+#define dledverde 22
+#define dledverm 24
 
-const int sensor[] = {A2, A1, A4, A0, A3};
+//  ldr                                                         A9 LDR ESQUERDA; A8 LDR DIREITA
+#define core A9
+#define cord A8
 
-const int valorPreto[] = {325, 350, 150, 324, 280}; 
+//  PID
+#define pide A11
+#define pidd A10
 
-const int valorBranco[] = {984, 982, 988, 986, 988};
+//                          ORDEM: ESQUERDA PONTA (EP) A3, ESQUERDA MEIO (EM) A2, FRENTE (F) A4, DIREITA MEIO (DM) A1, DIREITA PONTA (DP) A0
+const int sensor[] = {A3, A2, A4, A1, A0};
 
-const int media[] = {50, 50, 50, 50, 50}; //!ver valores pra cada um dps
+const int valorBranco[] = {720, 650, 740, 670, 730}; 
+
+const int valorPreto[] = {40, 40, 40, 40, 40};
+
+const int media[] = {50, 50, 50, 50, 50};
 
 int leituraSensor[5] = {};
 
@@ -92,8 +100,8 @@ void frente(){
   
   servoDir_f.write(velDir(25));
   servoDir_t.write(velDir(25));
-  servoEsq_f.write(velEsq(25));
-  servoEsq_t.write(velEsq(25));
+  servoEsq_f.write(velEsq(30));
+  servoEsq_t.write(velEsq(30));
 }
 
 void esquerda(){
