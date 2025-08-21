@@ -1,0 +1,87 @@
+
+// -------------------------------------------------------------------------------------------------------------------------------------------------
+
+bool contagem = false;
+int tempoo = 0;
+int estado = 0;
+
+
+bool lendoBranco() {
+  return (valorSensor[0] == 1 && valorSensor[1] == 1 && valorSensor[2] == 1 && valorSensor[3] == 1 && valorSensor[4] == 1);
+}
+
+unsigned long tempoBranco = 0;          // guarda o momento que começou a ler branco
+const unsigned long esperaBranco = 3000; // tempo de espera (3 segundos)
+
+void saladeresgate(){
+
+  frente();
+  delay(1500);
+
+  virarDireixo();
+  delay(1500);
+
+  frente();
+  delay(5500);
+
+  virarEsqeixo();
+  delay(1600);
+
+  frente();
+  delay(500);
+
+  while (analogRead(sensor[4]) < 600) {
+  frente();
+  }
+}
+
+void confere() {
+  if (lendoBranco()) {
+    if (tempoBranco == 0) {
+      tempoBranco = millis();  //contagrm
+    } else if (millis() - tempoBranco >= esperaBranco) {
+      // 3 segundos
+      saladeresgate();
+      tempoBranco = 0; // reseta
+    }
+  } else {
+    tempoBranco = 0; // se ver preto, zera contagem
+  }
+
+}
+
+//    while (true) {
+//     long distanciaFrente = ultrasonic.read();
+
+//     // Serial.print("Frente: ");
+//     // Serial.print(distanciaFrente);
+//     // Serial.print(" cm | Direita: ");
+//     // Serial.print(distanciaDireita);
+//     // Serial.println(" cm");
+
+//     switch (estado) {
+
+//       case 0: // Frente até obstáculo
+//         if (ultrasonic.read() > 10) {
+//           frente();
+//         } else {
+//           parar();
+//           estado = 3;
+//           delay(200);
+//         }
+//         break;
+
+//       case 3: // Vira esquerda
+//         virarEsqeixo();
+//         delay(1250);
+//         parar();
+//         estado = 0; // volta ao ciclo
+//         break;
+//     }
+
+//     delay(100);
+//   }
+// }
+
+
+#endif
