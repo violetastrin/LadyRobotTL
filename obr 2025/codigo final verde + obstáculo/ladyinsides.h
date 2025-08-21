@@ -284,23 +284,18 @@ void desviadir() {
   frente2();
   delay(1400);
   reajEsqdesv();
+  delay(1500);
+  frente2();
+  delay(2450);
+  virarEsqeixo();
   delay(1300);
   frente2();
-  delay(1900);
-  virarEsqeixo();
-  delay(800);
-  frente2();
-  delay(700);
-  esquerda2();
   delay(300);
-  frente2();
-  delay(900);
-  reajDirdesv();
-  delay(1000);
   while (analogRead(sensor[4]) < 600) {
     frente2();
   }
-
+  frente2();
+  delay(250);
   while (analogRead(sensor[2]) < 570) {
     direita2();
   }
