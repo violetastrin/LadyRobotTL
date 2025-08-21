@@ -1,0 +1,147 @@
+//---------------------- funções desvia obstáculo (NAO MUDAR!)
+
+void esqfrente2() {                     //esquerda frente
+  servoEsq_f.write(velEsq(45)); 
+  servoEsq_t.write(velEsq(45)); 
+}
+
+void dirfrente2() {                     //direita frente
+  servoDir_f.write(velDir(40)); 
+  servoDir_t.write(velDir(40));
+}
+
+void esqre2() {                         //esquerda tras
+  servoEsq_f.write(velEsq(-45));
+  servoEsq_t.write(velEsq(-45));
+}
+
+void dirre2() {                        //direita tras
+  servoDir_f.write(velDir(-40));
+  servoDir_t.write(velDir(-40));
+}
+
+void reajDirdesv(){                    //direita desvia
+  servoEsq_f.write(velEsq(40));
+  servoEsq_t.write(velEsq(40));
+  servoDir_f.write(velDir(-45));
+  servoDir_t.write(velDir(-45));
+}
+
+void reajEsqdesv(){                    //esquerda desvia
+  servoEsq_f.write(velEsq(-45));
+  servoEsq_t.write(velEsq(-45));
+  servoDir_f.write(velDir(40));
+  servoDir_t.write(velDir(40));
+}
+
+void reajEsqdesv2(){                  //girando no proprio eixo esquerda no final
+  servoEsq_f.write(velEsq(-90));
+  servoEsq_t.write(velEsq(-90));
+  servoDir_f.write(velDir(40));
+  servoDir_t.write(velDir(40));
+}
+
+void reajDirdesv2(){                  //girando no proprio eixo direita no final
+  servoEsq_f.write(velEsq(40));
+  servoEsq_t.write(velEsq(40));
+  servoDir_f.write(velDir(-90));
+  servoDir_t.write(velDir(-90));
+}
+
+void virarDireixo(){                 //girando no proprio eixo direita (no meio)
+  servoEsq_f.write(velEsq(30));
+  servoEsq_t.write(velEsq(30));
+  servoDir_f.write(velDir(-90));
+  servoDir_t.write(velDir(-90));
+}
+
+void virarEsqeixo(){                 //girando no proprio eixo esquerda (no meio)
+  servoEsq_f.write(velEsq(-90));
+  servoEsq_t.write(velEsq(-90));
+  servoDir_f.write(velDir(30));
+  servoDir_t.write(velDir(30));
+}
+
+void re2() {                         //todo ré
+  esqre2();
+  dirre2();
+}
+
+void esquerda2() {                   //
+  esqre2();
+  dirfrente2();
+}
+
+void direita2() {
+  esqfrente2();
+  dirre2();
+}
+
+void frente2() {
+  dirfrente2();
+  esqfrente2();
+}
+
+void retornoDIR(){
+  reajDirdesv();
+}
+
+void retornoESQ(){
+  reajEsqdesv();
+}
+
+//----------------------  desvia obstáculo -------------------------------------------------------------------------
+
+void desviaesq() {
+  re2();
+  delay(200);
+  esquerda2();
+  delay(1350);
+  frente2();
+  delay(1400);
+  reajDirdesv();
+  delay(1300);
+  frente2();
+  delay(1900);
+  virarDireixo();
+  delay(800);
+  frente2();
+  delay(700);
+  direita2();
+  delay(300);
+  frente2();
+  delay(900);
+  reajEsqdesv();
+  delay(1000);
+  while (analogRead(sensor[0]) < 600) {
+    frente2();
+  }
+  while (analogRead(sensor[2]) < 570) {
+    esquerda2();
+  }
+}
+
+void desviadir() {
+  re2();
+  delay(200);
+  direita2();
+  delay(1350);
+  frente2();
+  delay(1400);
+  reajEsqdesv();
+  delay(1500);
+  frente2();
+  delay(2450);
+  virarEsqeixo();
+  delay(1300);
+  frente2();
+  delay(300);
+  while (analogRead(sensor[4]) < 600) {
+    frente2();
+  }
+  frente2();
+  delay(250);
+  while (analogRead(sensor[2]) < 570) {
+    direita2();
+  }
+}
