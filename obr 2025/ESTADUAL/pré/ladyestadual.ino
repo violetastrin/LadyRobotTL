@@ -146,7 +146,9 @@ void loop() {
       // case 0b10110:             90 direita        com EM e DP
 
     case 0b11111:
-      conferevermelho();
+      parar();
+      delay(300);
+      vermelho();
 
     default:
       frente();
@@ -154,6 +156,7 @@ void loop() {
   }
 }
 //   ----------------------------------------------------- verde --------------------------------------------------
+//                             função de conferir verde
 void verde() {
   analogWrite(eledverde, 255);
   analogWrite(dledverde, 255);
@@ -201,7 +204,8 @@ void verde() {
       esquerda();
     }
     display.clear();
-  } else if (esquerdaverde == 0 && analogRead(cord) >= 250 && analogRead(cord) <= 380) {
+  } 
+    else if (esquerdaverde == 0 && analogRead(cord) >= 250 && analogRead(cord) <= 380) {
     Serial.print("Beco direita");
     display.setCursor(0, 0);
     display.setFontSize(FONT_SIZE_LARGE);
@@ -232,7 +236,7 @@ void verde() {
     display.clear();
   }
 }
-
+//                                esquerda verde
 void everde() {
   digitalWrite(eledverde, HIGH);
   if (esquerdaverde == 1) {
@@ -251,7 +255,7 @@ void everde() {
     delay(300);
   }
 }
-
+//                                direita verde
 void dverde() {
   digitalWrite(dledverde, HIGH);
   if (direitaverde == 1) {
@@ -270,10 +274,12 @@ void dverde() {
     delay(300);
   }
 }
+
 //   ---------------------------------------------------- vermelho -------------------------------------------------
+
 void vermelho() {
-  analogWrite(eledverm, 140);
-  analogWrite(dledverm, 140);
+  analogWrite(eledverm, 255);
+  analogWrite(dledverm, 255);
   delay(2000);
 
   Serial.print("Valor core (esquerda): ");
@@ -281,20 +287,16 @@ void vermelho() {
   Serial.print("Valor cord (direita): ");
   Serial.println(analogRead(cord));
 
-  if (analogRead(cord) >= 110 && analogRead(core) >= 104) {
+  if (analogRead(cord) > 90 && analogRead(cord) <= 100 && analogRead(core) > 90 && analogRead(core) <= 100) {
     parar();
     delay(1000000);
   } else {
-    frente;
+    frente();
   }
 }
 
-void conferevermelho(){
-  parar();
-  delay(300);
-  vermelho();
-}
 //   ---------------------------------------------------- 90 graus -------------------------------------------------
+//                                  90 direita
 void novgrausDireita() {
   Serial.println("90 direita");
   frente();
@@ -304,7 +306,7 @@ void novgrausDireita() {
     direita();
   }
 }
-
+//                                  90 esquerda
 void novgrausEsquerda() {
   Serial.println("90 esquerda");
   frente();
@@ -314,12 +316,12 @@ void novgrausEsquerda() {
     esquerda();
   }
 }
-
-
+//   --------------------------------------------------- reajuste -------------------------------------------------
+//                                  reajuste direita
 void reajd() {
   reajusteDireita();
 }
-
+//                                  reajuste esquerda
 void reaje() {
   reajusteEsquerda();
 }
