@@ -25,9 +25,9 @@ LCD_SSD1306 display;
 //                          ORDEM: ESQUERDA PONTA (EP) A3, ESQUERDA MEIO (EM) A2, FRENTE (F) A4, DIREITA MEIO (DM) A1, DIREITA PONTA (DP) A0
 const int sensor[] = { A3, A2, A4, A1, A0 };
 
-const int valorBranco[] = { 720, 650, 740, 670, 730 };
+const int valorBranco[] = { 850, 800, 850, 820, 810 };  //preto
 
-const int valorPreto[] = { 40, 40, 40, 40, 40 };
+const int valorPreto[] = { 190, 180, 190, 190, 190 };        //branco
 
 const int media[] = { 50, 50, 50, 50, 50 };
 
@@ -69,13 +69,13 @@ void leiturainfra() {
 }
 
 void esquerdaFrente() {
-  servoEsq_f.write(130);
-  servoEsq_t.write(130);
+  servoEsq_f.write(120);
+  servoEsq_t.write(120);
 }
 
 void esquerdaRe() {
-  servoEsq_f.write(50);
-  servoEsq_t.write(50);
+  servoEsq_f.write(60);
+  servoEsq_t.write(60);
 }
 
 void esquerdaPara() {
@@ -86,8 +86,8 @@ void esquerdaPara() {
 ///////////////////////////////
 
 void direitaFrente() {
-  servoDir_f.write(40);
-  servoDir_t.write(40);
+  servoDir_f.write(50);
+  servoDir_t.write(50);
 }
 
 void direitaRe() {
@@ -104,10 +104,10 @@ void direitaPara() {
 
 void frente() {
 
-  servoDir_f.write(velDir(25));
-  servoDir_t.write(velDir(25));
-  servoEsq_f.write(velEsq(30));
-  servoEsq_t.write(velEsq(30));
+  servoDir_f.write(velDir(20));
+  servoDir_t.write(velDir(20));
+  servoEsq_f.write(velEsq(25));
+  servoEsq_t.write(velEsq(25));
 }
 
 void esquerda() {
@@ -137,8 +137,8 @@ void devagarDireita() {  // virando para direita devagar
 void reajusteDireita() {
   Serial.println("reajuste direita");
   servoEsq_f.write(velEsq(10));
-  servoEsq_t.write(velEsq(10));   //20
-  servoDir_f.write(velDir(-10));  //10
+  servoEsq_t.write(velEsq(10));   
+  servoDir_f.write(velDir(-10));  
   servoDir_t.write(velDir(-10));
 }
 
@@ -307,7 +307,7 @@ void desviadir() {
   }
 }
 
-// -------------------------------------------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------ sala de resgate --------------------------------------------------------------------
 
 bool contagem = false;
 int tempoo = 0;
@@ -390,4 +390,5 @@ void confere() {
 //     delay(100);
 //   }
 // }
+
 #endif
