@@ -109,11 +109,11 @@ void direitaPara() {
 //////////////////////////////
 
 void frente() {
-
   servoDir_f.write(velDir(25));
   servoDir_t.write(velDir(25));
   servoEsq_f.write(velEsq(30));
   servoEsq_t.write(velEsq(30));
+
 }
 
 void esquerda() {
