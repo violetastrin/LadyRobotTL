@@ -1,6 +1,11 @@
 #include "ladyinsides.h"
 byte leitura = 0;
 
+int verdeEsqmin = 300;
+int verdeEsqmax = 800;
+int verdeDirmin = 230;
+int verdeDirmax = 880;
+
 void setup() {
   display.begin();
   display.clear();
@@ -34,13 +39,13 @@ void loop() {
 
   confere();
 
-  if (analogRead(core) >= 400 && analogRead(core) <= 570) {
+  if (analogRead(core) >= verdeEsqmin && analogRead(core) <= verdeEsqmax) {
     esquerdaverde = 1;
   } else {                     
     esquerdaverde = 0;
   }
 
-  if (analogRead(cord) >= 250 && analogRead(cord) <= 350) {
+  if (analogRead(cord) >= verdeDirmin && analogRead(cord) <= verdeDirmax) {
     direitaverde = 1;
   } else {
     direitaverde = 0;
@@ -123,8 +128,6 @@ void loop() {
       // case 0b10110:             90 direita        com EM e DP
 
     case 0b11111:
-      analogWrite(eledverm, 140);
-      analogWrite(dledverm, 140);
       vermelho();
 
     default:
@@ -147,13 +150,15 @@ void loop() {
 //                                                               ///////////  vermelho  ///////////
 void vermelho() {
   // delay(2000); //ele vai continuar andando por 2 segundos depois que detecta e o led acende, isso é interesante ou atrapalha a leitura?
-
+  
   Serial.print("Valor core (esquerda): ");
   Serial.print(analogRead(core));
   Serial.print("     |      Valor cord (direita): ");
   Serial.println(analogRead(cord));
 
   if ((analogRead(cord) >= 95) && (analogRead(cord) < 112) && (analogRead(core) >= 87) && (analogRead(core) < 105)) {
+    analogWrite(eledverm, 140);
+    analogWrite(dledverm, 140);
     display.setCursor(0, 0);
     display.setFontSize(FONT_SIZE_LARGE);
     display.println("vermelho");
@@ -179,7 +184,7 @@ void verde() {
   Serial.println(analogRead(cord));
 
 
-  if (analogRead(core) >= 250 && analogRead(core) <= 289 && analogRead(cord) >= 160 && analogRead(cord) <= 500) {
+  if (analogRead(core) >= verdeEsqmin && analogRead(core) <= verdeEsqmax && analogRead(cord) >= verdeDirmin && analogRead(cord) <= verdeDirmax) {
     Serial.println("Beco");
     display.setCursor(0, 0);
     display.setFontSize(FONT_SIZE_LARGE);
@@ -198,7 +203,7 @@ void verde() {
     }
     display.clear();
   } 
-  else if (analogRead(core) >= 270 && analogRead(core) <= 600 && direitaverde == 0) {
+  else if (analogRead(core) >= verdeEsqmin && analogRead(core) <= verdeEsqmax && direitaverde == 0) {
     Serial.println("Beco esquerda");
     display.setCursor(0, 0);
     display.setFontSize(FONT_SIZE_LARGE);
@@ -217,7 +222,7 @@ void verde() {
     }
     display.clear();
   } 
-  else if (esquerdaverde == 0 && analogRead(cord) >= 200 && analogRead(cord) <= 500) {
+  else if (esquerdaverde == 0 && analogRead(cord) >= verdeDirmin && analogRead(cord) <= verdeDirmax) {
     Serial.println("Beco direita");
     display.setCursor(0, 0);
     display.setFontSize(FONT_SIZE_LARGE);
