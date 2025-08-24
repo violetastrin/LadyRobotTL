@@ -1,9 +1,11 @@
 #include "ladyinsides.h"
+byte leitura = 0;
 
 void setup() {
-  Serial.begin(9600);
   display.begin();
-
+  display.clear();
+  display.setFontSize(FONT_SIZE_LARGE);
+  Serial.begin(9600);
   servoDir_f.attach(12);
   servoDir_t.attach(11);
   servoEsq_f.attach(6);
@@ -15,7 +17,7 @@ void loop() {
   leiturainfra();
   distancia = ultrasonic.read();
 
-  Serial.print(" sensorESQ = ");
+  Serial.print("  -   sensorESQ = ");
   Serial.print(analogRead(sensor[0]));
   Serial.print(" sensorRE = ");
   Serial.print(analogRead(sensor[1]));
@@ -38,60 +40,35 @@ void loop() {
     esquerdaverde = 0;
   }
 
-
-
   if (analogRead(cord) >= 250 && analogRead(cord) <= 350) {
     direitaverde = 1;
   } else {
     direitaverde = 0;
   }
 
-  if (sensorMap[0] >= media[0]) {
-    valorSensor[0] = 0;
-  } else {
-    valorSensor[0] = 1;
-  }
-
-  if (sensorMap[1] >= media[1]) {
-    valorSensor[1] = 0;
-  } else {
-    valorSensor[1] = 1;
-  }
-
-  if (sensorMap[2] >= media[2]) {
-    valorSensor[2] = 0;
-  } else {
-    valorSensor[2] = 1;
-  }
-
-  if (sensorMap[3] >= media[3]) {
-    valorSensor[3] = 0;
-  } else {
-    valorSensor[3] = 1;
-  }
-
-  if (sensorMap[4] >= media[4]) {
-    valorSensor[4] = 0;
-  } else {
-    valorSensor[4] = 1;
-  }
-
-
-
-  byte leitura = 0;
+  leitura = 0;  // zera antes de montar a leitura
   for (int i = 0; i < 5; i++) {
-    leitura |= valorSensor[i] << (4 - i);
+    int leituraAnalog = analogRead(sensor[i]);
+    valorSensor[i] = (leituraAnalog > media[i]) ? 0 : 1;  
+    leitura |= valorSensor[i] << (4 - i);  
   }
 
+  Serial.print("Sensores: ");
   Serial.print(leitura, BIN);
-  Serial.print(" / ");
-  Serial.println(analogRead(A2));
+
+  Serial.print("   -    Valor core (esquerda): ");
+  Serial.print(analogRead(core));
+  Serial.print("     |      Valor cord (direita): ");
+  Serial.println(analogRead(cord));
 
   switch (leitura) {
 
     //                    0 = preto; 1 = branco
     //                                                                  --frente--
     case 0b11011:  //frente (F)
+      // display.setCursor(0, 0);
+      // display.setFontSize(FONT_SIZE_LARGE);
+      // display.println("frente");
       frente();
       break;
 
@@ -144,12 +121,53 @@ void loop() {
       // case 0b01101:             90 esquerda       com EP e DM
       // case 0b10100:             90 direita        com EM, DM e DP
       // case 0b10110:             90 direita        com EM e DP
+
+    case 0b11111:
+      analogWrite(eledverm, 140);
+      analogWrite(dledverm, 140);
+      vermelho();
+
     default:
       frente();
       break;
   }
+
+  // Serial.print("BIN: ");
+  // for (int i = 0; i < 5; i++) {
+  // Serial.print(valorSensor[i]);
+  // }
+  // Serial.print(" | ANALOG: ");
+  // for (int i = 0; i < 5; i++) {
+  // Serial.print(analogRead(sensor[i]));
+  // Serial.print(" ");
+  // }
+  // Serial.println();
+
+}
+//                                                               ///////////  vermelho  ///////////
+void vermelho() {
+  // delay(2000); //ele vai continuar andando por 2 segundos depois que detecta e o led acende, isso é interesante ou atrapalha a leitura?
+
+  Serial.print("Valor core (esquerda): ");
+  Serial.print(analogRead(core));
+  Serial.print("     |      Valor cord (direita): ");
+  Serial.println(analogRead(cord));
+
+  if ((analogRead(cord) >= 95) && (analogRead(cord) < 112) && (analogRead(core) >= 87) && (analogRead(core) < 105)) {
+    display.setCursor(0, 0);
+    display.setFontSize(FONT_SIZE_LARGE);
+    display.println("vermelho");
+    parar();
+    delay(1000000);
+
+    display.clear();
+  } 
+    else {
+    frente();
+  }
 }
 
+//                                                                 ///////////  verde  ///////////
 void verde() {
   analogWrite(eledverde, 255);
   analogWrite(dledverde, 255);
@@ -157,12 +175,12 @@ void verde() {
 
   Serial.print("Valor core (esquerda): ");
   Serial.print(analogRead(core));
-  Serial.print("Valor cord (direita): ");
+  Serial.print("     |      Valor cord (direita): ");
   Serial.println(analogRead(cord));
 
 
-  if (analogRead(core) >= 400 && analogRead(core) <= 640 && analogRead(cord) >= 250 && analogRead(cord) <= 350) {
-    Serial.print("Beco");
+  if (analogRead(core) >= 250 && analogRead(core) <= 289 && analogRead(cord) >= 160 && analogRead(cord) <= 500) {
+    Serial.println("Beco");
     display.setCursor(0, 0);
     display.setFontSize(FONT_SIZE_LARGE);
     display.println("beco");
@@ -179,8 +197,9 @@ void verde() {
       esquerda();
     }
     display.clear();
-  } else if (analogRead(core) >= 400 && analogRead(core) <= 570 && direitaverde == 0) {
-    Serial.print("Beco esquerda");
+  } 
+  else if (analogRead(core) >= 270 && analogRead(core) <= 600 && direitaverde == 0) {
+    Serial.println("Beco esquerda");
     display.setCursor(0, 0);
     display.setFontSize(FONT_SIZE_LARGE);
     display.println("esq verde");
@@ -197,8 +216,9 @@ void verde() {
       esquerda();
     }
     display.clear();
-  } else if (esquerdaverde == 0 && analogRead(cord) >= 250 && analogRead(cord) <= 380) {
-    Serial.print("Beco direita");
+  } 
+  else if (esquerdaverde == 0 && analogRead(cord) >= 200 && analogRead(cord) <= 500) {
+    Serial.println("Beco direita");
     display.setCursor(0, 0);
     display.setFontSize(FONT_SIZE_LARGE);
     display.println("dir verde");
@@ -215,12 +235,17 @@ void verde() {
       direita();
     }
     display.clear();
-  } else {
-    Serial.print("Sem verde");
+  } 
+  else {
+    Serial.print("Valor core (esquerda): ");
+    Serial.print(analogRead(core));
+    Serial.print("     |      Valor cord (direita): ");
+    Serial.println(analogRead(cord));
+    Serial.println("Sem verde");
     display.clear();
     display.setCursor(0, 0);
     display.setFontSize(FONT_SIZE_LARGE);
-    display.println("nada");
+    display.println("sem verde");
     frente();
     delay(500);
     digitalWrite(eledverde, LOW);
@@ -248,24 +273,6 @@ void everde() {
   }
 }
 
-void vermelho() {
-  analogWrite(eledverm, 140);
-  analogWrite(dledverm, 140);
-  delay(2000);
-
-  Serial.print("Valor core (esquerda): ");
-  Serial.print(analogRead(core));
-  Serial.print("Valor cord (direita): ");
-  Serial.println(analogRead(cord));
-
-  if (analogRead(cord) >= 110 && analogRead(core) >= 104) {
-    parar();
-    delay(1000000);
-  } else {
-    frente;
-  }
-}
-
 void dverde() {
   digitalWrite(dledverde, HIGH);
   if (direitaverde == 1) {
@@ -287,20 +294,29 @@ void dverde() {
 
 void novgrausDireita() {
   Serial.println("90 direita");
-  // frente();
-  // delay(45);
+  display.clear();
+  display.setCursor(0, 0);
+  display.setFontSize(FONT_SIZE_LARGE);
+  display.println("90 direita");
+  frente();
+  delay(20);
 
-  while (analogRead(sensor[3]) <= 700) {
+  while (analogRead(sensor[2]) <= 570) {
     direita();
   }
 }
 
 void novgrausEsquerda() {
   Serial.println("90 esquerda");
-  // frente();
-  // delay(45);
+  Serial.println(leitura);
+  display.clear();
+  display.setCursor(0, 0);
+  display.setFontSize(FONT_SIZE_LARGE);
+  display.println("90 esquerda");
+  frente();
+  delay(20);
 
-  while (analogRead(sensor[1]) <= 700) {
+  while (analogRead(sensor[2]) <= 570) {
     esquerda();
   }
 }
