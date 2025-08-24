@@ -1,13 +1,14 @@
 #ifndef rodar
 #define rodar
 
-//               Bibliotecas
+//Bibliotecas
 #include <Servo.h>
 #include <Ultrasonic.h>
 #include <MicroLCD.h>
 // #include <PCD8544.h>
 // #include <SSD1306.h>
 #include <Arduino.h>
+// #include <MicroLCD.h>
 
 LCD_SSD1306 display;
 
@@ -25,11 +26,17 @@ LCD_SSD1306 display;
 //                          ORDEM: ESQUERDA PONTA (EP) A3, ESQUERDA MEIO (EM) A2, FRENTE (F) A4, DIREITA MEIO (DM) A1, DIREITA PONTA (DP) A0
 const int sensor[] = { A3, A2, A4, A1, A0 };
 
-const int valorBranco[] = { 850, 800, 850, 820, 810 };  //preto
+const int valorPreto[] = { 60, 60, 60, 60, 60 };      // branco
 
-const int valorPreto[] = { 190, 180, 190, 190, 190 };        //branco
+const int valorBranco[] = { 800, 680, 780, 720, 750 };   // preto
 
-const int media[] = { 50, 50, 50, 50, 50 };
+const int media[] = {
+  (valorPreto[0] + valorBranco[0]) / 2,
+  (valorPreto[1] + valorBranco[1]) / 2,
+  (valorPreto[2] + valorBranco[2]) / 2,
+  (valorPreto[3] + valorBranco[3]) / 2,
+  (valorPreto[4] + valorBranco[4]) / 2
+};
 
 int leituraSensor[5] = {};
 
@@ -43,7 +50,6 @@ Servo servoEsq_t;
 Servo servoDir_f;
 
 Ultrasonic ultrasonic(A14, A15);  // trig primeiro depois echo
-Ultrasonic ultrasonic2(A13, A12);
 int distancia;
 
 int velEsq(int x) {
@@ -69,13 +75,13 @@ void leiturainfra() {
 }
 
 void esquerdaFrente() {
-  servoEsq_f.write(120);
-  servoEsq_t.write(120);
+  servoEsq_f.write(130);
+  servoEsq_t.write(130);
 }
 
 void esquerdaRe() {
-  servoEsq_f.write(60);
-  servoEsq_t.write(60);
+  servoEsq_f.write(50);
+  servoEsq_t.write(50);
 }
 
 void esquerdaPara() {
@@ -86,8 +92,8 @@ void esquerdaPara() {
 ///////////////////////////////
 
 void direitaFrente() {
-  servoDir_f.write(50);
-  servoDir_t.write(50);
+  servoDir_f.write(40);
+  servoDir_t.write(40);
 }
 
 void direitaRe() {
@@ -103,11 +109,11 @@ void direitaPara() {
 //////////////////////////////
 
 void frente() {
+  servoDir_f.write(velDir(25));
+  servoDir_t.write(velDir(25));
+  servoEsq_f.write(velEsq(30));
+  servoEsq_t.write(velEsq(30));
 
-  servoDir_f.write(velDir(20));
-  servoDir_t.write(velDir(20));
-  servoEsq_f.write(velEsq(25));
-  servoEsq_t.write(velEsq(25));
 }
 
 void esquerda() {
@@ -137,8 +143,8 @@ void devagarDireita() {  // virando para direita devagar
 void reajusteDireita() {
   Serial.println("reajuste direita");
   servoEsq_f.write(velEsq(10));
-  servoEsq_t.write(velEsq(10));   
-  servoDir_f.write(velDir(-10));  
+  servoEsq_t.write(velEsq(10));   //20
+  servoDir_f.write(velDir(-10));  //10
   servoDir_t.write(velDir(-10));
 }
 
@@ -307,7 +313,7 @@ void desviadir() {
   }
 }
 
-// ------------------------------------------------------ sala de resgate --------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------------------------------------------
 
 bool contagem = false;
 int tempoo = 0;
