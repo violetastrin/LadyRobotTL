@@ -26,9 +26,10 @@ LCD_SSD1306 display;
 //                          ORDEM: ESQUERDA PONTA (EP) A3, ESQUERDA MEIO (EM) A2, FRENTE (F) A4, DIREITA MEIO (DM) A1, DIREITA PONTA (DP) A0
 const int sensor[] = { A3, A2, A4, A1, A0 };
 
-const int valorBranco[] = { 830, 740, 880, 850, 930 };
+const int valorBranco[] = { 500, 460, 690, 620, 570 };
 
-const int valorPreto[] = { 100, 100, 100, 100, 100 };
+//sensorRD = 92 sensorMEIO = 95 sensorD = 96 sensorE = 95 sensorRE = 91
+const int valorPreto[] = { 90, 90, 90, 90, 90 };
 
 const int media[] = { 50, 50, 50, 50, 50 };
 
