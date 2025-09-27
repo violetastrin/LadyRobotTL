@@ -364,3 +364,4 @@ void reajd() {
 void reaje() {
   reajusteEsquerda();
 }
+//a
